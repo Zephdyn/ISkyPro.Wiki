@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0-preview.1",
+  "tag": "v2.0.0-preview.1",
+  "title": "ISkyPro 2.0.0-preview.1",
+  "date": "2026-07-05",
+  "channel": "preview",
+  "changelog": "/changelog/v2-0-0-preview-1",
+  "summary": [
+    "主程序迁移到 .NET 10 和 ASP.NET Core。",
+    "新增 Vue 3 WebUI、QQBot 网关、日志查看和插件管理。",
+    "旧 DLL 插件通过独立 win-x86 PluginHost 隔离运行。",
+    "新增现代 C# 插件 SDK 与示例插件。"
+  ]
+}

@@ -1,0 +1,10 @@
+:root {
+  --vp-font-family-base:
+    "Segoe UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial,
+    sans-serif;
+  --vp-font-family-mono:
+    "Cascadia Code", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --vp-c-brand-1: #256f5a;
+  --vp-c-brand-2: #2f8a70;
+  --vp-c-brand-3: #39a887;
+}
