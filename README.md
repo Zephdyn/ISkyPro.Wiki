@@ -13,6 +13,11 @@ pnpm docs:build
 pnpm docs:preview
 ```
 
+On Windows paths containing `#`, `pnpm docs:dev` starts from a temporary
+hash-free workspace because Vite dev-server file URLs treat `#` as a URL
+fragment. Restart the dev server after editing docs so the temporary copy is
+refreshed.
+
 ## Release Notes
 
 Use GitHub Releases as the update-check source for ISkyPro clients:
