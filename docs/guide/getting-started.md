@@ -27,9 +27,11 @@ ISkyPro/
     appsettings.json
   data/
   plugin/
-  install-service.bat
-  uninstall-service.bat
-  service-status.bat
+  service-menu.bat
+  service/
+    install-service.bat
+    uninstall-service.bat
+    service-status.bat
 ```
 
 手动运行时只启动 `ISkyPro.exe`。`isky.exe` 是旧插件兼容宿主，不是用户启动入口。
@@ -57,22 +59,29 @@ D:\Bots\ISkyPro-A -> ISkyPro-A
 D:\Bots\ISkyPro-B -> ISkyPro-B
 ```
 
-以管理员身份打开命令行，在实例目录运行：
+单实例可以直接双击 `service-menu.bat` 打开服务管理菜单。也可以用默认服务名
+`ISkyPro` 直接安装并启动：
 
 ```cmd
-install-service.bat ISkyPro-A start
+service\install-service.bat start
+```
+
+多实例或自定义服务名时，以管理员身份打开命令行，在实例目录运行：
+
+```cmd
+service\install-service.bat ISkyPro-A start
 ```
 
 查看服务状态：
 
 ```cmd
-service-status.bat ISkyPro-A
+service\service-status.bat ISkyPro-A
 ```
 
 停止并卸载服务：
 
 ```cmd
-uninstall-service.bat ISkyPro-A
+service\uninstall-service.bat ISkyPro-A
 ```
 
 多实例部署时，每个实例必须使用不同目录、不同服务名，并规划不同的 WebUI / Webhook 端口。
