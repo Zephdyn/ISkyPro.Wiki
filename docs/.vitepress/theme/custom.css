@@ -8,3 +8,23 @@
   --vp-c-brand-2: #2f8a70;
   --vp-c-brand-3: #39a887;
 }
+
+.VPNavBarTitle .logo {
+  border-radius: 8px;
+}
+
+.VPHomeHero .image-bg {
+  display: none;
+}
+
+.VPHomeHero .image-src {
+  max-height: 360px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 28px rgb(31 41 55 / 18%));
+}
+
+@media (max-width: 767px) {
+  .VPHomeHero .image-src {
+    max-height: 260px;
+  }
+}

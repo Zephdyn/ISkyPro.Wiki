@@ -5,6 +5,9 @@ hero:
   name: ISkyPro Wiki
   text: QQBot 框架、旧 ISky 插件兼容和现代插件开发文档
   tagline: 面向 2.0 预览版的使用、部署、发布和扩展说明。
+  image:
+    src: /assets/yuki.png
+    alt: ISkyPro 看板娘
   actions:
     - theme: brand
       text: 快速开始

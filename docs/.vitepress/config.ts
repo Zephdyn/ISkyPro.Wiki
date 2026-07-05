@@ -9,7 +9,15 @@ export default defineConfig({
   base,
   cleanUrls: true,
   lastUpdated: true,
+  head: [
+    ['link', { rel: 'icon', href: `${base}ico/ISkyPro.ico` }],
+    ['meta', { name: 'theme-color', content: '#256f5a' }]
+  ],
   themeConfig: {
+    logo: {
+      src: '/assets/Icon.png',
+      alt: 'ISkyPro'
+    },
     search: {
       provider: 'local'
     },
