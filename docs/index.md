@@ -22,5 +22,5 @@ features:
   - title: 插件生态
     details: 覆盖旧 DLL 插件兼容边界、隔离宿主和现代 C# 插件 SDK。
   - title: 更新提示
-    details: 使用 GitHub Releases 暴露最新版本，WebUI 可读取 release 内容并跳转到完整 changelog。
+    details: 查看当前版本、公开更新日志和新版功能摘要。
 ---

@@ -23,8 +23,7 @@ export default defineConfig({
     },
     nav: [
       { text: '指南', link: '/guide/getting-started' },
-      { text: '更新日志', link: '/changelog/' },
-      { text: '发布与更新检测', link: '/reference/update-check' }
+      { text: '更新日志', link: '/changelog/' }
     ],
     sidebar: [
       {
@@ -38,8 +37,7 @@ export default defineConfig({
         text: '发布',
         items: [
           { text: '更新日志', link: '/changelog/' },
-          { text: '2.0.0-preview.1', link: '/changelog/v2-0-0-preview-1' },
-          { text: '更新检测约定', link: '/reference/update-check' }
+          { text: '2.0.0-preview.1', link: '/changelog/v2-0-0-preview-1' }
         ]
       }
     ],
