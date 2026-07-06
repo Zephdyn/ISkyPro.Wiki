@@ -2,7 +2,7 @@
 
 ISkyPro 是面向 QQBot 和旧 ISky 插件生态的 .NET 10 重构版主框架。它把主框架、Bot 网关、Web 管理界面、旧 DLL 插件隔离宿主、`message.dll` 兼容层和现代 C# 插件 SDK 放在同一个解决方案中。
 
-当前版本为 `2.0.0-preview.1`。预览版会优先保持旧插件 ABI、x86 插件宿主发布策略和主要 WebUI/API 行为稳定；`ISkyPro.Contracts` 与 `ISkyPro.PluginSdk` 在稳定版前仍可能调整。
+当前版本为 `2.0.0-preview.2`。预览版会优先保持旧插件 ABI、x86 插件宿主发布策略和主要 WebUI/API 行为稳定；`ISkyPro.Contracts` 与 `ISkyPro.PluginSdk` 在稳定版前仍可能调整。
 
 ## 环境要求
 

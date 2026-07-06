@@ -22,8 +22,8 @@ refreshed.
 
 Use GitHub Releases as the update-check source for ISkyPro clients:
 
-- Tag format: `v2.0.0-preview.1`
-- Release title: `ISkyPro 2.0.0-preview.1`
+- Tag format: `v2.0.0-preview.2`
+- Release title: `ISkyPro 2.0.0-preview.2`
 - Release body: concise changelog summary for WebUI preview
 - Full details: link to the matching page under `/changelog/`
 

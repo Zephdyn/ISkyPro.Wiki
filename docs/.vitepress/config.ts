@@ -37,6 +37,7 @@ export default defineConfig({
         text: '发布',
         items: [
           { text: '更新日志', link: '/changelog/' },
+          { text: '2.0.0-preview.2', link: '/changelog/v2-0-0-preview-2' },
           { text: '2.0.0-preview.1', link: '/changelog/v2-0-0-preview-1' }
         ]
       }
