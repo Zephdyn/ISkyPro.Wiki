@@ -24,11 +24,6 @@ SDK archive file names:
 | Node.js Plugin SDK v2 | `ISkyPro-PluginSdk-Node-2.0.0-preview.3.zip` |
 | Go Plugin SDK v2 | `ISkyPro-PluginSdk-Go-2.0.0-preview.3.zip` |
 
-These SDK packages are not main application update packages. Main application packages include runtime identifiers such as `win-x64`, `win-arm64`, or `linux-x64`; SDK packages should not use those application runtime identifiers.
+SDK archives are for plugin development, not for installing or updating the ISkyPro application. To install or update ISkyPro, download the platform package above that matches your system.
 
-During development, you can also read repository samples directly:
-
-- `samples/ISkyPro.SamplePlugin`
-- `samples/stdio-python-plugin`
-- `samples/stdio-node-plugin`
-- `samples/stdio-go-plugin`
+The Legacy SDK archive contains the E-language SDK files. The C#, Python, Node.js, and Go Plugin SDK v2 archives include the SDK files for that language plus a sample plugin.

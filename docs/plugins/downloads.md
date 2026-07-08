@@ -24,11 +24,6 @@ SDK 压缩包文件名：
 | Node.js Plugin SDK v2 | `ISkyPro-PluginSdk-Node-2.0.0-preview.3.zip` |
 | Go Plugin SDK v2 | `ISkyPro-PluginSdk-Go-2.0.0-preview.3.zip` |
 
-这些 SDK 包不是主程序更新包。主程序发布包会带 `win-x64`、`win-arm64` 或 `linux-x64` 等运行时标识，SDK 包不应使用这些主程序运行时标识。
+SDK 压缩包用于插件开发，不用于安装或更新 ISkyPro 主程序。安装或更新主程序时，请下载上方与你的系统匹配的平台包。
 
-开发时也可以直接参考仓库样例：
-
-- `samples/ISkyPro.SamplePlugin`
-- `samples/stdio-python-plugin`
-- `samples/stdio-node-plugin`
-- `samples/stdio-go-plugin`
+旧插件 SDK 包包含易语言 SDK 文件。C#、Python、Node.js 和 Go 的 Plugin SDK v2 压缩包包含对应语言的 SDK 文件和示例插件。
