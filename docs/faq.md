@@ -2,7 +2,7 @@
 
 ## WebUI token 在哪里看？
 
-首次启动 `ISkyPro.exe` 时，终端会输出 WebUI 地址和访问 token。服务模式下不会自动弹浏览器，请查看服务日志或启动输出。
+首次启动 `ISkyPro.exe` 或 Linux 包中的 `ISkyPro` 时，终端会输出 WebUI 地址和访问 token。服务模式下不会自动弹浏览器，请查看服务日志或启动输出。
 
 ## 应该选 WebSocket 还是 Webhook？
 
@@ -24,6 +24,10 @@
 
 旧插件是 DLL 插件，放在 `plugin/`，由 x86 兼容宿主运行。新插件使用 Plugin SDK v2，放在 `plugins-v2/`，通过 manifest 和 stdio/HTTP 协议接入。
 
+## Linux 支持旧插件吗？
+
+不支持。Linux preview 包支持主程序、WebUI、QQBot 网关和 Plugin SDK v2 新插件；旧 DLL 插件依赖 Windows/x86 兼容宿主和 `message.dll`，仍需要 Windows 包。
+
 ## 为什么旧插件需要 Windows/x86 兼容宿主？
 
 旧生态插件依赖历史 DLL ABI 和 32 位运行环境。ISkyPro 用独立 x86 宿主隔离它们，避免直接加载到主程序进程。
@@ -38,4 +42,4 @@
 
 ## 服务模式下为什么不会自动弹浏览器？
 
-Windows Service 在后台会话中运行，不能像桌面程序一样弹出浏览器。请手动打开 WebUI 地址并输入访问 token。
+Windows Service 或 Linux systemd 都在后台会话中运行，不能像桌面程序一样弹出浏览器。请手动打开 WebUI 地址并输入访问 token。

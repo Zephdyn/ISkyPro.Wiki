@@ -6,16 +6,18 @@ The current version is `2.0.0-preview.3`. Preview builds prioritize compatibilit
 
 ## Requirements
 
-- Windows
-- An ISkyPro release package, such as `ISkyPro-2.0.0-preview.3-win-x64.zip`
+- Windows x64 / Windows ARM64, or Linux x64 preview
+- An ISkyPro release package, such as `ISkyPro-2.0.0-preview.3-win-x64.zip`, `ISkyPro-2.0.0-preview.3-win-arm64.zip`, or `ISkyPro-2.0.0-preview.3-linux-x64.tar.gz`
 - Network access to the QQBot platform
 - Bot ID / AppID and Secret from your QQ Open Platform bot console
 
 The release package includes runtime components for normal use. Users do not need to install the .NET SDK, Node.js, or compiler toolchains.
 
+Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins. Legacy DLL plugins, the x86 `isky.exe` compatibility host, and the `message.dll` compatibility layer are still only provided in Windows packages.
+
 ## Package Layout
 
-After extracting the package, the main entry points and folders are:
+After extracting a Windows package, the main entry points and folders are:
 
 ```text
 ISkyPro/
@@ -36,13 +38,48 @@ ISkyPro/
 
 Start only `ISkyPro.exe` manually. `isky.exe` is the legacy plugin compatibility host and is not the user-facing entry point.
 
+After extracting a Linux package, the main entry points and folders are:
+
+```text
+ISkyPro/
+  ISkyPro                  # Main process entry point
+  config/
+    appsettings.json
+  data/
+  plugins-v2/
+```
+
+Linux packages do not include the legacy plugin compatibility host, `message.dll`, or Windows Service scripts.
+
 ## Start ISkyPro
+
+Windows:
 
 1. Extract the release package to a stable directory, for example `D:\Bots\ISkyPro`.
 2. Double-click `ISkyPro.exe`, or run it from a terminal:
 
 ```cmd
 ISkyPro.exe
+```
+
+3. The terminal prints the WebUI address and access token.
+4. Open the full address shown in the terminal in your browser.
+
+Linux:
+
+1. Extract the release package to a stable directory, for example `/opt/iskypro`:
+
+```bash
+sudo mkdir -p /opt/iskypro
+sudo tar -xzf ISkyPro-2.0.0-preview.3-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
+sudo chmod +x /opt/iskypro/ISkyPro
+```
+
+2. Run it from a terminal:
+
+```bash
+cd /opt/iskypro
+./ISkyPro
 ```
 
 3. The terminal prints the WebUI address and access token.
@@ -76,7 +113,7 @@ The quick start only requires login and mode selection. Group message permission
 
 ## Long-Running Entry Point
 
-For long-running deployments, install a Windows Service. Each instance should use its own directory and service name:
+For long-running Windows deployments, install a Windows Service. Each instance should use its own directory and service name:
 
 ```text
 D:\Bots\ISkyPro-A -> ISkyPro-A
@@ -106,5 +143,35 @@ Stop and uninstall the service:
 ```cmd
 service\uninstall-service.bat ISkyPro-A
 ```
+
+For long-running Linux deployments, use systemd. This example assumes the program is under `/opt/iskypro` and runs as user `iskypro`:
+
+```ini
+[Unit]
+Description=ISkyPro
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=iskypro
+WorkingDirectory=/opt/iskypro
+ExecStart=/opt/iskypro/ISkyPro --no-open-browser
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Save it as `/etc/systemd/system/iskypro.service`, then run:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now iskypro
+sudo systemctl status iskypro
+```
+
+Service mode does not open a browser automatically. Confirm the WebUI address from `journalctl -u iskypro`, terminal output, or configuration files, then log in with a valid access token.
 
 For multi-instance deployments, each instance must use a different directory, service name, and planned WebUI / Webhook ports.

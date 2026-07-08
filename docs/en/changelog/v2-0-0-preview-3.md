@@ -6,11 +6,13 @@ Release date: 2026-07-08
 
 - about: Update downloads now show visible progress with status, file name, downloaded bytes, total bytes, and percent; unknown total size uses an indeterminate progress state.
 - about: Automatic installation now completes the visible WebUI download before calling the install endpoint; failed or cancelled downloads no longer continue into installation.
+- about: Automatic installation supports Linux `.tar.gz` / `.tgz` main application packages; the Linux update script preserves user directories, replaces WebUI assets, and restarts `ISkyPro`.
 - about: The About page now links to the GitHub repository while keeping the docs, Release, and changelog links.
 - plugins: Added Legacy / Modern plugin tabs with count badges and remembered selection; the first load chooses the larger plugin set.
 - plugins: The Modern plugins tab shows Plugin SDK v2 protocol version, transport, permissions, command count, bot binding, queue metrics, recent errors, HTTP registration, and log entry points.
 - gateway: WebSocket business-event receive is decoupled from plugin dispatch and QQBot HTTP sends, so the gateway read loop no longer waits on slow plugins or slow sends.
 - gateway: Added business-event queue and outbound-send queue metrics for queued, in-flight, completed, dropped, failed, rate-limited, and last-error states.
+- runtime: Non-Windows runtimes now protect WebUI tokens, Bot Secrets, and other runtime credentials with a local AES-GCM key stored at `data/iskypro.runtime.key`, which is preserved with user data.
 
 ## 🧩 Plugin Development
 
@@ -40,11 +42,13 @@ Release date: 2026-07-08
 ## ♻️ Compatibility
 
 - legacy-plugin: Legacy DLL plugin ordered dispatch, return-value interception, x86 PluginHost isolation, and drag sorting are unaffected by the new plugin tabs.
+- linux: Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins; legacy DLL plugins, `isky.exe`, and the `message.dll` compatibility layer remain Windows-package only.
 - modern-plugin: HTTP modern plugin controls currently provide registry-level enable, disable, remove, and state refresh behavior; `stdio-jsonrpc` static discovery, zip install, start, stop, restart, crash recovery, token auth, SDK API permission checks, event delivery, log observability, settings schema, Python / Node.js / Go minimal SDKs, and generators are wired, while Java SDKs and stable API naming remain future work.
 
 ## 📝 Docs
 
 - docs: Updated `docs/reference/update-check.md` with download task progress endpoints, status fields, and WebUI download/install flow.
+- docs: Updated Wiki quick start, FAQ, and SDK download pages with Linux preview package startup, systemd long-running deployment, Linux auto-update behavior, and the Windows-only boundary for legacy plugins.
 - docs: Updated `docs/reference/new-plugin-sdk.md` with the Plugin SDK v2 protocol, event model, permission model, SDK method naming, and language coverage status.
 - docs: Updated `docs/designs/pluginhost-message-dispatch.md` with the legacy/modern dispatch model, gateway business queue, and modern plugin queue differences.
 - docs: The Wiki now includes quick start, QQBot event setup, Webhook and reverse proxy, Plugin SDK, FAQ, SDK downloads, and preview.3 changelog pages, with Chinese/English i18n support; the homepage now links to GitHub.

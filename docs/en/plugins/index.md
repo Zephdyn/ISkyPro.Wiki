@@ -4,6 +4,8 @@ ISkyPro supports both legacy DLL plugins and new Plugin SDK v2 plugins.
 
 Legacy plugins target the existing ISky / E-language ecosystem. They continue to live in `plugin/` and run in the isolated x86 `isky.exe` host. New plugins target a cross-language and cross-platform path. They use static manifests under `plugins-v2/`, `stdio-jsonrpc` or HTTP transport, and lifecycle management from Main.
 
+Linux preview packages support only the modern plugin path. Legacy DLL plugins depend on the Windows/x86 compatibility host and `message.dll`, so they require a Windows package.
+
 ## What to Read
 
 - Existing DLL plugin users: start with [Legacy and Modern Plugins](/en/plugins/legacy-vs-modern).

@@ -18,6 +18,8 @@ ISkyPro/
 - WebUI 可扫描、上传、启用、禁用、重启、调整排序、打开设置和卸载。
 - 旧插件 ABI 和 `message.dll` 兼容层继续保留。
 
+旧 DLL 插件仅支持 Windows 包。Linux preview 包不包含 `isky.exe`、`message.dll` 或旧插件 ABI 兼容层。
+
 ## 新插件
 
 新插件使用 `plugins-v2/`：
@@ -43,5 +45,5 @@ ISkyPro/
 
 - 已有 DLL 插件：继续用旧插件入口。
 - 新写插件：优先用 Plugin SDK v2。
-- 需要跨平台或 Python / Node.js / Go：使用新插件。
+- 需要 Linux、跨平台或 Python / Node.js / Go：使用新插件。
 - 需要旧插件拦截链语义：使用旧插件，或在新插件中显式设计 command / filter。

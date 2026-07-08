@@ -18,6 +18,8 @@ Characteristics:
 - The WebUI can scan, upload, enable, disable, restart, sort, open settings, and uninstall them.
 - The legacy plugin ABI and `message.dll` compatibility layer remain available.
 
+Legacy DLL plugins are supported only by Windows packages. Linux preview packages do not include `isky.exe`, `message.dll`, or the legacy plugin ABI compatibility layer.
+
 ## Modern Plugins
 
 Modern plugins use `plugins-v2/`:
@@ -43,5 +45,5 @@ Characteristics:
 
 - Existing DLL plugin: keep using the legacy plugin entry.
 - New plugin: prefer Plugin SDK v2.
-- Python / Node.js / Go or cross-platform plugin: use the modern plugin path.
+- Linux, Python / Node.js / Go, or cross-platform plugin: use the modern plugin path.
 - Legacy interception-chain semantics: use a legacy plugin, or explicitly design command / filter behavior in a modern plugin.

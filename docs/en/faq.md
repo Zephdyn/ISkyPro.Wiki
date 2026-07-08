@@ -2,7 +2,7 @@
 
 ## Where can I find the WebUI token?
 
-When `ISkyPro.exe` starts for the first time, the terminal prints the WebUI address and access token. Service mode does not open a browser automatically, so check service logs or startup output.
+When `ISkyPro.exe` or the Linux package's `ISkyPro` starts for the first time, the terminal prints the WebUI address and access token. Service mode does not open a browser automatically, so check service logs or startup output.
 
 ## Should I use WebSocket or Webhook?
 
@@ -24,6 +24,10 @@ Use a public HTTPS address whose path matches the ISkyPro Webhook setting, for e
 
 Legacy plugins are DLL plugins placed in `plugin/` and run by the x86 compatibility host. Modern plugins use Plugin SDK v2, live under `plugins-v2/`, and connect through manifest and stdio/HTTP protocols.
 
+## Does Linux support legacy plugins?
+
+No. Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins. Legacy DLL plugins depend on the Windows/x86 compatibility host and `message.dll`, so they still require a Windows package.
+
 ## Why do legacy plugins need a Windows/x86 compatibility host?
 
 The legacy ecosystem depends on the historical DLL ABI and 32-bit runtime environment. ISkyPro isolates them in an independent x86 host instead of loading them directly into the main process.
@@ -38,4 +42,4 @@ No. Update-check failure only affects newer-version prompts and download entries
 
 ## Why does service mode not open a browser automatically?
 
-Windows Services run in a background session and cannot open the browser like a desktop process. Open the WebUI address manually and enter the access token.
+Windows Services and Linux systemd services run in a background session and cannot open the browser like a desktop process. Open the WebUI address manually and enter the access token.
