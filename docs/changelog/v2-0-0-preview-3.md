@@ -6,8 +6,11 @@
 
 - about: 更新下载流程新增可见进度，显示状态、文件名、已下载大小、总大小和百分比；总大小未知时显示不确定进度。
 - about: 自动安装现在先完成 WebUI 可见下载，再触发安装接口；下载失败或取消时不会继续进入安装步骤。
+- about: 确认安装后不再保留遮挡进度条的弹窗，下载进度卡片新增取消按钮，可直接终止正在进行的更新下载。
 - about: 自动安装支持 Linux `.tar.gz` / `.tgz` 主程序包，Linux 更新脚本会保留用户目录、替换 WebUI 并重启 `ISkyPro`。
 - about: 关于页新增 GitHub 仓库入口，保留文档、Release 和更新日志入口。
+- webui: 侧边栏版本徽标和关于页当前版本改为读取后端运行时版本，临时测试版本或更新重启后不再依赖 WebUI 内置 changelog 版本。
+- webui: 自动打开 WebUI 时会携带当前程序版本参数，`index.html` 和更新接口响应设置为 no-cache/no-store，避免更新重启后首屏继续使用旧版前端缓存。
 - package: 新增 Linux x64 preview 主程序包 `ISkyPro-<version>-linux-x64.tar.gz`，解压后可直接运行 `ISkyPro`；Linux 包启用 invariant globalization，不需要额外安装 ICU，并且不包含 Windows 旧插件宿主、`message.dll` 或 Windows Service 脚本。
 - plugins: 插件页新增“旧插件 / 新插件”选项卡、数量徽标和选择记忆；首次打开时优先显示插件数量更多的一类。
 - plugins: 新插件页展示 Plugin SDK v2 插件的协议版本、transport、权限、命令数量、Bot 绑定、队列指标、最近错误、HTTP 注册和日志入口。
@@ -54,3 +57,4 @@
 - docs: 更新 `docs/designs/pluginhost-message-dispatch.md`，记录新旧插件分发模型、网关业务队列和现代插件队列差异。
 - docs: Wiki 新增快速开始、QQBot 事件配置、Webhook 与反向代理、插件 SDK、FAQ、SDK 下载和 preview.3 changelog 页面，支持中英文 i18n 站点；首页新增 GitHub 仓库入口。
 - docs: Wiki 首页 `/assets/yuki.png` 压缩到 256 KB 以下，并保持原路径。
+- release: 新增通用版本发布提示词，覆盖主程序 Windows / Linux 包、SDK 包、Wiki Release 上传和发布后校验流程。

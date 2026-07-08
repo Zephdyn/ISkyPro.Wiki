@@ -6,8 +6,11 @@ Release date: 2026-07-08
 
 - about: Update downloads now show visible progress with status, file name, downloaded bytes, total bytes, and percent; unknown total size uses an indeterminate progress state.
 - about: Automatic installation now completes the visible WebUI download before calling the install endpoint; failed or cancelled downloads no longer continue into installation.
+- about: The install confirmation dialog now closes after confirmation instead of covering the progress bar, and the progress card includes a cancel button for an in-progress update download.
 - about: Automatic installation supports Linux `.tar.gz` / `.tgz` main application packages; the Linux update script preserves user directories, replaces WebUI assets, and restarts `ISkyPro`.
 - about: The About page now links to the GitHub repository while keeping the docs, Release, and changelog links.
+- webui: The sidebar version badge and About current-version field now read the backend runtime version, so temporary test versions and post-update restarts no longer depend on the WebUI-bundled changelog version.
+- webui: Automatically opened WebUI URLs now include the current application version, and `index.html` plus update API responses use no-cache/no-store headers to avoid showing stale frontend assets after an update restart.
 - package: Added the Linux x64 preview application package `ISkyPro-<version>-linux-x64.tar.gz`; after extraction, users can run `ISkyPro` directly. Linux packages enable invariant globalization, do not require an additional ICU install, and exclude the Windows legacy plugin host, `message.dll`, and Windows Service scripts.
 - plugins: Added Legacy / Modern plugin tabs with count badges and remembered selection; the first load chooses the larger plugin set.
 - plugins: The Modern plugins tab shows Plugin SDK v2 protocol version, transport, permissions, command count, bot binding, queue metrics, recent errors, HTTP registration, and log entry points.
@@ -54,3 +57,4 @@ Release date: 2026-07-08
 - docs: Updated `docs/designs/pluginhost-message-dispatch.md` with the legacy/modern dispatch model, gateway business queue, and modern plugin queue differences.
 - docs: The Wiki now includes quick start, QQBot event setup, Webhook and reverse proxy, Plugin SDK, FAQ, SDK downloads, and preview.3 changelog pages, with Chinese/English i18n support; the homepage now links to GitHub.
 - docs: Compressed the Wiki homepage `/assets/yuki.png` below 256 KB while keeping the same path.
+- release: Added a reusable version-release prompt covering Windows / Linux application packages, SDK packages, Wiki Release upload, and post-release verification.
