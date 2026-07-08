@@ -8,6 +8,7 @@ Release date: 2026-07-08
 - about: Automatic installation now completes the visible WebUI download before calling the install endpoint; failed or cancelled downloads no longer continue into installation.
 - about: Automatic installation supports Linux `.tar.gz` / `.tgz` main application packages; the Linux update script preserves user directories, replaces WebUI assets, and restarts `ISkyPro`.
 - about: The About page now links to the GitHub repository while keeping the docs, Release, and changelog links.
+- package: Added the Linux x64 preview application package `ISkyPro-<version>-linux-x64.tar.gz`; after extraction, users can run `ISkyPro` directly. Linux packages enable invariant globalization, do not require an additional ICU install, and exclude the Windows legacy plugin host, `message.dll`, and Windows Service scripts.
 - plugins: Added Legacy / Modern plugin tabs with count badges and remembered selection; the first load chooses the larger plugin set.
 - plugins: The Modern plugins tab shows Plugin SDK v2 protocol version, transport, permissions, command count, bot binding, queue metrics, recent errors, HTTP registration, and log entry points.
 - gateway: WebSocket business-event receive is decoupled from plugin dispatch and QQBot HTTP sends, so the gateway read loop no longer waits on slow plugins or slow sends.

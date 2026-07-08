@@ -8,6 +8,7 @@
 - about: 自动安装现在先完成 WebUI 可见下载，再触发安装接口；下载失败或取消时不会继续进入安装步骤。
 - about: 自动安装支持 Linux `.tar.gz` / `.tgz` 主程序包，Linux 更新脚本会保留用户目录、替换 WebUI 并重启 `ISkyPro`。
 - about: 关于页新增 GitHub 仓库入口，保留文档、Release 和更新日志入口。
+- package: 新增 Linux x64 preview 主程序包 `ISkyPro-<version>-linux-x64.tar.gz`，解压后可直接运行 `ISkyPro`；Linux 包启用 invariant globalization，不需要额外安装 ICU，并且不包含 Windows 旧插件宿主、`message.dll` 或 Windows Service 脚本。
 - plugins: 插件页新增“旧插件 / 新插件”选项卡、数量徽标和选择记忆；首次打开时优先显示插件数量更多的一类。
 - plugins: 新插件页展示 Plugin SDK v2 插件的协议版本、transport、权限、命令数量、Bot 绑定、队列指标、最近错误、HTTP 注册和日志入口。
 - gateway: WebSocket 业务事件接收与插件分发、QQBot HTTP 发送解耦，网关读取循环不会再等待慢插件或慢发送链路。

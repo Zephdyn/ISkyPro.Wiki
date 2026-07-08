@@ -6,14 +6,14 @@ The current version is `2.0.0-preview.3`. Preview builds prioritize compatibilit
 
 ## Requirements
 
-- Windows x64 / Windows ARM64, or Linux x64 preview
+- Windows x64 / Windows ARM64, or glibc Linux x64 preview
 - An ISkyPro release package, such as `ISkyPro-2.0.0-preview.3-win-x64.zip`, `ISkyPro-2.0.0-preview.3-win-arm64.zip`, or `ISkyPro-2.0.0-preview.3-linux-x64.tar.gz`
 - Network access to the QQBot platform
 - Bot ID / AppID and Secret from your QQ Open Platform bot console
 
 The release package includes runtime components for normal use. Users do not need to install the .NET SDK, Node.js, or compiler toolchains.
 
-Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins. Legacy DLL plugins, the x86 `isky.exe` compatibility host, and the `message.dll` compatibility layer are still only provided in Windows packages.
+Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins, and target glibc Linux x64 distributions rather than Alpine/musl. Legacy DLL plugins, the x86 `isky.exe` compatibility host, and the `message.dll` compatibility layer are still only provided in Windows packages.
 
 ## Package Layout
 

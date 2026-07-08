@@ -7,7 +7,7 @@
   "changelog": "/changelog/v2-0-0-preview-3",
   "summary": [
     "关于页更新下载新增可见进度和下载后安装衔接。",
-    "Linux preview 包支持主程序、WebUI、QQBot 网关、新插件和自动更新。",
+    "Linux x64 preview 包现已可由发布脚本生成，并支持主程序、WebUI、QQBot 网关、新插件和自动更新。",
     "插件页新增旧插件 / 新插件分栏和 Plugin SDK v2 运行时状态。",
     "新增 Python、Node.js、Go stdio-jsonrpc SDK 样例和 catalog stub 生成。"
   ]
