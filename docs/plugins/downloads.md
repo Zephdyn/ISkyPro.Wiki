@@ -14,7 +14,7 @@ SDK 压缩包随同一产品版本 GitHub Release 发布。`2.0.0-preview.3` 的
 | Windows ARM64 | `ISkyPro-2.0.0-preview.3-win-arm64.zip` |
 | Linux x64 preview | `ISkyPro-2.0.0-preview.3-linux-x64.tar.gz` |
 
-建议 asset 命名：
+SDK 压缩包文件名：
 
 | SDK | 文件名 |
 | --- | --- |

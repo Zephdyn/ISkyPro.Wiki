@@ -14,7 +14,7 @@ Main application package names:
 | Windows ARM64 | `ISkyPro-2.0.0-preview.3-win-arm64.zip` |
 | Linux x64 preview | `ISkyPro-2.0.0-preview.3-linux-x64.tar.gz` |
 
-Recommended asset names:
+SDK archive file names:
 
 | SDK | File name |
 | --- | --- |
