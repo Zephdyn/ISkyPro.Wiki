@@ -34,12 +34,13 @@
 - modern-plugin: 事件 ACK 超时、进程退出时的 pending request 和插件拒绝 ACK 会更新 timeout/failure 指标；stderr 与 `log.write` 插件日志加入 4096 字符截断，避免异常日志撑爆记录。
 - modern-plugin: Plugin SDK v2 新增 settings schema API 和 WebUI 自动表单，支持 string、number、boolean、select、path、secret 字段，配置保存到插件隔离目录，secret 字段不回显且留空保存会保留旧值。
 - modern-plugin: 新插件页现在展示真实 stdio runtime 状态、PID、exit code、超时指标和 settings 入口；`settings.pageUrl` 继续只允许 loopback HTTP URL。
+- modern-plugin: 新插件页新增本地 zip 上传安装入口，支持覆盖已安装的 `stdio-jsonrpc` 插件、安装后启动、安装后扫描刷新，并在后端拒绝路径穿越、无效 manifest、非 stdio transport 和运行中更新。
 - modern-plugin: `unsafe.rawOpenApi` 作为默认关闭的实验入口保留，需要显式权限。
 
 ## ♻️ Compatibility
 
 - legacy-plugin: 旧 DLL 插件的顺序分发、返回值拦截、x86 PluginHost 隔离和拖拽排序不受新插件分栏影响。
-- modern-plugin: HTTP 现代插件控制端点目前提供注册表级启用、禁用、移除和状态刷新；`stdio-jsonrpc` 静态发现、启动、停止、重启、崩溃恢复、token 鉴权、SDK API 权限校验、事件投递、日志观测、settings schema、Python / Node.js / Go 最小 SDK 和生成器已接入，Java 等 SDK 与稳定 API 命名冻结仍属于后续工作。
+- modern-plugin: HTTP 现代插件控制端点目前提供注册表级启用、禁用、移除和状态刷新；`stdio-jsonrpc` 静态发现、zip 安装、启动、停止、重启、崩溃恢复、token 鉴权、SDK API 权限校验、事件投递、日志观测、settings schema、Python / Node.js / Go 最小 SDK 和生成器已接入，Java 等 SDK 与稳定 API 命名冻结仍属于后续工作。
 
 ## 📝 Docs
 

@@ -34,12 +34,13 @@ Release date: 2026-07-08
 - modern-plugin: Event ACK timeouts, pending requests during process exit, and plugin-rejected ACKs now update timeout/failure metrics; stderr and `log.write` plugin logs are truncated to 4096 characters.
 - modern-plugin: Added Plugin SDK v2 settings schema APIs and a WebUI auto form for string, number, boolean, select, path, and secret fields; config is saved in the plugin-isolated config directory, secret values are not echoed, and blank secret saves preserve the previous value.
 - modern-plugin: The Modern plugins tab now shows real stdio runtime state, PID, exit code, timeout metrics, and settings entry points; `settings.pageUrl` remains limited to loopback HTTP URLs.
+- modern-plugin: The Modern plugins tab now includes local zip upload installation for `stdio-jsonrpc` plugins, with overwrite, start-after-install, post-install scan refresh, and backend rejection for path traversal, invalid manifests, non-stdio transports, and updates while running.
 - modern-plugin: `unsafe.rawOpenApi` remains available only as a disabled-by-default experimental entry that requires explicit permission.
 
 ## ♻️ Compatibility
 
 - legacy-plugin: Legacy DLL plugin ordered dispatch, return-value interception, x86 PluginHost isolation, and drag sorting are unaffected by the new plugin tabs.
-- modern-plugin: HTTP modern plugin controls currently provide registry-level enable, disable, remove, and state refresh behavior; `stdio-jsonrpc` static discovery, start, stop, restart, crash recovery, token auth, SDK API permission checks, event delivery, log observability, settings schema, Python / Node.js / Go minimal SDKs, and generators are wired, while Java SDKs and stable API naming remain future work.
+- modern-plugin: HTTP modern plugin controls currently provide registry-level enable, disable, remove, and state refresh behavior; `stdio-jsonrpc` static discovery, zip install, start, stop, restart, crash recovery, token auth, SDK API permission checks, event delivery, log observability, settings schema, Python / Node.js / Go minimal SDKs, and generators are wired, while Java SDKs and stable API naming remain future work.
 
 ## 📝 Docs
 
