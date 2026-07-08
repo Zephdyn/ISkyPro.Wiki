@@ -1,14 +1,14 @@
 {
-  "version": "2.0.0-preview.2",
-  "tag": "v2.0.0-preview.2",
-  "title": "ISkyPro 2.0.0-preview.2",
-  "date": "2026-07-06",
+  "version": "2.0.0-preview.3",
+  "tag": "v2.0.0-preview.3",
+  "title": "ISkyPro 2.0.0-preview.3",
+  "date": "2026-07-08",
   "channel": "preview",
-  "changelog": "/changelog/v2-0-0-preview-2",
+  "changelog": "/changelog/v2-0-0-preview-3",
   "summary": [
-    "服务菜单和服务脚本现在会根据 Windows 语言和区域自动选择中英文。",
-    "旧易语言图片字符串码和 Markdown 消息发送兼容性得到修复。",
-    "旧插件发送日志会保留原始 msg 内容，方便排查兼容消息。",
-    "Bot 会话消息明细表列宽调整，长消息显示更稳定。"
+    "关于页更新下载新增可见进度和下载后安装衔接。",
+    "插件页新增旧插件 / 新插件分栏和 Plugin SDK v2 运行时状态。",
+    "新增 Python、Node.js、Go stdio-jsonrpc SDK 样例和 catalog stub 生成。",
+    "Wiki 扩展快速开始、事件配置、插件开发、FAQ 和 SDK 下载文档。"
   ]
 }

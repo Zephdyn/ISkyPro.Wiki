@@ -1,15 +1,15 @@
 # 快速开始
 
-ISkyPro 是面向 QQBot 和旧 ISky 插件生态的 .NET 10 重构版主框架。它把主框架、Bot 网关、Web 管理界面、旧 DLL 插件隔离宿主、`message.dll` 兼容层和现代 C# 插件 SDK 放在同一个解决方案中。
+ISkyPro 是面向 QQBot 和旧 ISky 插件生态的 .NET 10 重构版主框架。它包含主程序、Web 管理界面、QQBot 网关、旧 DLL 插件隔离宿主、`message.dll` 兼容层和 Plugin SDK v2。
 
-当前版本为 `2.0.0-preview.2`。预览版会优先保持旧插件 ABI、x86 插件宿主发布策略和主要 WebUI/API 行为稳定；`ISkyPro.Contracts` 与 `ISkyPro.PluginSdk` 在稳定版前仍可能调整。
+当前版本为 `2.0.0-preview.3`。预览版会优先保持旧插件 ABI、x86 插件宿主发布策略和主要 WebUI 行为稳定；新的 Plugin SDK v2 仍是 preview API。
 
-## 环境要求
+## 准备
 
 - Windows
-- ISkyPro 发布包
+- ISkyPro 发布包，例如 `ISkyPro-2.0.0-preview.3-win-x64.zip`
 - 可访问 QQBot 平台的网络环境
-- 如需长期运行，需要管理员权限安装 Windows Service
+- QQ 开放平台机器人管理后台中的 Bot ID / AppID 和 Secret
 
 发布包自带运行所需组件，普通用户不需要安装 .NET SDK、Node.js 或编译工具链。
 
@@ -36,7 +36,7 @@ ISkyPro/
 
 手动运行时只启动 `ISkyPro.exe`。`isky.exe` 是旧插件兼容宿主，不是用户启动入口。
 
-## 手动启动
+## 启动 ISkyPro
 
 1. 解压发布包到固定目录，例如 `D:\Bots\ISkyPro`。
 2. 双击 `ISkyPro.exe`，或在命令行运行：
@@ -48,9 +48,33 @@ ISkyPro.exe
 3. 终端会输出 WebUI 地址和访问 token。
 4. 在浏览器打开终端输出的完整地址进入 WebUI。
 
-默认 WebUI 地址为 `http://127.0.0.1:5432`。如果端口被占用，请先关闭占用程序，或在配置中调整监听地址。
+默认 WebUI 地址为 `http://127.0.0.1:5432`。如果端口被占用，终端会提示实际监听地址或失败原因。
 
-## 长期运行
+## 登录 QQBot
+
+首次进入 WebUI 后，打开 Bot 登录页面：
+
+1. 填写 QQ 开放平台机器人管理后台中的 Bot ID / AppID。
+2. 填写 Secret。
+3. 选择连接模式。
+4. 点击验证并保存。
+
+Bot ID / AppID 和 Secret 只来自你自己的 QQ 机器人后台。不要把 Secret 发给插件作者或公开在日志、截图、Issue 中。
+
+## 选择连接模式
+
+优先按部署方式选择：
+
+- 本机使用、没有公网 HTTPS 回调、QQ 开放平台未配置回调地址时，选择 WebSocket。
+- 已经在 QQ 开放平台配置回调地址，或准备通过公网 HTTPS / 反向代理接收回调时，选择 Webhook。
+- 如果 QQ 开放平台已经配置了回调地址，首次排查收不到消息时先按 Webhook 的回调地址、签名和事件勾选排查，不要只按 WebSocket 路线排查。
+
+快速开始只需要完成登录和模式选择。群消息权限、事件订阅、Webhook 反代和排障见后续页面：
+
+- [QQBot 事件配置](/guide/qqbot-events)
+- [Webhook 与反向代理](/guide/webhook-and-proxy)
+
+## 长期运行入口
 
 长期运行建议安装 Windows Service。每个实例使用一个独立目录和一个独立服务名：
 

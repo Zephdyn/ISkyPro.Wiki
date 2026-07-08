@@ -22,21 +22,63 @@ export default defineConfig({
       provider: 'local'
     },
     nav: [
-      { text: '指南', link: '/guide/getting-started' },
-      { text: '更新日志', link: '/changelog/' }
+      {
+        text: '指南',
+        items: [
+          { text: '快速开始', link: '/guide/getting-started' },
+          { text: 'QQBot 事件配置', link: '/guide/qqbot-events' },
+          { text: 'Webhook 与反向代理', link: '/guide/webhook-and-proxy' }
+        ]
+      },
+      {
+        text: '插件 SDK',
+        items: [
+          { text: '插件概览', link: '/plugins/' },
+          { text: '旧插件与新插件', link: '/plugins/legacy-vs-modern' },
+          { text: '快速实现', link: '/plugins/sdk-quick-start' },
+          { text: '事件详解', link: '/plugins/events' },
+          { text: '发布插件', link: '/plugins/publishing' },
+          { text: '故障排查', link: '/plugins/troubleshooting' },
+          { text: 'SDK 下载', link: '/plugins/downloads' }
+        ]
+      },
+      { text: 'FAQ', link: '/faq' },
+      { text: '更新日志', link: '/changelog/' },
+      { text: 'GitHub', link: 'https://github.com/Zephdyn/ISkyPro.Wiki' }
     ],
     sidebar: [
       {
-        text: '开始',
+        text: '指南',
         items: [
           { text: '项目简介', link: '/' },
-          { text: '快速开始', link: '/guide/getting-started' }
+          { text: '快速开始', link: '/guide/getting-started' },
+          { text: 'QQBot 事件配置', link: '/guide/qqbot-events' },
+          { text: 'Webhook 与反向代理', link: '/guide/webhook-and-proxy' }
+        ]
+      },
+      {
+        text: '插件 SDK',
+        items: [
+          { text: '插件概览', link: '/plugins/' },
+          { text: '旧插件与新插件', link: '/plugins/legacy-vs-modern' },
+          { text: '快速实现', link: '/plugins/sdk-quick-start' },
+          { text: '事件详解', link: '/plugins/events' },
+          { text: '发布插件', link: '/plugins/publishing' },
+          { text: '故障排查', link: '/plugins/troubleshooting' },
+          { text: 'SDK 下载', link: '/plugins/downloads' }
+        ]
+      },
+      {
+        text: '支持',
+        items: [
+          { text: 'FAQ', link: '/faq' }
         ]
       },
       {
         text: '发布',
         items: [
           { text: '更新日志', link: '/changelog/' },
+          { text: '2.0.0-preview.3', link: '/changelog/v2-0-0-preview-3' },
           { text: '2.0.0-preview.2', link: '/changelog/v2-0-0-preview-2' },
           { text: '2.0.0-preview.1', link: '/changelog/v2-0-0-preview-1' }
         ]

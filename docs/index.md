@@ -15,12 +15,15 @@ hero:
     - theme: alt
       text: 更新日志
       link: /changelog/
+    - theme: alt
+      text: GitHub 仓库
+      link: https://github.com/Zephdyn/ISkyPro.Wiki
 
 features:
   - title: 运行与部署
-    details: 记录主程序、WebUI、Bot 网关、Webhook 和发布包的常用操作。
+    details: 记录主程序、WebUI、Bot 网关、Webhook、服务模式和发布包的常用操作。
   - title: 插件生态
-    details: 覆盖旧 DLL 插件兼容边界、隔离宿主和现代 C# 插件 SDK。
+    details: 覆盖旧 DLL 插件兼容边界、隔离宿主和 Plugin SDK v2 多语言预览。
   - title: 更新提示
-    details: 查看当前版本、公开更新日志和新版功能摘要。
+    details: 查看当前版本、公开更新日志、SDK 下载和新版功能摘要。
 ---
