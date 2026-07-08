@@ -7,6 +7,7 @@ Release date: 2026-07-08
 - about: Update downloads now show visible progress with status, file name, downloaded bytes, total bytes, and percent; unknown total size uses an indeterminate progress state.
 - about: Automatic installation now completes the visible WebUI download before calling the install endpoint; failed or cancelled downloads no longer continue into installation.
 - about: The install confirmation dialog now closes after confirmation instead of covering the progress bar, and the progress card includes a cancel button for an in-progress update download.
+- about: Update cache cleanup now removes cancelled `.download` partial files and clears consumed or leftover packages, one-time installer scripts, and staging directories after successful installs and on application startup, preventing `data/updates` from accumulating one package per version.
 - about: Automatic installation supports Linux `.tar.gz` / `.tgz` main application packages; the Linux update script preserves user directories, replaces WebUI assets, and restarts `ISkyPro`.
 - about: The About page now links to the GitHub repository while keeping the docs, Release, and changelog links.
 - webui: The sidebar version badge and About current-version field now read the backend runtime version, so temporary test versions and post-update restarts no longer depend on the WebUI-bundled changelog version.
