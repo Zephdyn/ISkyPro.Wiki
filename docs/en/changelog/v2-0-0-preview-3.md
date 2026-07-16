@@ -57,5 +57,5 @@ Release date: 2026-07-08
 - docs: Updated `docs/reference/new-plugin-sdk.md` with the Plugin SDK v2 protocol, event model, permission model, SDK method naming, and language coverage status.
 - docs: Updated `docs/designs/pluginhost-message-dispatch.md` with the legacy/modern dispatch model, gateway business queue, and modern plugin queue differences.
 - docs: The Wiki now includes quick start, QQBot event setup, Webhook and reverse proxy, Plugin SDK, FAQ, SDK downloads, and preview.3 changelog pages, with Chinese/English i18n support; the homepage now links to GitHub.
-- docs: Compressed the Wiki homepage `/assets/yuki.png` below 256 KB while keeping the same path.
+- docs: Compressed the Wiki homepage `/assets/yuki.png` below 512 KiB while preserving its original resolution, text clarity, and path.
 - release: Added a reusable version-release prompt covering Windows / Linux application packages, SDK packages, Wiki Release upload, and post-release verification.

@@ -57,5 +57,5 @@
 - docs: 更新 `docs/reference/new-plugin-sdk.md`，记录 Plugin SDK v2 协议、事件模型、权限模型、SDK 方法命名和语言覆盖状态。
 - docs: 更新 `docs/designs/pluginhost-message-dispatch.md`，记录新旧插件分发模型、网关业务队列和现代插件队列差异。
 - docs: Wiki 新增快速开始、QQBot 事件配置、Webhook 与反向代理、插件 SDK、FAQ、SDK 下载和 preview.3 changelog 页面，支持中英文 i18n 站点；首页新增 GitHub 仓库入口。
-- docs: Wiki 首页 `/assets/yuki.png` 压缩到 256 KB 以下，并保持原路径。
+- docs: Wiki 首页 `/assets/yuki.png` 在保持原始分辨率和文字清晰度的前提下压缩到 512 KiB 以下，并保持原路径。
 - release: 新增通用版本发布提示词，覆盖主程序 Windows / Linux 包、SDK 包、Wiki Release 上传和发布后校验流程。
