@@ -1,6 +1,108 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
 const base = process.env.VITEPRESS_BASE ?? '/ISkyPro.Wiki/'
+const docsDir = path.dirname(fileURLToPath(import.meta.url))
+
+type SidebarItem = {
+  text: string
+  link: string
+}
+
+type ParsedVersion = {
+  major: number
+  minor: number
+  patch: number
+  prereleaseLabel: string
+  prereleaseNumber: number
+  hasPrerelease: boolean
+}
+
+function slugToVersion(fileName: string): string {
+  const slug = fileName.replace(/\.md$/i, '').replace(/^v/i, '')
+  const match = slug.match(/^(\d+)-(\d+)-(\d+)(?:-(.+))?$/)
+  if (!match) {
+    return slug.replace(/-/g, '.')
+  }
+
+  const core = `${match[1]}.${match[2]}.${match[3]}`
+  if (!match[4]) {
+    return core
+  }
+
+  // v2-0-0-preview-4 -> 2.0.0-preview.4
+  const prerelease = match[4].replace(/-(\d+)$/, '.$1')
+  return `${core}-${prerelease}`
+}
+
+function parseVersion(version: string): ParsedVersion {
+  const [core, prerelease = ''] = version.split('-', 2)
+  const [major = 0, minor = 0, patch = 0] = core.split('.').map((part) => Number.parseInt(part, 10) || 0)
+  const prereleaseMatch = prerelease.match(/^([a-zA-Z]+)(?:\.?(\d+))?$/)
+
+  return {
+    major,
+    minor,
+    patch,
+    prereleaseLabel: prereleaseMatch?.[1] ?? prerelease,
+    prereleaseNumber: Number.parseInt(prereleaseMatch?.[2] ?? '0', 10) || 0,
+    hasPrerelease: prerelease.length > 0
+  }
+}
+
+function compareVersionsDesc(left: string, right: string): number {
+  const a = parseVersion(left)
+  const b = parseVersion(right)
+
+  if (a.major !== b.major) {
+    return b.major - a.major
+  }
+
+  if (a.minor !== b.minor) {
+    return b.minor - a.minor
+  }
+
+  if (a.patch !== b.patch) {
+    return b.patch - a.patch
+  }
+
+  // Stable release sorts above prereleases of the same core version.
+  if (a.hasPrerelease !== b.hasPrerelease) {
+    return a.hasPrerelease ? 1 : -1
+  }
+
+  if (a.prereleaseLabel !== b.prereleaseLabel) {
+    return b.prereleaseLabel.localeCompare(a.prereleaseLabel)
+  }
+
+  return b.prereleaseNumber - a.prereleaseNumber
+}
+
+function buildChangelogSidebarItems(localePrefix: '' | '/en'): SidebarItem[] {
+  const relativeDir = localePrefix === '/en' ? '../en/changelog' : '../changelog'
+  const changelogDir = path.resolve(docsDir, relativeDir)
+
+  if (!fs.existsSync(changelogDir)) {
+    return []
+  }
+
+  return fs
+    .readdirSync(changelogDir)
+    .filter((fileName) => /^v.+\.md$/i.test(fileName))
+    .map((fileName) => {
+      const slug = fileName.replace(/\.md$/i, '')
+      const version = slugToVersion(fileName)
+      return {
+        text: version,
+        link: `${localePrefix}/changelog/${slug}`,
+        version
+      }
+    })
+    .sort((left, right) => compareVersionsDesc(left.version, right.version))
+    .map(({ text, link }) => ({ text, link }))
+}
 
 const zhNav = [
   {
@@ -60,10 +162,7 @@ const zhSidebar = [
     text: '发布',
     items: [
       { text: '更新日志', link: '/changelog/' },
-      { text: '2.0.0-preview.4', link: '/changelog/v2-0-0-preview-4' },
-      { text: '2.0.0-preview.3', link: '/changelog/v2-0-0-preview-3' },
-      { text: '2.0.0-preview.2', link: '/changelog/v2-0-0-preview-2' },
-      { text: '2.0.0-preview.1', link: '/changelog/v2-0-0-preview-1' }
+      ...buildChangelogSidebarItems('')
     ]
   }
 ]
@@ -126,10 +225,7 @@ const enSidebar = [
     text: 'Release',
     items: [
       { text: 'Changelog', link: '/en/changelog/' },
-      { text: '2.0.0-preview.4', link: '/en/changelog/v2-0-0-preview-4' },
-      { text: '2.0.0-preview.3', link: '/en/changelog/v2-0-0-preview-3' },
-      { text: '2.0.0-preview.2', link: '/en/changelog/v2-0-0-preview-2' },
-      { text: '2.0.0-preview.1', link: '/en/changelog/v2-0-0-preview-1' }
+      ...buildChangelogSidebarItems('/en')
     ]
   }
 ]
