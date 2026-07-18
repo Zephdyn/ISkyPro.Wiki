@@ -1,7 +1,7 @@
 # ISkyPro Wiki
 
 [![Status](https://img.shields.io/badge/status-preview-orange)](https://github.com/Zephdyn/ISkyPro.Wiki)
-[![Version](https://img.shields.io/badge/version-2.0.0--preview.3-blue)](https://github.com/Zephdyn/ISkyPro.Wiki)
+[![Version](https://img.shields.io/badge/version-2.0.0--preview.4-blue)](https://github.com/Zephdyn/ISkyPro.Wiki)
 [![Docs Build](https://img.shields.io/github/actions/workflow/status/Zephdyn/ISkyPro.Wiki/deploy.yml?branch=main&label=docs%20build&logo=githubactions)](https://github.com/Zephdyn/ISkyPro.Wiki/actions/workflows/deploy.yml)
 [![VitePress](https://img.shields.io/badge/VitePress-1.6-646CFF?logo=vite)](https://vitepress.dev/)
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
@@ -14,7 +14,7 @@ ISkyPro Wiki is the public documentation repository for ISkyPro. It provides the
 
 ISkyPro is a .NET 10 rewrite of the bot framework for QQBot and the legacy ISky plugin ecosystem. It brings the main process, Web management UI, QQBot gateway, isolated legacy DLL plugin host, `message.dll` compatibility layer, and Plugin SDK v2 into a clearer runtime and extension model while preserving legacy plugin compatibility.
 
-The current documentation targets `2.0.0-preview.3`. Preview builds prioritize stability for the legacy plugin ABI, the Windows x86 plugin-host packaging model, and major WebUI workflows. The new Plugin SDK v2 may still change before a stable release.
+The current documentation targets `2.0.0-preview.4`. Preview builds prioritize stability for the legacy plugin ABI, the Windows x86 plugin-host packaging model, and major WebUI workflows. The new Plugin SDK v2 may still change before a stable release.
 
 ## Documentation
 

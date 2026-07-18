@@ -2,12 +2,12 @@
 
 ISkyPro is a .NET 10 rewrite of the main framework for QQBot and the legacy ISky plugin ecosystem. It includes the main process, Web management UI, QQBot gateway, isolated legacy DLL plugin host, `message.dll` compatibility layer, and Plugin SDK v2.
 
-The current version is `2.0.0-preview.3`. Preview builds prioritize compatibility for the legacy plugin ABI, the x86 plugin-host packaging model, and major WebUI workflows. The new Plugin SDK v2 remains a preview API.
+The current version is `2.0.0-preview.4`. Preview builds prioritize compatibility for the legacy plugin ABI, the x86 plugin-host packaging model, and major WebUI workflows. The new Plugin SDK v2 remains a preview API.
 
 ## Requirements
 
 - Windows x64 / Windows ARM64, or glibc Linux x64 preview
-- An ISkyPro release package, such as `ISkyPro-2.0.0-preview.3-win-x64.zip`, `ISkyPro-2.0.0-preview.3-win-arm64.zip`, or `ISkyPro-2.0.0-preview.3-linux-x64.tar.gz`
+- An ISkyPro release package, such as `ISkyPro-2.0.0-preview.4-win-x64.zip`, `ISkyPro-2.0.0-preview.4-win-arm64.zip`, or `ISkyPro-2.0.0-preview.4-linux-x64.tar.gz`
 - Network access to the QQBot platform
 - Bot ID / AppID and Secret from your QQ Open Platform bot console
 
@@ -71,7 +71,7 @@ Linux:
 
 ```bash
 sudo mkdir -p /opt/iskypro
-sudo tar -xzf ISkyPro-2.0.0-preview.3-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
+sudo tar -xzf ISkyPro-2.0.0-preview.4-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
 sudo chmod +x /opt/iskypro/ISkyPro
 ```
 

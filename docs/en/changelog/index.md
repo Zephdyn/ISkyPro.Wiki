@@ -7,6 +7,7 @@ This directory records public ISkyPro release notes. Release publishing should m
 
 ## Versions
 
+- [2.0.0-preview.4](/en/changelog/v2-0-0-preview-4.md)
 - [2.0.0-preview.3](/en/changelog/v2-0-0-preview-3.md)
 - [2.0.0-preview.2](/en/changelog/v2-0-0-preview-2.md)
 - [2.0.0-preview.1](/en/changelog/v2-0-0-preview-1.md)

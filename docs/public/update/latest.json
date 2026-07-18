@@ -1,14 +1,13 @@
 {
-  "version": "2.0.0-preview.3",
-  "tag": "v2.0.0-preview.3",
-  "title": "ISkyPro 2.0.0-preview.3",
-  "date": "2026-07-08",
+  "version": "2.0.0-preview.4",
+  "tag": "v2.0.0-preview.4",
+  "title": "ISkyPro 2.0.0-preview.4",
+  "date": "2026-07-18",
   "channel": "preview",
-  "changelog": "/changelog/v2-0-0-preview-3",
+  "changelog": "/changelog/v2-0-0-preview-4",
   "summary": [
-    "关于页更新下载新增可见进度和下载后安装衔接。",
-    "Linux x64 preview 包现已可由发布脚本生成，并支持主程序、WebUI、QQBot 网关、新插件和自动更新。",
-    "插件页新增旧插件 / 新插件分栏和 Plugin SDK v2 运行时状态。",
-    "新增 Python、Node.js、Go stdio-jsonrpc SDK 样例和 catalog stub 生成。"
+    "启动扫描和每个插件载入前强制结束本包未托管的残留 isky.exe，杀不掉则拒绝启动，避免授权插件双开。",
+    "isky.exe 启动后尽量抑制 Windows 崩溃对话框，并通过 Job Object 绑定子进程，减少崩溃后卡死导致旧插件消息停摆。",
+    "Api_GetRunLength 改为使用 ISkyPro 主程序启动时间，isky.exe 崩溃重启后运行时长不再归零。"
   ]
 }

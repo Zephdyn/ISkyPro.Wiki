@@ -14,4 +14,4 @@ Linux preview 包只支持新插件路线。旧 DLL 插件依赖 Windows/x86 兼
 - 启动失败或收不到事件：看 [故障排查](/plugins/troubleshooting)。
 - 需要 SDK 包：看 [SDK 下载](/plugins/downloads)。
 
-Plugin SDK v2 在 `2.0.0-preview.3` 中仍是 preview API。它适合提前验证 stdio 插件和多语言样例，不代表最终稳定接口已经冻结。
+Plugin SDK v2 在 `2.0.0-preview.4` 中仍是 preview API。它适合提前验证 stdio 插件和多语言样例，不代表最终稳定接口已经冻结。

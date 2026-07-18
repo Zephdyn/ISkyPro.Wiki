@@ -1,6 +1,6 @@
 # Plugin SDK v2 Quick Start
 
-A minimal Plugin SDK v2 package contains `manifest.json` and the plugin entry file. `2.0.0-preview.3` provides preview support for C#, Python, Node.js, and Go.
+A minimal Plugin SDK v2 package contains `manifest.json` and the plugin entry file. `2.0.0-preview.4` provides preview support for C#, Python, Node.js, and Go.
 
 ## Python stdio Plugin
 
@@ -21,7 +21,7 @@ The manifest declares the stdio startup command:
   "version": "0.1.0",
   "author": "Example",
   "protocolVersion": 2,
-  "sdkVersion": "2.0.0-preview.3",
+  "sdkVersion": "2.0.0-preview.4",
   "transport": {
     "type": "stdio-jsonrpc",
     "stdio": {

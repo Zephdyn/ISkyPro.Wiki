@@ -2,12 +2,12 @@
 
 ISkyPro 是面向 QQBot 和旧 ISky 插件生态的 .NET 10 重构版主框架。它包含主程序、Web 管理界面、QQBot 网关、旧 DLL 插件隔离宿主、`message.dll` 兼容层和 Plugin SDK v2。
 
-当前版本为 `2.0.0-preview.3`。预览版会优先保持旧插件 ABI、x86 插件宿主发布策略和主要 WebUI 行为稳定；新的 Plugin SDK v2 仍是 preview API。
+当前版本为 `2.0.0-preview.4`。预览版会优先保持旧插件 ABI、x86 插件宿主发布策略和主要 WebUI 行为稳定；新的 Plugin SDK v2 仍是 preview API。
 
 ## 准备
 
 - Windows x64 / Windows ARM64，或 glibc Linux x64 preview
-- ISkyPro 发布包，例如 `ISkyPro-2.0.0-preview.3-win-x64.zip`、`ISkyPro-2.0.0-preview.3-win-arm64.zip` 或 `ISkyPro-2.0.0-preview.3-linux-x64.tar.gz`
+- ISkyPro 发布包，例如 `ISkyPro-2.0.0-preview.4-win-x64.zip`、`ISkyPro-2.0.0-preview.4-win-arm64.zip` 或 `ISkyPro-2.0.0-preview.4-linux-x64.tar.gz`
 - 可访问 QQBot 平台的网络环境
 - QQ 开放平台机器人管理后台中的 Bot ID / AppID 和 Secret
 
@@ -71,7 +71,7 @@ Linux：
 
 ```bash
 sudo mkdir -p /opt/iskypro
-sudo tar -xzf ISkyPro-2.0.0-preview.3-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
+sudo tar -xzf ISkyPro-2.0.0-preview.4-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
 sudo chmod +x /opt/iskypro/ISkyPro
 ```
 

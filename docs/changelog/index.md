@@ -7,6 +7,7 @@
 
 ## 版本列表
 
+- [2.0.0-preview.4](/changelog/v2-0-0-preview-4.md)
 - [2.0.0-preview.3](/changelog/v2-0-0-preview-3.md)
 - [2.0.0-preview.2](/changelog/v2-0-0-preview-2.md)
 - [2.0.0-preview.1](/changelog/v2-0-0-preview-1.md)
