@@ -60,6 +60,7 @@ const zhSidebar = [
     text: '发布',
     items: [
       { text: '更新日志', link: '/changelog/' },
+      { text: '2.0.0-preview.4', link: '/changelog/v2-0-0-preview-4' },
       { text: '2.0.0-preview.3', link: '/changelog/v2-0-0-preview-3' },
       { text: '2.0.0-preview.2', link: '/changelog/v2-0-0-preview-2' },
       { text: '2.0.0-preview.1', link: '/changelog/v2-0-0-preview-1' }
@@ -125,6 +126,7 @@ const enSidebar = [
     text: 'Release',
     items: [
       { text: 'Changelog', link: '/en/changelog/' },
+      { text: '2.0.0-preview.4', link: '/en/changelog/v2-0-0-preview-4' },
       { text: '2.0.0-preview.3', link: '/en/changelog/v2-0-0-preview-3' },
       { text: '2.0.0-preview.2', link: '/en/changelog/v2-0-0-preview-2' },
       { text: '2.0.0-preview.1', link: '/en/changelog/v2-0-0-preview-1' }
