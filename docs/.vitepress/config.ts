@@ -117,7 +117,7 @@ const zhNav = [
     text: '插件 SDK',
     items: [
       { text: '插件概览', link: '/plugins/' },
-      { text: '旧插件与新插件', link: '/plugins/legacy-vs-modern' },
+      { text: 'ISky v1 与 ISkyPro v2+', link: '/plugins/v1-vs-v2' },
       { text: '快速实现', link: '/plugins/sdk-quick-start' },
       { text: '事件详解', link: '/plugins/events' },
       { text: '发布插件', link: '/plugins/publishing' },
@@ -144,7 +144,7 @@ const zhSidebar = [
     text: '插件 SDK',
     items: [
       { text: '插件概览', link: '/plugins/' },
-      { text: '旧插件与新插件', link: '/plugins/legacy-vs-modern' },
+      { text: 'ISky v1 与 ISkyPro v2+', link: '/plugins/v1-vs-v2' },
       { text: '快速实现', link: '/plugins/sdk-quick-start' },
       { text: '事件详解', link: '/plugins/events' },
       { text: '发布插件', link: '/plugins/publishing' },
@@ -180,7 +180,7 @@ const enNav = [
     text: 'Plugin SDK',
     items: [
       { text: 'Overview', link: '/en/plugins/' },
-      { text: 'Legacy and Modern', link: '/en/plugins/legacy-vs-modern' },
+      { text: 'ISky v1 and ISkyPro v2+', link: '/en/plugins/v1-vs-v2' },
       { text: 'Quick Start', link: '/en/plugins/sdk-quick-start' },
       { text: 'Events', link: '/en/plugins/events' },
       { text: 'Publishing', link: '/en/plugins/publishing' },
@@ -207,7 +207,7 @@ const enSidebar = [
     text: 'Plugin SDK',
     items: [
       { text: 'Overview', link: '/en/plugins/' },
-      { text: 'Legacy and Modern', link: '/en/plugins/legacy-vs-modern' },
+      { text: 'ISky v1 and ISkyPro v2+', link: '/en/plugins/v1-vs-v2' },
       { text: 'Quick Start', link: '/en/plugins/sdk-quick-start' },
       { text: 'Events', link: '/en/plugins/events' },
       { text: 'Publishing', link: '/en/plugins/publishing' },

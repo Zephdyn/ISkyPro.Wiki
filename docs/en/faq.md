@@ -20,21 +20,21 @@ Get them from the QQ Open Platform bot console. Do not copy Secrets from third-p
 
 Use a public HTTPS address whose path matches the ISkyPro Webhook setting, for example `https://bot.example.com/qqbot/webhook`.
 
-## What is the difference between legacy and modern plugins?
+## What is the difference between ISky v1 and ISkyPro v2+ plugins?
 
-Legacy plugins are DLL plugins placed in `plugin/` and run by the x86 compatibility host. Modern plugins use Plugin SDK v2, live under `plugins-v2/`, and connect through manifest and stdio/HTTP protocols.
+ISky v1 plugins are *EPL* / x86 DLL plugins compatible with the original ISky framework v1 ABI. They are placed in `plugin/` and run by the x86 compatibility host. ISkyPro v2+ plugins use Plugin SDK v2 and connect through static manifests plus stdio-jsonrpc or HTTP transport; local stdio plugins are installed under `plugins-v2/`.
 
-## Does Linux support legacy plugins?
+## Does Linux support ISky v1 plugins?
 
-No. Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins. Legacy DLL plugins depend on the Windows/x86 compatibility host and `message.dll`, so they still require a Windows package.
+No. Linux x64 packages support the main process, WebUI, QQBot gateway, and ISkyPro v2+ plugins. ISky v1 plugins depend on the Windows/x86 compatibility host and `message.dll`, so they still require a Windows package.
 
-## Why do legacy plugins need a Windows/x86 compatibility host?
+## Why do ISky v1 plugins need a Windows/x86 compatibility host?
 
-The legacy ecosystem depends on the historical DLL ABI and 32-bit runtime environment. ISkyPro isolates them in an independent x86 host instead of loading them directly into the main process.
+ISky v1 plugins depend on the original ISky framework DLL ABI and a 32-bit runtime environment. ISkyPro isolates them in an independent x86 host instead of loading them directly into the main process.
 
-## Why did a newly uploaded modern plugin not start?
+## Why did a newly uploaded ISkyPro v2+ plugin not start?
 
-Successful installation does not always start the plugin. Confirm that start after install was selected during upload, or start it manually from the Modern plugins tab. Stop a running plugin before updating it.
+Successful installation does not always start the plugin. Confirm that start after install was selected during upload, or start it manually from the v2 plugins tab. Stop a running plugin before updating it.
 
 ## Does update-check failure affect runtime?
 

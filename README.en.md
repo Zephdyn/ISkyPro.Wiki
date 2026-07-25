@@ -12,7 +12,7 @@
 
 ISkyPro Wiki is the public documentation repository for ISkyPro. It provides the project overview, getting started guides, release notes, deployment notes, and plugin documentation for users, plugin authors, and operators.
 
-ISkyPro is a .NET 10 rewrite of the bot framework for QQBot and the legacy ISky plugin ecosystem. It brings the main process, Web management UI, QQBot gateway, isolated legacy DLL plugin host, `message.dll` compatibility layer, and Plugin SDK v2 into a clearer runtime and extension model while preserving legacy plugin compatibility.
+ISkyPro is a .NET 10 rewrite of the bot framework for QQBot and the ISky plugin ecosystem. It brings the main process, Web management UI, QQBot gateway, isolated ISky v1 *EPL* / x86 plugin host, `message.dll` compatibility layer, and ISkyPro v2+ Plugin SDK into a clearer runtime and extension model while preserving compatibility with original ISky framework v1 plugins.
 
 The current documentation targets stable release `2.0.0`. The C#, Python, Node.js, and Go Plugin SDK v2 sources and samples are maintained in this public repository.
 
@@ -31,17 +31,17 @@ The current documentation targets stable release `2.0.0`. The C#, Python, Node.j
 | --- | --- |
 | QQBot gateway | Supports WebSocket / Webhook connections, event dispatch, signature verification, and message handling flows. |
 | WebUI management | Provides Bot login, runtime status, plugin management, log viewing, settings, and Chinese / English UI. |
-| Legacy plugin compatibility | Windows packages run legacy DLL plugins through an isolated x86 plugin host and provide the `message.dll` compatibility layer. |
-| Modern plugins | Plugin SDK v2 supports the new C# plugin development model for new plugins and gradual migration. |
+| ISky v1 plugin compatibility | Windows packages run ISky v1 plugins through an isolated x86 plugin host and provide the `message.dll` compatibility layer. |
+| ISkyPro v2+ plugins | Plugin SDK v2 supports C#, Python, Node.js, and Go for new development and gradual migration. |
 | Public SDK | `sdk/` contains the four language SDKs, `samples/` contains runnable examples, and one public catalog generates their method surfaces. |
-| Deployment | Supports Windows x64 / Windows ARM64; Linux x64 preview supports the main process, WebUI, QQBot gateway, and modern plugins. |
+| Deployment | Supports Windows x64 / Windows ARM64; Linux x64 supports the main process, WebUI, QQBot gateway, and ISkyPro v2+ plugins. |
 | User documentation | Covers installation, QQBot event setup, Webhook reverse proxy, plugin publishing, downloads, and FAQ topics. |
 
 ## Platform Notes
 
-- Windows packages include the main process, WebUI, legacy plugin compatibility host, `message.dll`, and Windows Service scripts.
-- Linux x64 preview packages target glibc distributions and include the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugin runtime.
-- Linux packages do not include the legacy DLL plugin host, `message.dll`, or Windows Service scripts.
+- Windows packages include the main process, WebUI, ISky v1 plugin compatibility host, `message.dll`, and Windows Service scripts.
+- Linux x64 packages target glibc distributions and include the main process, WebUI, QQBot gateway, and ISkyPro v2+ plugin runtime.
+- Linux packages do not include the ISky v1 plugin host, `message.dll`, or Windows Service scripts.
 - Running ISkyPro from a release package does not require the .NET SDK, Node.js, or compiler toolchains.
 
 ## Local Preview

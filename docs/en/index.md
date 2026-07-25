@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: ISkyPro Wiki
-  text: QQBot framework, legacy ISky compatibility, and modern plugin development
-  tagline: Usage, deployment, release, and extension notes for the 2.0 preview line.
+  text: QQBot framework, ISky v1 compatibility, and ISkyPro v2+ plugin development
+  tagline: Usage, deployment, release, and extension notes for the stable 2.0 line.
   image:
     src: /assets/yuki.png
     alt: ISkyPro mascot
@@ -23,7 +23,7 @@ features:
   - title: Runtime and Deployment
     details: Main process, WebUI, Bot gateway, Webhook, service mode, and release package operations.
   - title: Plugin Ecosystem
-    details: Legacy DLL plugin compatibility boundaries, isolated hosting, and the Plugin SDK v2 multilingual preview.
+    details: ISky v1 *EPL* / x86 compatibility boundaries, isolated hosting, and multilingual ISkyPro v2+ Plugin SDK support.
   - title: Release Notes
     details: Current version notes, public changelog, SDK downloads, and highlights from newer builds.
 ---

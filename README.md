@@ -12,7 +12,7 @@ English: [README.en.md](README.en.md)
 
 ISkyPro Wiki 是 ISkyPro 的公开文档仓库，面向用户、插件作者和部署者提供项目介绍、快速开始、发布说明和插件文档。
 
-ISkyPro 是面向 QQBot 与旧 ISky 插件生态的 .NET 10 重构版 Bot 框架。它把主程序、Web 管理界面、QQBot 网关、旧 DLL 插件隔离宿主、`message.dll` 兼容层和 Plugin SDK v2 统一到新的运行与扩展模型中，在保留旧插件兼容性的同时提供现代化的部署和管理体验。
+ISkyPro 是面向 QQBot 与 ISky 插件生态的 .NET 10 重构版 Bot 框架。它把主程序、Web 管理界面、QQBot 网关、ISky v1 插件兼容宿主、`message.dll` 兼容层和 ISkyPro v2+ Plugin SDK 统一到新的运行与扩展模型中，在兼容原 ISky 框架 v1 插件的同时提供跨语言、跨平台的 v2+ 插件体系。
 
 当前文档面向稳定版 `2.0.0`。Plugin SDK v2 的 C#、Python、Node.js 和 Go 源码与样例已在本公开仓库维护。
 
@@ -31,17 +31,17 @@ ISkyPro 是面向 QQBot 与旧 ISky 插件生态的 .NET 10 重构版 Bot 框架
 | --- | --- |
 | QQBot 接入 | 支持 WebSocket / Webhook 接入、事件分发、签名校验和消息处理流程。 |
 | WebUI 管理 | 提供 Bot 登录、运行状态、插件管理、日志查看、系统设置和中英文界面。 |
-| 旧插件兼容 | Windows 包内通过独立 x86 插件宿主运行旧 DLL 插件，并提供 `message.dll` 兼容层。 |
-| 现代插件 | Plugin SDK v2 面向新的 C# 插件开发模式，适合新插件和逐步迁移。 |
+| ISky v1 插件兼容 | Windows 包内通过独立 x86 插件宿主运行 ISky v1 *EPL* / x86 插件，并提供 `message.dll` 兼容层。 |
+| ISkyPro v2+ 插件 | Plugin SDK v2 支持 C#、Python、Node.js 和 Go，适合新开发插件和逐步迁移。 |
 | 公开 SDK | `sdk/` 提供四语言 SDK，`samples/` 提供可运行样例，方法由公共 catalog 统一生成。 |
-| 部署运行 | 支持 Windows x64 / Windows ARM64；Linux x64 preview 支持主程序、WebUI、QQBot 网关和现代插件。 |
+| 部署运行 | 支持 Windows x64 / Windows ARM64；Linux x64 支持主程序、WebUI、QQBot 网关和 ISkyPro v2+ 插件。 |
 | 用户文档 | 覆盖安装启动、QQBot 事件配置、Webhook 反代、插件发布、下载和常见问题。 |
 
 ## 平台说明
 
-- Windows 发布包包含主程序、WebUI、旧插件兼容宿主、`message.dll` 和 Windows Service 脚本。
-- Linux x64 preview 包面向 glibc 发行版，包含主程序、WebUI、QQBot 网关和 Plugin SDK v2 现代插件运行能力。
-- Linux 包不包含旧 DLL 插件宿主、`message.dll` 或 Windows Service 脚本。
+- Windows 发布包包含主程序、WebUI、ISky v1 插件兼容宿主、`message.dll` 和 Windows Service 脚本。
+- Linux x64 包面向 glibc 发行版，包含主程序、WebUI、QQBot 网关和 ISkyPro v2+ 插件运行能力。
+- Linux 包不包含 ISky v1 插件宿主、`message.dll` 或 Windows Service 脚本。
 - 使用发布包运行 ISkyPro 时不需要安装 .NET SDK、Node.js 或编译工具链。
 
 ## 本地预览

@@ -20,21 +20,21 @@
 
 填写公网 HTTPS 地址，路径要与 ISkyPro Webhook 设置一致，例如 `https://bot.example.com/qqbot/webhook`。
 
-## 旧插件和新插件有什么区别？
+## ISky v1 插件和 ISkyPro v2+ 插件有什么区别？
 
-旧插件是 DLL 插件，放在 `plugin/`，由 x86 兼容宿主运行。新插件使用 Plugin SDK v2，放在 `plugins-v2/`，通过 manifest 和 stdio/HTTP 协议接入。
+ISky v1 插件是兼容原 ISky 框架 v1 ABI 的 *EPL* / x86 DLL 插件，放在 `plugin/`，由 x86 兼容宿主运行。ISkyPro v2+ 插件使用 Plugin SDK v2，通过 manifest 和 stdio-jsonrpc / HTTP transport 接入；本地 stdio 插件安装在 `plugins-v2/`。
 
-## Linux 支持旧插件吗？
+## Linux 支持 ISky v1 插件吗？
 
-不支持。Linux preview 包支持主程序、WebUI、QQBot 网关和 Plugin SDK v2 新插件；旧 DLL 插件依赖 Windows/x86 兼容宿主和 `message.dll`，仍需要 Windows 包。
+不支持。Linux x64 包支持主程序、WebUI、QQBot 网关和 ISkyPro v2+ 插件；ISky v1 插件依赖 Windows/x86 兼容宿主和 `message.dll`，仍需要 Windows 包。
 
-## 为什么旧插件需要 Windows/x86 兼容宿主？
+## 为什么 ISky v1 插件需要 Windows/x86 兼容宿主？
 
-旧生态插件依赖历史 DLL ABI 和 32 位运行环境。ISkyPro 用独立 x86 宿主隔离它们，避免直接加载到主程序进程。
+ISky v1 插件依赖原 ISky 框架 DLL ABI 和 32 位运行环境。ISkyPro 用独立 x86 宿主隔离它们，避免直接加载到主程序进程。
 
-## 新插件 zip 上传后为什么没有启动？
+## ISkyPro v2+ 插件 ZIP 上传后为什么没有启动？
 
-安装成功不一定自动启动。确认上传时勾选了“安装后立即启动”，或在新插件页手动启动。运行中的插件更新前需要先停止。
+安装成功不一定自动启动。确认上传时勾选了“安装后立即启动”，或在 v2 插件页手动启动。运行中的插件更新前需要先停止。
 
 ## 更新检测失败是否影响运行？
 

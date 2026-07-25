@@ -80,7 +80,7 @@ dotnet publish .\MyPlugin.csproj -c Release
 
 ## 上传安装
 
-在 WebUI 新插件页上传 zip。安装器会：
+在 WebUI“v2 插件”页上传 ZIP。安装器会：
 
 - 拒绝路径穿越条目。
 - 只读取 manifest，不执行插件。
@@ -99,7 +99,7 @@ HTTP 插件不生成 ISkyPro 安装 ZIP。开发者应先把服务部署到服�
 - `GET /iskypro/plugin/manifest`：返回 `ModernPluginManifest`，并声明 `ReceiveMessages` 与 `HttpTransport` capability。
 - `POST /iskypro/plugin/events/message`：接收消息事件并返回 `ModernPluginMessageResponse`。
 
-用户在 WebUI“新插件”页输入 Base URL 完成注册。发布新版本时由服务自身完成滚动更新或重启，不通过 ISkyPro ZIP 覆盖流程。
+用户在 WebUI“v2 插件”页输入 Base URL 完成注册。发布新版本时由服务自身完成滚动更新或重启，不通过 ISkyPro ZIP 覆盖流程。
 
 HTTP 发布说明还应写清：
 

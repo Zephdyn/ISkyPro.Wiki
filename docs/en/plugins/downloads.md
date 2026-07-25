@@ -20,7 +20,7 @@ SDK archive names:
 
 | SDK | File name |
 | --- | --- |
-| Legacy SDK | `SDK-Legacy-2.0.0.zip` |
+| ISky v1 SDK (*EPL*) | `SDK-V1-EPL-2.0.0.zip` |
 | C# Plugin SDK v2 | `SDK-V2-CSharp-2.0.0.zip` |
 | Python Plugin SDK v2 | `SDK-V2-Python-2.0.0.zip` |
 | Node.js Plugin SDK v2 | `SDK-V2-NodeJS-2.0.0.zip` |

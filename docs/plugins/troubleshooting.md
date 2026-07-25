@@ -1,12 +1,12 @@
 # 插件故障排查
 
-## 新插件未发现
+## ISkyPro v2+ 插件未发现
 
 - zip 根目录或唯一顶层目录下没有 `manifest.json`。
 - manifest JSON 格式错误。
 - `pluginId`、`name`、`version`、`author` 或 `sdkVersion` 缺失。
 - `transport.type` 不是 `stdio-jsonrpc`。
-- 插件安装到了旧插件 `plugin/` 目录，而不是通过新插件上传入口安装。
+- 插件被复制到 ISky v1 插件使用的 `plugin/` 目录，而不是通过 v2 插件上传入口安装。
 
 ## 启动失败
 

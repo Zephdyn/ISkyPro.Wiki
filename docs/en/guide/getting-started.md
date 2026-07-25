@@ -1,19 +1,19 @@
 # Getting Started
 
-ISkyPro is a .NET 10 rewrite of the main framework for QQBot and the legacy ISky plugin ecosystem. It includes the main process, Web management UI, QQBot gateway, isolated legacy DLL plugin host, `message.dll` compatibility layer, and Plugin SDK v2.
+ISkyPro is a .NET 10 rewrite of the main framework for QQBot and the ISky plugin ecosystem. It includes the main process, Web management UI, QQBot gateway, isolated ISky v1 *EPL* / x86 plugin host, `message.dll` compatibility layer, and the ISkyPro v2+ Plugin SDK.
 
 The current stable version is `2.0.0`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
 
 ## Requirements
 
-- Windows x64 / Windows ARM64, or glibc Linux x64 preview
+- Windows x64 / Windows ARM64, or glibc Linux x64
 - An ISkyPro release package, such as `ISkyPro-2.0.0-win-x64.zip`, `ISkyPro-2.0.0-win-arm64.zip`, or `ISkyPro-2.0.0-linux-x64.tar.gz`
 - Network access to the QQBot platform
 - Bot ID / AppID and Secret from your QQ Open Platform bot console
 
 The release package includes runtime components for normal use. Users do not need to install the .NET SDK, Node.js, or compiler toolchains.
 
-Linux preview packages support the main process, WebUI, QQBot gateway, and Plugin SDK v2 modern plugins, and target glibc Linux x64 distributions rather than Alpine/musl. Legacy DLL plugins, the x86 `isky.exe` compatibility host, and the `message.dll` compatibility layer are still only provided in Windows packages.
+Linux x64 packages support the main process, WebUI, QQBot gateway, and ISkyPro v2+ plugins, and target glibc Linux x64 distributions rather than Alpine/musl. ISky v1 plugins, the x86 `isky.exe` compatibility host, and the `message.dll` compatibility layer are still only provided in Windows packages.
 
 ## Package Layout
 
@@ -22,7 +22,7 @@ After extracting a Windows package, the main entry points and folders are:
 ```text
 ISkyPro/
   ISkyPro.exe              # Main process entry point
-  isky.exe                 # Legacy plugin compatibility host, internal component
+  isky.exe                 # ISky v1 EPL/x86 compatibility host, internal component
   bin/
     message.dll
   config/
@@ -36,7 +36,7 @@ ISkyPro/
     service-status.bat
 ```
 
-Start only `ISkyPro.exe` manually. `isky.exe` is the legacy plugin compatibility host and is not the user-facing entry point.
+Start only `ISkyPro.exe` manually. `isky.exe` is the v1 plugin compatibility host and is not the user-facing entry point.
 
 After extracting a Linux package, the main entry points and folders are:
 
@@ -49,7 +49,7 @@ ISkyPro/
   plugins-v2/
 ```
 
-Linux packages do not include the legacy plugin compatibility host, `message.dll`, or Windows Service scripts.
+Linux packages do not include the v1 plugin compatibility host, `message.dll`, or Windows Service scripts.
 
 ## Start ISkyPro
 

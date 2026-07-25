@@ -88,7 +88,7 @@ The packaged manifest must launch the compiled executable, not `go run`.
 
 ## Upload Install
 
-Upload the zip from the WebUI Modern plugins tab. The installer:
+Upload the ZIP from the WebUI “v2 plugins” tab. The installer:
 
 - Rejects path traversal entries.
 - Reads only the manifest and does not execute the plugin.
@@ -111,7 +111,7 @@ Required endpoints:
 - `POST /iskypro/plugin/events/message`: receives message events and returns
   `ModernPluginMessageResponse`.
 
-Users register the base URL from the WebUI Modern plugins page. New releases are
+Users register the base URL from the WebUI “v2 plugins” page. New releases are
 rolled out or restarted by the service deployment system, not through ISkyPro's
 ZIP replacement flow.
 

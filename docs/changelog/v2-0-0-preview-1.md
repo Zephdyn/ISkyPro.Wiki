@@ -14,7 +14,7 @@
 - dashboard: 新增运行概览，显示网关状态、消息收发计数、插件数量和最近框架日志。
 - bot: 新增 QQBot 验证登录、WebSocket / Webhook 模式选择、Mention 过滤配置和退出登录。
 - plugins: 新增旧 DLL 插件扫描、上传、启用、禁用、重启、打开设置和卸载操作。
-- plugins: 旧插件宿主请求改为有界 FIFO 串行队列，并在设置中新增分发队列容量，避免并发消息投递直接失败。
+- plugins: ISky v1 插件宿主请求改为有界 FIFO 串行队列，并在设置中新增分发队列容量，避免并发消息投递直接失败。
 - logs: 新增框架日志、插件日志、Bot 会话日志查看，并支持搜索、分页和清理。
 - settings: 新增 WebUI 访问控制、Webhook 监听地址、反向代理配置生成、日志保留策略和调试工具。
 - about: 新增侧边栏底部“关于”入口，显示当前版本和更新日志。
@@ -23,18 +23,18 @@
 
 - contracts: 新增 `ISkyPro.Contracts`，集中定义 IPC、Bot 和插件宿主之间共享的合同类型。
 - sdk: 新增 `ISkyPro.PluginSdk`，用于开发现代 C# 插件。
-- sample: 新增 `ISkyPro.SamplePlugin`，作为现代插件开发示例。
-- debug: 新增 WebUI 模拟消息入口，用于验证现代插件分发链路，不会向 QQ 发送消息。
-- native: 新增 `message.dll` 兼容层，保留旧插件 ABI 接入路径。
+- sample: 新增 `ISkyPro.SamplePlugin`，作为 ISkyPro v2+ 插件开发示例。
+- debug: 新增 WebUI 模拟消息入口，用于验证 ISkyPro v2+ 插件分发链路，不会向 QQ 发送消息。
+- native: 新增 `message.dll` 兼容层，保留 ISky v1 插件 ABI 接入路径。
 - native: 重构 `message.dll` 内部实现，拆分授权、队列、JSON 载荷、成员查询、统计和返回缓冲等模块，并补充并发、唤醒和成员查询测试。
 
 ## Compatibility
 
 - plugin: 保留旧 DLL 插件的启动、停止、重启、启用、禁用、设置窗口和卸载路径。
-- plugin: 保留旧插件通过 `message.dll` 进入消息兼容层的调用方式。
-- plugin: 同一旧插件 DLL 的生命周期和消息回调继续串行执行；并发入口现在排队或按超时返回，不再触发单 pending request 异常。
-- host: 旧插件宿主保持 Windows x86 兼容性。
-- native: `message.dll` 导出函数、调用约定和旧插件可见返回语义保持不变。
+- plugin: 保留 ISky v1 插件通过 `message.dll` 进入消息兼容层的调用方式。
+- plugin: 同一 ISky v1 插件 DLL 的生命周期和消息回调继续串行执行；并发入口现在排队或按超时返回，不再触发单 pending request 异常。
+- host: ISky v1 插件宿主保持 Windows x86 兼容性。
+- native: `message.dll` 导出函数、调用约定和 ISky v1 插件可见返回语义保持不变。
 - state: 插件启用状态、崩溃计数、连续崩溃禁用和重启窗口由主程序集中管理。
 
 ## Docs

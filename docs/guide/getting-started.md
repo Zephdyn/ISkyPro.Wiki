@@ -1,19 +1,19 @@
 # 快速开始
 
-ISkyPro 是面向 QQBot 和旧 ISky 插件生态的 .NET 10 重构版主框架。它包含主程序、Web 管理界面、QQBot 网关、旧 DLL 插件隔离宿主、`message.dll` 兼容层和 Plugin SDK v2。
+ISkyPro 是面向 QQBot 和 ISky 插件生态的 .NET 10 重构版主框架。它包含主程序、Web 管理界面、QQBot 网关、ISky v1 插件兼容宿主、`message.dll` 兼容层和 ISkyPro v2+ Plugin SDK。
 
 当前稳定版本为 `2.0.0`。Plugin SDK v2 已提供 C#、Python、Node.js 和 Go 公共源码。
 
 ## 准备
 
-- Windows x64 / Windows ARM64，或 glibc Linux x64 preview
+- Windows x64 / Windows ARM64，或 glibc Linux x64
 - ISkyPro 发布包，例如 `ISkyPro-2.0.0-win-x64.zip`、`ISkyPro-2.0.0-win-arm64.zip` 或 `ISkyPro-2.0.0-linux-x64.tar.gz`
 - 可访问 QQBot 平台的网络环境
 - QQ 开放平台机器人管理后台中的 Bot ID / AppID 和 Secret
 
 发布包自带运行所需组件，普通用户不需要安装 .NET SDK、Node.js 或编译工具链。
 
-Linux preview 包支持主程序、WebUI、QQBot 网关和 Plugin SDK v2 新插件，目标为 glibc Linux x64 发行版，不面向 Alpine/musl。旧 DLL 插件、`isky.exe` x86 兼容宿主和 `message.dll` 兼容层仍只在 Windows 包中提供。
+Linux x64 包支持主程序、WebUI、QQBot 网关和 ISkyPro v2+ 插件，目标为 glibc Linux x64 发行版，不面向 Alpine/musl。ISky v1 插件、`isky.exe` x86 兼容宿主和 `message.dll` 兼容层仍只在 Windows 包中提供。
 
 ## 发布包结构
 
@@ -22,7 +22,7 @@ Windows 包解压后，主要入口和目录如下：
 ```text
 ISkyPro/
   ISkyPro.exe              # 主程序入口
-  isky.exe                 # 旧插件兼容宿主，内部组件
+  isky.exe                 # ISky v1 EPL/x86 兼容宿主，内部组件
   bin/
     message.dll
   config/
@@ -36,7 +36,7 @@ ISkyPro/
     service-status.bat
 ```
 
-手动运行时只启动 `ISkyPro.exe`。`isky.exe` 是旧插件兼容宿主，不是用户启动入口。
+手动运行时只启动 `ISkyPro.exe`。`isky.exe` 是 ISky v1 插件兼容宿主，不是用户启动入口。
 
 Linux 包解压后，主要入口和目录如下：
 
@@ -49,7 +49,7 @@ ISkyPro/
   plugins-v2/
 ```
 
-Linux 包不包含旧插件兼容宿主、`message.dll` 或 Windows Service 脚本。
+Linux 包不包含 v1 插件兼容宿主、`message.dll` 或 Windows Service 脚本。
 
 ## 启动 ISkyPro
 

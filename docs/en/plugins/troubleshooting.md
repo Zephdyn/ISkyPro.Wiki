@@ -1,12 +1,12 @@
 # Plugin Troubleshooting
 
-## Modern Plugin Not Found
+## ISkyPro v2+ Plugin Not Found
 
 - The zip root or its single top-level directory does not contain `manifest.json`.
 - The manifest is not valid JSON.
 - `pluginId`, `name`, `version`, `author`, or `sdkVersion` is missing.
 - `transport.type` is not `stdio-jsonrpc`.
-- The plugin was copied to the legacy `plugin/` directory instead of installed through the Modern plugin upload entry.
+- The plugin was copied to the ISky v1 `plugin/` directory instead of installed through the v2 plugin upload entry.
 
 ## Startup Failure
 

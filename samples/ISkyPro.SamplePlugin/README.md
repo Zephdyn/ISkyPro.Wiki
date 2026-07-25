@@ -13,7 +13,7 @@ artifacts/ISkyPro.SamplePlugin.zip
 ```
 
 The ZIP contains `manifest.json`, the application DLL, runtime metadata, and
-all required managed dependencies. Upload it from WebUI **Plugins > Modern >
+all required managed dependencies. Upload it from WebUI **Plugins > ISkyPro v2+ >
 Install plugin package**.
 
 Projects that reference the `ISkyPro.PluginSdk` NuGet package receive the

@@ -19,7 +19,7 @@ SDK 压缩包文件名：
 
 | SDK | 文件名 |
 | --- | --- |
-| 旧插件 SDK | `SDK-Legacy-2.0.0.zip` |
+| ISky v1 *EPL* SDK | `SDK-V1-EPL-2.0.0.zip` |
 | C# Plugin SDK v2 | `SDK-V2-CSharp-2.0.0.zip` |
 | Python Plugin SDK v2 | `SDK-V2-Python-2.0.0.zip` |
 | Node.js Plugin SDK v2 | `SDK-V2-NodeJS-2.0.0.zip` |

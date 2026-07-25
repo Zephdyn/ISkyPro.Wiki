@@ -159,7 +159,7 @@ need Go. Produce a separate ZIP for every target OS and architecture.
 
 1. Use the language packaging command above to create an installable ZIP. A custom pipeline must also include the entry point, dependencies, and root `manifest.json`.
 2. The zip root or its single top-level directory must contain `manifest.json`.
-3. Open the WebUI Plugins page and switch to Modern.
+3. Open the WebUI Plugins page and switch to ISkyPro v2+ Plugins.
 4. Upload the zip.
 5. When the same plugin ID is detected, review the old and new plugin details in the confirmation dialog before replacing it.
 6. To run immediately, enable start after install.
@@ -204,7 +204,7 @@ Minimal manifest response:
 ```
 
 After deployment, enter a base URL such as `http://127.0.0.1:5080` under
-**Plugins > Modern > Register HTTP plugin**. ISkyPro fetches and validates the
+**Plugins > ISkyPro v2+ Plugins > Register HTTP plugin**. ISkyPro fetches and validates the
 manifest before registration.
 
 The plugin developer owns the HTTP service process, dependencies, TLS,

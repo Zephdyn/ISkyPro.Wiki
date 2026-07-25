@@ -42,4 +42,4 @@ If only mentioned messages are received, first check the group-level full-messag
 - Webhook signature failure: confirm the callback secret matches the platform configuration.
 - Events not subscribed: select group, C2C, guild, or direct-message events on the QQ platform when using Webhook.
 - Group full-message access disabled: enable it in the mobile QQ group bot settings.
-- Plugin did not respond: check WebUI logs to see whether the event entered the framework, was intercepted by a legacy plugin, or was filtered by a modern plugin.
+- Plugin did not respond: check WebUI logs to see whether the event entered the framework, was intercepted by an ISky v1 plugin, or was filtered by an ISkyPro v2+ plugin.

@@ -149,7 +149,7 @@ Go 包内是已经编译好的本机程序，目标机器不需要安装 Go。�
 
 1. 使用上面的语言打包命令生成可安装 ZIP；自定义流程也必须包含入口、依赖和根目录 `manifest.json`。
 2. zip 根目录或唯一顶层目录下必须有 `manifest.json`。
-3. 打开 WebUI 插件页，切到“新插件”。
+3. 打开 WebUI 插件页，切到“v2 插件”。
 4. 上传 zip。
 5. 如检测到同 ID 插件，确认框会显示新旧版本和插件信息；确认后才会覆盖。
 6. 需要立即运行时，勾选安装后启动。
@@ -192,7 +192,7 @@ POST /iskypro/plugin/events/message
 }
 ```
 
-部署完成后，在 WebUI“插件 → 新插件 → 注册 HTTP 插件”中填写 Base URL，例如
+部署完成后，在 WebUI“插件 → v2 插件 → 注册 HTTP 插件”中填写 Base URL，例如
 `http://127.0.0.1:5080`。ISkyPro 会先读取 manifest；校验通过后才注册。
 
 HTTP 服务的进程、依赖、TLS、鉴权、日志、更新和高可用由插件开发者负责。当前 HTTP transport 使用 HTTP modern-plugin request/response contract，不使用 stdio runtime token，也不通过本地 ZIP 安装器管理生命周期。
