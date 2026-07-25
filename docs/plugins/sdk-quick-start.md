@@ -1,6 +1,6 @@
 # Plugin SDK v2 快速实现
 
-Plugin SDK v2 的最小插件包由 `manifest.json` 和插件入口文件组成。`2.0.0-preview.4` 提供 C#、Python、Node.js 和 Go 预览能力。
+Plugin SDK v2 的最小插件包由 `manifest.json` 和插件入口文件组成。稳定版 `2.0.0` 正式支持 C#、Python、Node.js 和 Go。
 
 ## Python stdio 插件
 
@@ -21,7 +21,7 @@ manifest 中声明 stdio 启动方式：
   "version": "0.1.0",
   "author": "Example",
   "protocolVersion": 2,
-  "sdkVersion": "2.0.0-preview.4",
+  "sdkVersion": "2.0.0",
   "transport": {
     "type": "stdio-jsonrpc",
     "stdio": {
@@ -50,6 +50,9 @@ manifest 中声明 stdio 启动方式：
 - `samples/stdio-node-plugin`
 - `samples/stdio-go-plugin`
 - `samples/ISkyPro.SamplePlugin/EchoPluginV2.cs`
+
+SDK 唯一源码位于本公开仓库的 `sdk/`。更新 API catalog 后运行
+`python tools/plugin-sdk-stub-generator/generate.py` 即可同时替换四语言生成方法。
 
 ## 安装到 WebUI
 

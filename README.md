@@ -1,7 +1,7 @@
 # ISkyPro Wiki
 
-[![Status](https://img.shields.io/badge/status-preview-orange)](https://github.com/Zephdyn/ISkyPro.Wiki)
-[![Version](https://img.shields.io/badge/version-2.0.0--preview.4-blue)](https://github.com/Zephdyn/ISkyPro.Wiki)
+[![Status](https://img.shields.io/badge/status-stable-brightgreen)](https://github.com/Zephdyn/ISkyPro.Wiki)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/Zephdyn/ISkyPro.Wiki)
 [![Docs Build](https://img.shields.io/github/actions/workflow/status/Zephdyn/ISkyPro.Wiki/deploy.yml?branch=main&label=docs%20build&logo=githubactions)](https://github.com/Zephdyn/ISkyPro.Wiki/actions/workflows/deploy.yml)
 [![VitePress](https://img.shields.io/badge/VitePress-1.6-646CFF?logo=vite)](https://vitepress.dev/)
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
@@ -14,7 +14,7 @@ ISkyPro Wiki 是 ISkyPro 的公开文档仓库，面向用户、插件作者和�
 
 ISkyPro 是面向 QQBot 与旧 ISky 插件生态的 .NET 10 重构版 Bot 框架。它把主程序、Web 管理界面、QQBot 网关、旧 DLL 插件隔离宿主、`message.dll` 兼容层和 Plugin SDK v2 统一到新的运行与扩展模型中，在保留旧插件兼容性的同时提供现代化的部署和管理体验。
 
-当前文档面向 `2.0.0-preview.4` 预览版。预览版优先保持旧插件 ABI、Windows x86 插件宿主发布策略和主要 WebUI 操作稳定；新的 Plugin SDK v2 仍可能在正式版前调整。
+当前文档面向稳定版 `2.0.0`。Plugin SDK v2 的 C#、Python、Node.js 和 Go 源码与样例已在本公开仓库维护。
 
 ## 在线文档
 
@@ -33,6 +33,7 @@ ISkyPro 是面向 QQBot 与旧 ISky 插件生态的 .NET 10 重构版 Bot 框架
 | WebUI 管理 | 提供 Bot 登录、运行状态、插件管理、日志查看、系统设置和中英文界面。 |
 | 旧插件兼容 | Windows 包内通过独立 x86 插件宿主运行旧 DLL 插件，并提供 `message.dll` 兼容层。 |
 | 现代插件 | Plugin SDK v2 面向新的 C# 插件开发模式，适合新插件和逐步迁移。 |
+| 公开 SDK | `sdk/` 提供四语言 SDK，`samples/` 提供可运行样例，方法由公共 catalog 统一生成。 |
 | 部署运行 | 支持 Windows x64 / Windows ARM64；Linux x64 preview 支持主程序、WebUI、QQBot 网关和现代插件。 |
 | 用户文档 | 覆盖安装启动、QQBot 事件配置、Webhook 反代、插件发布、下载和常见问题。 |
 

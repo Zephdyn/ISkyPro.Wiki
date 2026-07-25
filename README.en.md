@@ -1,7 +1,7 @@
 # ISkyPro Wiki
 
-[![Status](https://img.shields.io/badge/status-preview-orange)](https://github.com/Zephdyn/ISkyPro.Wiki)
-[![Version](https://img.shields.io/badge/version-2.0.0--preview.4-blue)](https://github.com/Zephdyn/ISkyPro.Wiki)
+[![Status](https://img.shields.io/badge/status-stable-brightgreen)](https://github.com/Zephdyn/ISkyPro.Wiki)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/Zephdyn/ISkyPro.Wiki)
 [![Docs Build](https://img.shields.io/github/actions/workflow/status/Zephdyn/ISkyPro.Wiki/deploy.yml?branch=main&label=docs%20build&logo=githubactions)](https://github.com/Zephdyn/ISkyPro.Wiki/actions/workflows/deploy.yml)
 [![VitePress](https://img.shields.io/badge/VitePress-1.6-646CFF?logo=vite)](https://vitepress.dev/)
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
@@ -14,7 +14,7 @@ ISkyPro Wiki is the public documentation repository for ISkyPro. It provides the
 
 ISkyPro is a .NET 10 rewrite of the bot framework for QQBot and the legacy ISky plugin ecosystem. It brings the main process, Web management UI, QQBot gateway, isolated legacy DLL plugin host, `message.dll` compatibility layer, and Plugin SDK v2 into a clearer runtime and extension model while preserving legacy plugin compatibility.
 
-The current documentation targets `2.0.0-preview.4`. Preview builds prioritize stability for the legacy plugin ABI, the Windows x86 plugin-host packaging model, and major WebUI workflows. The new Plugin SDK v2 may still change before a stable release.
+The current documentation targets stable release `2.0.0`. The C#, Python, Node.js, and Go Plugin SDK v2 sources and samples are maintained in this public repository.
 
 ## Documentation
 
@@ -33,6 +33,7 @@ The current documentation targets `2.0.0-preview.4`. Preview builds prioritize s
 | WebUI management | Provides Bot login, runtime status, plugin management, log viewing, settings, and Chinese / English UI. |
 | Legacy plugin compatibility | Windows packages run legacy DLL plugins through an isolated x86 plugin host and provide the `message.dll` compatibility layer. |
 | Modern plugins | Plugin SDK v2 supports the new C# plugin development model for new plugins and gradual migration. |
+| Public SDK | `sdk/` contains the four language SDKs, `samples/` contains runnable examples, and one public catalog generates their method surfaces. |
 | Deployment | Supports Windows x64 / Windows ARM64; Linux x64 preview supports the main process, WebUI, QQBot gateway, and modern plugins. |
 | User documentation | Covers installation, QQBot event setup, Webhook reverse proxy, plugin publishing, downloads, and FAQ topics. |
 

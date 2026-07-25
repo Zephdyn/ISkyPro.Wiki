@@ -1,0 +1,236 @@
+{
+  "version": "2.0.0",
+  "basePath": "",
+  "endpoints": [
+    {
+      "name": "messages.replyText",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/messages",
+      "permission": "messages.reply",
+      "stability": "stable",
+      "requestModel": "GroupTextMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "messages.replyMarkdown",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/messages",
+      "permission": "messages.reply",
+      "stability": "preview",
+      "requestModel": "GroupMarkdownMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "messages.replyMedia",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/messages",
+      "permission": "messages.reply",
+      "stability": "preview",
+      "requestModel": "GroupMediaMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "messages.sendGroupText",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/messages",
+      "permission": "messages.send",
+      "stability": "stable",
+      "requestModel": "GroupTextMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "messages.sendC2CText",
+      "method": "POST",
+      "path": "v2/users/{userOpenId}/messages",
+      "permission": "messages.send",
+      "stability": "stable",
+      "requestModel": "C2CTextMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "messages.sendChannelText",
+      "method": "POST",
+      "path": "channels/{channelId}/messages",
+      "permission": "messages.send",
+      "stability": "stable",
+      "requestModel": "ChannelTextMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "messages.sendDirectMessage",
+      "method": "POST",
+      "path": "dms/{guildId}/messages",
+      "permission": "messages.send",
+      "stability": "stable",
+      "requestModel": "DirectTextMessageRequest",
+      "responseModel": "MessageResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "media.uploadGroupFile",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/files",
+      "permission": "media.upload",
+      "stability": "stable",
+      "requestModel": "GroupFileUploadRequest",
+      "responseModel": "FileUploadResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "media.uploadC2CFile",
+      "method": "POST",
+      "path": "v2/users/{userOpenId}/files",
+      "permission": "media.upload",
+      "stability": "stable",
+      "requestModel": "C2CFileUploadRequest",
+      "responseModel": "FileUploadResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "media.uploadChannelFile",
+      "method": "POST",
+      "path": "channels/{channelId}/files",
+      "permission": "media.upload",
+      "stability": "preview",
+      "requestModel": "ChannelFileUploadRequest",
+      "responseModel": "FileUploadResponse",
+      "defaultEnabled": true
+    },
+    {
+      "name": "users.getCurrentBot",
+      "method": "GET",
+      "path": "users/@me",
+      "permission": "users.read",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "BotUser",
+      "defaultEnabled": true
+    },
+    {
+      "name": "users.getUser",
+      "method": "GET",
+      "path": "users/{userId}",
+      "permission": "users.read",
+      "stability": "preview",
+      "requestModel": null,
+      "responseModel": "User",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.getGroupInfo",
+      "method": "GET",
+      "path": "v2/groups/{groupOpenId}",
+      "permission": "groups.read",
+      "stability": "preview",
+      "requestModel": null,
+      "responseModel": "Group",
+      "defaultEnabled": true
+    },
+    {
+      "name": "guilds.getGuild",
+      "method": "GET",
+      "path": "guilds/{guildId}",
+      "permission": "guilds.read",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "Guild",
+      "defaultEnabled": true
+    },
+    {
+      "name": "channels.getChannel",
+      "method": "GET",
+      "path": "channels/{channelId}",
+      "permission": "guilds.read",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "Channel",
+      "defaultEnabled": true
+    },
+    {
+      "name": "channels.createSubChannel",
+      "method": "POST",
+      "path": "guilds/{guildId}/channels",
+      "permission": "channels.manage",
+      "stability": "stable",
+      "requestModel": "CreateChannelRequest",
+      "responseModel": "Channel",
+      "defaultEnabled": true
+    },
+    {
+      "name": "channels.updateSubChannel",
+      "method": "PATCH",
+      "path": "channels/{channelId}",
+      "permission": "channels.manage",
+      "stability": "stable",
+      "requestModel": "UpdateChannelRequest",
+      "responseModel": "Channel",
+      "defaultEnabled": true
+    },
+    {
+      "name": "channels.deleteSubChannel",
+      "method": "DELETE",
+      "path": "channels/{channelId}",
+      "permission": "channels.manage",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "Empty",
+      "defaultEnabled": true
+    },
+    {
+      "name": "members.getMember",
+      "method": "GET",
+      "path": "guilds/{guildId}/members/{userId}",
+      "permission": "members.read",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "Member",
+      "defaultEnabled": true
+    },
+    {
+      "name": "members.listMembers",
+      "method": "GET",
+      "path": "guilds/{guildId}/members",
+      "permission": "members.read",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "MemberList",
+      "defaultEnabled": true
+    },
+    {
+      "name": "permissions.getApiPermissions",
+      "method": "GET",
+      "path": "guilds/{guildId}/api_permission",
+      "permission": "permissions.manage",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "ApiPermissionList",
+      "defaultEnabled": true
+    },
+    {
+      "name": "permissions.requestApiPermissionDemand",
+      "method": "POST",
+      "path": "guilds/{guildId}/api_permission/demand",
+      "permission": "permissions.manage",
+      "stability": "stable",
+      "requestModel": "ApiPermissionDemandRequest",
+      "responseModel": "ApiPermissionDemand",
+      "defaultEnabled": true
+    },
+    {
+      "name": "unsafe.rawOpenApi",
+      "method": "*",
+      "path": "{path}",
+      "permission": "unsafe.raw-open-api",
+      "stability": "unsafe",
+      "requestModel": "RawOpenApiRequest",
+      "responseModel": "RawOpenApiResponse",
+      "defaultEnabled": false
+    }
+  ]
+}

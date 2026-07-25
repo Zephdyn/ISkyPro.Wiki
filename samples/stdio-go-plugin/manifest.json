@@ -1,0 +1,43 @@
+{
+  "pluginId": "top.iskypro.sample.go-stdio",
+  "name": "ISkyPro Go stdio sample",
+  "version": "0.1.0",
+  "author": "ISkyPro",
+  "description": "Go Plugin SDK v2 stdio-jsonrpc sample.",
+  "protocolVersion": 2,
+  "sdkVersion": "2.0.0",
+  "transport": {
+    "type": "stdio-jsonrpc",
+    "stdio": {
+      "command": "go",
+      "args": [ "run", ".", "--iskypro-stdio" ],
+      "workingDirectory": ".",
+      "environment": {}
+    }
+  },
+  "supportedPlatforms": [
+    { "platform": "windows", "architectures": [ "x64", "arm64" ] },
+    { "platform": "linux", "architectures": [ "x64", "arm64" ] },
+    { "platform": "osx", "architectures": [ "x64", "arm64" ] }
+  ],
+  "eventSubscriptions": [
+    { "eventType": "message.created", "botAccountIds": [], "conversationIds": [] }
+  ],
+  "permissions": [ "messages.reply", "users.read" ],
+  "commands": [
+    {
+      "name": "go",
+      "aliases": [ "golang" ],
+      "prefixes": [ "/" ],
+      "conversationScopes": [],
+      "priority": 10
+    }
+  ],
+  "filters": [],
+  "concurrency": {
+    "maxConcurrentEvents": 2,
+    "queueCapacity": 32,
+    "allowSameConversationConcurrency": false,
+    "overflowPolicy": "reject-new"
+  }
+}

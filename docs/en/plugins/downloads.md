@@ -1,29 +1,32 @@
 # SDK Downloads
 
-SDK archives are published with the GitHub Release for the same product version. The `2.0.0-preview.4` SDKs are still preview APIs and do not promise stable naming.
+The canonical Plugin SDK v2 source is under `sdk/` in this public repository. You
+can clone it directly or download a language archive from the matching Release.
+Stable `2.0.0` SDK interfaces follow semantic versioning.
 
 Download entry:
 
-- [v2.0.0-preview.4 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.0.0-preview.4)
+- [v2.0.0 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.0.0)
 
 Main application package names:
 
 | Platform | File name |
 | --- | --- |
-| Windows x64 | `ISkyPro-2.0.0-preview.4-win-x64.zip` |
-| Windows ARM64 | `ISkyPro-2.0.0-preview.4-win-arm64.zip` |
-| Linux x64 preview | `ISkyPro-2.0.0-preview.4-linux-x64.tar.gz` |
+| Windows x64 | `ISkyPro-2.0.0-win-x64.zip` |
+| Windows ARM64 | `ISkyPro-2.0.0-win-arm64.zip` |
+| Linux x64 | `ISkyPro-2.0.0-linux-x64.tar.gz` |
 
-SDK archive file names:
+SDK archive names:
 
 | SDK | File name |
 | --- | --- |
-| Legacy SDK | `ISkyPro-LegacySdk-2.0.0-preview.4.zip` |
-| C# Plugin SDK v2 | `ISkyPro-PluginSdk-CSharp-2.0.0-preview.4.zip` |
-| Python Plugin SDK v2 | `ISkyPro-PluginSdk-Python-2.0.0-preview.4.zip` |
-| Node.js Plugin SDK v2 | `ISkyPro-PluginSdk-Node-2.0.0-preview.4.zip` |
-| Go Plugin SDK v2 | `ISkyPro-PluginSdk-Go-2.0.0-preview.4.zip` |
+| Legacy SDK | `SDK-Legacy-2.0.0.zip` |
+| C# Plugin SDK v2 | `SDK-V2-CSharp-2.0.0.zip` |
+| Python Plugin SDK v2 | `SDK-V2-Python-2.0.0.zip` |
+| Node.js Plugin SDK v2 | `SDK-V2-NodeJS-2.0.0.zip` |
+| Go Plugin SDK v2 | `SDK-V2-Go-2.0.0.zip` |
 
-SDK archives are for plugin development, not for installing or updating the ISkyPro application. To install or update ISkyPro, download the platform package above that matches your system.
-
-The Legacy SDK archive contains the E-language SDK files. The C#, Python, Node.js, and Go Plugin SDK v2 archives include the SDK files for that language plus a sample plugin.
+SDK archives are for plugin development, not application installation or updates.
+The C# archive includes NuGet packages, public contracts, SDK source, and a runnable
+sample. Other archives preserve the relative `sdk/<language>` and `samples/<sample>`
+layout so their samples build immediately after extraction.

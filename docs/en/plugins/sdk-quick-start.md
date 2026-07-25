@@ -1,6 +1,6 @@
 # Plugin SDK v2 Quick Start
 
-A minimal Plugin SDK v2 package contains `manifest.json` and the plugin entry file. `2.0.0-preview.4` provides preview support for C#, Python, Node.js, and Go.
+A minimal Plugin SDK v2 package contains `manifest.json` and the plugin entry file. Stable release `2.0.0` officially supports C#, Python, Node.js, and Go.
 
 ## Python stdio Plugin
 
@@ -21,7 +21,7 @@ The manifest declares the stdio startup command:
   "version": "0.1.0",
   "author": "Example",
   "protocolVersion": 2,
-  "sdkVersion": "2.0.0-preview.4",
+  "sdkVersion": "2.0.0",
   "transport": {
     "type": "stdio-jsonrpc",
     "stdio": {
@@ -50,6 +50,10 @@ Repository samples:
 - `samples/stdio-node-plugin`
 - `samples/stdio-go-plugin`
 - `samples/ISkyPro.SamplePlugin/EchoPluginV2.cs`
+
+The canonical SDK source is under `sdk/` in this public repository. After changing
+the API catalog, run `python tools/plugin-sdk-stub-generator/generate.py` to replace
+the generated method surfaces for all four languages.
 
 ## Install from WebUI
 
