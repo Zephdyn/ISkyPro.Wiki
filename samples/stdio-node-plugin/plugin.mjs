@@ -1,4 +1,14 @@
-import { StdioJsonRpcPlugin } from "../../sdk/node/iskypro-sdk-v2/index.js";
+let sdk;
+try {
+  sdk = await import("@iskypro/plugin-sdk-v2");
+} catch (error) {
+  if (error?.code !== "ERR_MODULE_NOT_FOUND") {
+    throw error;
+  }
+  sdk = await import("../../sdk/node/iskypro-sdk-v2/index.js");
+}
+
+const { StdioJsonRpcPlugin } = sdk;
 
 const pluginId = "top.iskypro.sample.node-stdio";
 

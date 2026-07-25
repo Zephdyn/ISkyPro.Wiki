@@ -62,7 +62,10 @@ class _At:
     everyone = _MessagePart({"type": "mention", "target": "everyone"})
 
     @staticmethod
-    def user(user: Union[str, UserRef, Mapping[str, Any]]) -> _MessagePart:
+    def user(
+        user: Union[str, UserRef, Mapping[str, Any]],
+        qqbot_format: Optional[str] = None,
+    ) -> _MessagePart:
         if isinstance(user, UserRef):
             mention_id = user.mention_id
         elif isinstance(user, Mapping):
@@ -70,15 +73,18 @@ class _At:
         else:
             mention_id = str(user or "")
         _validate_id(mention_id, "mention id")
-        return _MessagePart(
-            {"type": "mention", "target": "user", "id": mention_id}
-        )
+        _validate_qqbot_mention_format(mention_id, qqbot_format)
+        payload = {"type": "mention", "target": "user", "id": mention_id}
+        if qqbot_format is not None:
+            payload["qqBotFormat"] = qqbot_format
+        return _MessagePart(payload)
 
     @classmethod
     def users(
         cls,
         users: Iterable[Union[str, UserRef, Mapping[str, Any]]],
         separator: str = " ",
+        qqbot_format: Optional[str] = None,
     ) -> _CompositePart:
         values = list(users)
         if not values:
@@ -89,7 +95,7 @@ class _At:
         for index, user in enumerate(values):
             if index > 0 and separator:
                 parts.append(separator)
-            parts.append(cls.user(user))
+            parts.append(cls.user(user, qqbot_format))
         return _CompositePart(tuple(parts))
 
 
@@ -103,6 +109,13 @@ def _optional_string(value: Any) -> Optional[str]:
 def _validate_id(value: str, label: str) -> None:
     if not value.strip() or any(ord(character) < 32 or ord(character) == 127 for character in value):
         raise ValueError(f"{label} must not be empty or contain control characters")
+
+
+def _validate_qqbot_mention_format(mention_id: str, value: Optional[str]) -> None:
+    if value not in (None, "current", "legacy", "legacy-bang"):
+        raise ValueError("qqbot mention format must be current, legacy, or legacy-bang")
+    if value in ("legacy", "legacy-bang") and any(character in mention_id for character in "<>"):
+        raise ValueError("legacy QQBot mention ids must not contain '<' or '>'")
 
 
 def _normalize_parts(parts: Iterable[Any]) -> JsonObject:

@@ -22,7 +22,7 @@ ISkyPro/
 
 ## 新插件
 
-新插件使用 `plugins-v2/`：
+本地 stdio 新插件使用 `plugins-v2/`：
 
 ```text
 ISkyPro/
@@ -40,6 +40,10 @@ ISkyPro/
 - 插件进程由 Main 启动、停止、重启和监控。
 - 支持 typed + raw 事件、`messageReference` 延迟回复、权限声明和 settings schema。
 - WebUI 新插件页可安装 zip、查看状态、启动、停止、重启、禁用、卸载和打开设置。
+
+HTTP 新插件不放入 `plugins-v2/`，也不上传 ZIP。它作为独立 Web 服务运行，通过
+`GET /iskypro/plugin/manifest` 和 `POST /iskypro/plugin/events/message` 接入，用户只在
+WebUI 中注册 Base URL。HTTP 服务生命周期由其自身部署环境管理。
 
 ## 什么时候选哪种
 

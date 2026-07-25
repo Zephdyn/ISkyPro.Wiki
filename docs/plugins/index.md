@@ -10,7 +10,7 @@ Linux preview 包只支持新插件路线。旧 DLL 插件依赖 Windows/x86 兼
 
 - 已有 DLL 插件用户：先看 [旧插件与新插件](/plugins/legacy-vs-modern)。
 - 想写新插件：从 [快速实现](/plugins/sdk-quick-start) 开始。
-- 想发布新插件 zip：看 [发布插件](/plugins/publishing)。
+- 想发布 stdio ZIP 或部署 HTTP 插件服务：看 [发布插件](/plugins/publishing)。
 - 启动失败或收不到事件：看 [故障排查](/plugins/troubleshooting)。
 - 需要 SDK 包：看 [SDK 下载](/plugins/downloads)。
 

@@ -45,6 +45,14 @@ type MessagePart interface {
 	appendWire([]JsonObject) ([]JsonObject, error)
 }
 
+type QqBotMentionFormat string
+
+const (
+	QqBotMentionFormatCurrent    QqBotMentionFormat = "current"
+	QqBotMentionFormatLegacy     QqBotMentionFormat = "legacy"
+	QqBotMentionFormatLegacyBang QqBotMentionFormat = "legacy-bang"
+)
+
 type textPart struct {
 	text string
 }
@@ -58,16 +66,25 @@ func (p textPart) appendWire(parts []JsonObject) ([]JsonObject, error) {
 }
 
 type mentionPart struct {
-	target string
-	id     string
+	target      string
+	id          string
+	qqBotFormat QqBotMentionFormat
 }
 
 func AtUser(id string) MessagePart {
 	return mentionPart{target: "user", id: id}
 }
 
+func AtUserWithQqBotFormat(id string, format QqBotMentionFormat) MessagePart {
+	return mentionPart{target: "user", id: id, qqBotFormat: format}
+}
+
 func AtUserRef(user UserRef) MessagePart {
 	return AtUser(user.MentionID)
+}
+
+func AtUserRefWithQqBotFormat(user UserRef, format QqBotMentionFormat) MessagePart {
+	return AtUserWithQqBotFormat(user.MentionID, format)
 }
 
 func AtEveryone() MessagePart {
@@ -79,7 +96,17 @@ func (p mentionPart) appendWire(parts []JsonObject) ([]JsonObject, error) {
 		if err := validateID(p.id, "mention id"); err != nil {
 			return nil, err
 		}
-		return append(parts, JsonObject{"type": "mention", "target": "user", "id": p.id}), nil
+		if p.qqBotFormat != "" && p.qqBotFormat != QqBotMentionFormatCurrent && p.qqBotFormat != QqBotMentionFormatLegacy && p.qqBotFormat != QqBotMentionFormatLegacyBang {
+			return nil, errors.New("QQBot mention format must be current, legacy, or legacy-bang")
+		}
+		if (p.qqBotFormat == QqBotMentionFormatLegacy || p.qqBotFormat == QqBotMentionFormatLegacyBang) && strings.ContainsAny(p.id, "<>") {
+			return nil, errors.New("legacy QQBot mention ids must not contain '<' or '>'")
+		}
+		wire := JsonObject{"type": "mention", "target": "user", "id": p.id}
+		if p.qqBotFormat != "" {
+			wire["qqBotFormat"] = string(p.qqBotFormat)
+		}
+		return append(parts, wire), nil
 	}
 	if p.target == "everyone" {
 		return append(parts, JsonObject{"type": "mention", "target": "everyone"}), nil
@@ -109,6 +136,28 @@ func AtUserRefs(users ...UserRef) MessagePart {
 			parts = append(parts, Text(" "))
 		}
 		parts = append(parts, AtUserRef(user))
+	}
+	return compositePart{parts: parts}
+}
+
+func AtUsersWithQqBotFormat(format QqBotMentionFormat, ids ...string) MessagePart {
+	parts := make([]MessagePart, 0, len(ids)*2)
+	for index, id := range ids {
+		if index > 0 {
+			parts = append(parts, Text(" "))
+		}
+		parts = append(parts, AtUserWithQqBotFormat(id, format))
+	}
+	return compositePart{parts: parts}
+}
+
+func AtUserRefsWithQqBotFormat(format QqBotMentionFormat, users ...UserRef) MessagePart {
+	parts := make([]MessagePart, 0, len(users)*2)
+	for index, user := range users {
+		if index > 0 {
+			parts = append(parts, Text(" "))
+		}
+		parts = append(parts, AtUserRefWithQqBotFormat(user, format))
 	}
 	return compositePart{parts: parts}
 }

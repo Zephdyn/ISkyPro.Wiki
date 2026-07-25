@@ -1,6 +1,13 @@
 # Plugin SDK v2 快速实现
 
-Plugin SDK v2 的最小插件包由 `manifest.json` 和插件入口文件组成。稳定版 `2.0.0` 正式支持 C#、Python、Node.js 和 Go。
+稳定版 `2.0.0` 正式支持 C#、Python、Node.js 和 Go。开始前先选择部署方式：
+
+| 方式 | 适合场景 | 如何接入 ISkyPro |
+| --- | --- | --- |
+| `stdio-jsonrpc` | 本地插件、需要完整 Plugin SDK v2 API、希望由 ISkyPro 管理进程生命周期 | 发布为包含 `manifest.json` 的 ZIP，在 WebUI 上传 |
+| HTTP | 已有 Web 服务、容器或远程服务，希望自己管理进程和扩缩容 | 部署 HTTP 服务，在 WebUI 注册 Base URL，不上传 ZIP |
+
+两种方式不是同一个发布包的两种启动参数。stdio 插件是本地受管进程；HTTP 插件是独立运行的服务。
 
 ## Python stdio 插件
 
@@ -54,9 +61,63 @@ manifest 中声明 stdio 启动方式：
 SDK 唯一源码位于本公开仓库的 `sdk/`。更新 API catalog 后运行
 `python tools/plugin-sdk-stub-generator/generate.py` 即可同时替换四语言生成方法。
 
+## 打包 stdio 插件
+
+不要直接压缩源码目录。正式 ZIP 必须包含插件入口、运行依赖和根目录 `manifest.json`。仓库样例提供了可直接运行的打包入口：
+
+### C#
+
+引用 `ISkyPro.PluginSdk` NuGet 包并在项目目录放置 `manifest.json` 后，`dotnet publish` 会自动生成 ZIP：
+
+```powershell
+dotnet publish .\MyPlugin.csproj -c Release
+```
+
+默认输出：
+
+```text
+artifacts/<AssemblyName>.zip
+```
+
+完整样例：`samples/ISkyPro.SamplePlugin`。发布目标会把 DLL、`.deps.json`、`.runtimeconfig.json`、SDK 依赖和 manifest 一起打包。
+
+### Python
+
+```powershell
+Set-Location samples\stdio-python-plugin
+python package.py
+```
+
+脚本使用 Python 标准库生成 ZIP，并把 `iskypro_sdk_v2` 一起放进插件包。目标机器仍需提供兼容的 `python` 命令。
+
+### Node.js
+
+```powershell
+Set-Location samples\stdio-node-plugin
+npm run package:plugin
+```
+
+也可以直接运行 `node package-plugin.mjs`。脚本只使用 Node.js 内置模块，并把 `@iskypro/plugin-sdk-v2` 放入包内 `node_modules`。目标机器仍需提供兼容的 `node` 命令。
+
+### Go
+
+```powershell
+Set-Location samples\stdio-go-plugin
+go run ./tools/package-plugin
+```
+
+交叉编译示例：
+
+```powershell
+go run ./tools/package-plugin -goos linux -goarch amd64
+go run ./tools/package-plugin -goos windows -goarch arm64
+```
+
+Go 包内是已经编译好的本机程序，目标机器不需要安装 Go。每个平台和架构需要分别生成 ZIP。
+
 ## 安装到 WebUI
 
-1. 将插件目录打成 zip。
+1. 使用上面的语言打包命令生成可安装 ZIP；自定义流程也必须包含入口、依赖和根目录 `manifest.json`。
 2. zip 根目录或唯一顶层目录下必须有 `manifest.json`。
 3. 打开 WebUI 插件页，切到“新插件”。
 4. 上传 zip。
@@ -64,3 +125,43 @@ SDK 唯一源码位于本公开仓库的 `sdk/`。更新 API catalog 后运行
 6. 需要立即运行时，勾选安装后启动。
 
 安装阶段不会执行插件，只读取 zip 和 manifest。运行中的插件更新前需要先停止。
+
+## 部署 HTTP 插件
+
+HTTP 插件不需要、也不能通过本地插件 ZIP 上传。先把它作为普通 Web 服务部署，再向 ISkyPro 注册服务地址。
+
+服务必须提供：
+
+```text
+GET  /iskypro/plugin/manifest
+POST /iskypro/plugin/events/message
+```
+
+最小 manifest 响应：
+
+```json
+{
+  "pluginId": "top.example.http",
+  "name": "HTTP Example",
+  "version": "0.1.0",
+  "author": "Example",
+  "protocolVersion": 2,
+  "capabilities": 9
+}
+```
+
+`9` 表示 `ReceiveMessages | HttpTransport`。消息接口接收 `ModernPluginMessageEvent`，并返回：
+
+```json
+{
+  "accepted": true,
+  "intercepted": false,
+  "outboundMessages": [],
+  "error": null
+}
+```
+
+部署完成后，在 WebUI“插件 → 新插件 → 注册 HTTP 插件”中填写 Base URL，例如
+`http://127.0.0.1:5080`。ISkyPro 会先读取 manifest；校验通过后才注册。
+
+HTTP 服务的进程、依赖、TLS、鉴权、日志、更新和高可用由插件开发者负责。当前 HTTP transport 使用 HTTP modern-plugin request/response contract，不使用 stdio runtime token，也不通过本地 ZIP 安装器管理生命周期。

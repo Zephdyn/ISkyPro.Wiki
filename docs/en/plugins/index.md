@@ -10,7 +10,7 @@ Linux preview packages support only the modern plugin path. Legacy DLL plugins d
 
 - Existing DLL plugin users: start with [Legacy and Modern Plugins](/en/plugins/legacy-vs-modern).
 - New plugin authors: start with [Quick Start](/en/plugins/sdk-quick-start).
-- Plugin zip publishers: read [Publishing Plugins](/en/plugins/publishing).
+- stdio ZIP publishers and HTTP service operators: read [Publishing Plugins](/en/plugins/publishing).
 - Startup failures or missing events: read [Troubleshooting](/en/plugins/troubleshooting).
 - SDK packages: read [SDK Downloads](/en/plugins/downloads).
 

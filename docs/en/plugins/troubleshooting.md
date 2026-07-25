@@ -12,7 +12,8 @@
 
 - `transport.stdio.command` does not exist or is not in `PATH`.
 - `workingDirectory` points to the wrong location.
-- Python / Node.js / Go is not installed.
+- The target machine lacks the Python or Node.js runtime; production Go packages should contain a compiled executable instead of depending on `go run`.
+- The ZIP contains only source code and omits the Python SDK, Node.js `node_modules`, C# publish dependencies, or the Go executable.
 - The plugin did not enter protocol mode with `--iskypro-stdio`.
 - The initialize response has a different `pluginId`, protocol version, or encoding than the manifest.
 
@@ -36,7 +37,15 @@ Return an ACK quickly after receiving an event. For slow HTTP calls, database wo
 
 ## Missing Permission
 
-SDK API calls are checked against manifest `permissions`. `messages.replyText` requires `messages.reply`; reading the current bot profile requires `users.read`.
+SDK API calls are checked against manifest `permissions`. `messages.reply` requires `messages.reply`; reading the current bot profile requires `users.read`.
+
+## HTTP Plugin Registration Failure
+
+- The HTTP service was incorrectly uploaded as a ZIP; register its base URL instead.
+- The base URL is unreachable from the ISkyPro host.
+- `GET /iskypro/plugin/manifest` returns an empty response, invalid JSON, or no `HttpTransport` capability.
+- `POST /iskypro/plugin/events/message` is not implemented.
+- A reverse proxy, TLS policy, or additional authentication blocks ISkyPro requests.
 
 ## Reply Failure
 

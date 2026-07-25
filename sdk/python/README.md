@@ -19,3 +19,16 @@ Use `--iskypro-stdio` as the explicit plugin entry argument and reserve stdout
 for JSON-RPC frames. Application logs must go to stderr or `context.log_write`.
 Use `message.reply(*parts)` for bound replies and
 `context.messages.group(...).send(*parts)` for proactive messages.
+
+## Package a stdio plugin
+
+The runnable sample contains a standard-library-only packager:
+
+```powershell
+Set-Location samples\stdio-python-plugin
+python package.py
+```
+
+It writes an installable ZIP under `artifacts/` and vendors
+`iskypro_sdk_v2` beside the plugin entry point. Copy the sample packager into a
+new project or implement the same layout in your own release pipeline.

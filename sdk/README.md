@@ -24,3 +24,24 @@ dotnet build SDK.sln
 ```
 
 Generated files should be replaced by the generator, not edited method by method.
+
+## Plugin deployment modes
+
+The SDK supports two different deployment models:
+
+| Transport | Deployment | Lifecycle |
+| --- | --- | --- |
+| `stdio-jsonrpc` | Publish the local process and upload an installable ZIP containing `manifest.json` | ISkyPro installs, starts, stops, and restarts it |
+| HTTP | Deploy a continuously running HTTP service and register its base URL | The developer operates the service; ISkyPro only sends HTTP requests |
+
+Runnable stdio samples include packaging commands that bundle their SDK/runtime
+dependencies:
+
+- C#: `dotnet publish samples/ISkyPro.SamplePlugin/ISkyPro.SamplePlugin.csproj -c Release`
+- Python: run `python package.py` in `samples/stdio-python-plugin`
+- Node.js: run `npm run package:plugin` in `samples/stdio-node-plugin`
+- Go: run `go run ./tools/package-plugin` in `samples/stdio-go-plugin`
+
+HTTP plugins are not uploaded as ZIP files. They expose the HTTP modern-plugin
+manifest and message endpoints, then are registered from WebUI by base URL. See
+the Wiki quick start and publishing guide for the exact contract.

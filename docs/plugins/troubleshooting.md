@@ -12,7 +12,8 @@
 
 - `transport.stdio.command` 不存在或不在 PATH。
 - `workingDirectory` 指向错误。
-- Python / Node.js / Go 没有安装。
+- Python / Node.js 插件的目标机器没有对应运行时；Go 正式包应包含已编译程序，不应依赖 `go run`。
+- ZIP 只包含源码，没有包含 Python SDK、Node.js `node_modules`、C# publish 依赖或 Go 可执行文件。
 - 插件没有带 `--iskypro-stdio` 进入协议模式。
 - initialize 返回的 `pluginId`、协议版本或 encoding 与 manifest 不一致。
 
@@ -36,7 +37,15 @@ fmt.Println("hello")
 
 ## 无权限
 
-SDK API 调用会按 manifest `permissions` 校验。调用 `messages.replyText` 需要 `messages.reply`，读取当前机器人资料需要 `users.read`。
+SDK API 调用会按 manifest `permissions` 校验。调用 `messages.reply` 需要 `messages.reply`，读取当前机器人资料需要 `users.read`。
+
+## HTTP 插件注册失败
+
+- 把 HTTP 服务错误地打成 ZIP 上传；HTTP 插件应注册 Base URL。
+- Base URL 无法从 ISkyPro 所在机器访问。
+- `GET /iskypro/plugin/manifest` 返回空响应、无效 JSON 或缺少 `HttpTransport` capability。
+- 消息接口没有实现 `POST /iskypro/plugin/events/message`。
+- 反向代理、TLS 或额外鉴权阻止了 ISkyPro 请求。
 
 ## 回复失败
 

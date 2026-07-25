@@ -3,7 +3,10 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "sdk" / "python"))
+plugin_directory = Path(__file__).resolve().parent
+vendored_sdk = plugin_directory / "iskypro_sdk_v2"
+sdk_root = plugin_directory if vendored_sdk.is_dir() else plugin_directory.parents[1] / "sdk" / "python"
+sys.path.insert(0, str(sdk_root))
 
 from iskypro_sdk_v2 import StdioJsonRpcPlugin  # noqa: E402
 

@@ -37,9 +37,15 @@ export interface UserRef {
 
 export interface MessagePart {}
 
+export type QqBotMentionFormat = "current" | "legacy" | "legacy-bang";
+
 export const at: {
-  user(user: string | UserRef): MessagePart;
-  users(users: Iterable<string | UserRef>, separator?: string): MessagePart;
+  user(user: string | UserRef, qqBotFormat?: QqBotMentionFormat): MessagePart;
+  users(
+    users: Iterable<string | UserRef>,
+    separator?: string,
+    qqBotFormat?: QqBotMentionFormat,
+  ): MessagePart;
   readonly everyone: MessagePart;
 };
 

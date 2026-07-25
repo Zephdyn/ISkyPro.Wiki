@@ -22,7 +22,7 @@ Legacy DLL plugins are supported only by Windows packages. Linux preview package
 
 ## Modern Plugins
 
-Modern plugins use `plugins-v2/`:
+Local stdio modern plugins use `plugins-v2/`:
 
 ```text
 ISkyPro/
@@ -40,6 +40,12 @@ Characteristics:
 - The plugin process is started, stopped, restarted, and monitored by Main.
 - Supports typed + raw events, delayed replies through `messageReference`, permission declarations, and settings schema.
 - The WebUI Modern tab can install zip packages, show status, start, stop, restart, disable, uninstall, and open settings.
+
+HTTP modern plugins do not live under `plugins-v2/` and are not uploaded as
+ZIP files. They run as independent web services, expose
+`GET /iskypro/plugin/manifest` and `POST /iskypro/plugin/events/message`, and are
+registered in WebUI by base URL. Their deployment environment owns the service
+lifecycle.
 
 ## Which One to Use
 

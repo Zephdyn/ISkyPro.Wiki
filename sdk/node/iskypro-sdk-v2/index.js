@@ -185,12 +185,23 @@ function compositePart(parts) {
 }
 
 export const at = Object.freeze({
-  user(user) {
+  user(user, qqBotFormat = undefined) {
     const id = typeof user === "string" ? user : user?.mentionId ?? "";
     validateId(id, "mention id");
-    return messagePart({ type: "mention", target: "user", id });
+    if (![undefined, "current", "legacy", "legacy-bang"].includes(qqBotFormat)) {
+      throw new TypeError("QQBot mention format must be current, legacy, or legacy-bang");
+    }
+    if (["legacy", "legacy-bang"].includes(qqBotFormat) && /[<>]/u.test(id)) {
+      throw new TypeError("legacy QQBot mention ids must not contain '<' or '>'");
+    }
+    return messagePart({
+      type: "mention",
+      target: "user",
+      id,
+      ...(qqBotFormat === undefined ? {} : { qqBotFormat }),
+    });
   },
-  users(users, separator = " ") {
+  users(users, separator = " ", qqBotFormat = undefined) {
     const values = [...users];
     if (values.length === 0) {
       throw new TypeError("at.users requires at least one user");
@@ -203,7 +214,7 @@ export const at = Object.freeze({
       if (index > 0 && separator.length > 0) {
         parts.push(separator);
       }
-      parts.push(at.user(user));
+      parts.push(at.user(user, qqBotFormat));
     }
     return compositePart(parts);
   },

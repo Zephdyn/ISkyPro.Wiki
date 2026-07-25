@@ -1,0 +1,9 @@
+{
+  "name": "iskypro-stdio-node-plugin-sample",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "package:plugin": "node package-plugin.mjs"
+  }
+}

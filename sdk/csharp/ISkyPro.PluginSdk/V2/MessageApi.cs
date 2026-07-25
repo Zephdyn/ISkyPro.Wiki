@@ -10,28 +10,35 @@ public static class At
 
     public static MessagePart Everyone { get; } = new MentionPart(MentionTarget.Everyone);
 
-    public static MessagePart User(string id)
+    public static MessagePart User(string id, QqBotMentionFormat? qqBotFormat = null)
     {
         ValidateMentionId(id, nameof(id));
-        return new MentionPart(MentionTarget.User, id);
+        ValidateQqBotFormatId(id, qqBotFormat, nameof(id));
+        return new MentionPart(MentionTarget.User, id, qqBotFormat);
     }
 
-    public static MessagePart User(UserRef user)
+    public static MessagePart User(UserRef user, QqBotMentionFormat? qqBotFormat = null)
     {
         ArgumentNullException.ThrowIfNull(user);
-        return User(user.MentionId);
+        return User(user.MentionId, qqBotFormat);
     }
 
-    public static MessagePart Users(IEnumerable<string> ids, string separator = " ")
+    public static MessagePart Users(
+        IEnumerable<string> ids,
+        string separator = " ",
+        QqBotMentionFormat? qqBotFormat = null)
     {
         ArgumentNullException.ThrowIfNull(ids);
-        return CreateUsers(ids.Select(User), separator);
+        return CreateUsers(ids.Select(id => User(id, qqBotFormat)), separator);
     }
 
-    public static MessagePart Users(IEnumerable<UserRef> users, string separator = " ")
+    public static MessagePart Users(
+        IEnumerable<UserRef> users,
+        string separator = " ",
+        QqBotMentionFormat? qqBotFormat = null)
     {
         ArgumentNullException.ThrowIfNull(users);
-        return CreateUsers(users.Select(User), separator);
+        return CreateUsers(users.Select(user => User(user, qqBotFormat)), separator);
     }
 
     private static MessagePart CreateUsers(IEnumerable<MessagePart> mentions, string separator)
@@ -67,6 +74,20 @@ public static class At
         if (string.IsNullOrWhiteSpace(id) || id.Any(char.IsControl))
         {
             throw new ArgumentException("Mention id must not be empty or contain control characters.", parameterName);
+        }
+    }
+
+    private static void ValidateQqBotFormatId(
+        string id,
+        QqBotMentionFormat? qqBotFormat,
+        string parameterName)
+    {
+        if (qqBotFormat is QqBotMentionFormat.Legacy or QqBotMentionFormat.LegacyBang
+            && id.IndexOfAny(['<', '>']) >= 0)
+        {
+            throw new ArgumentException(
+                "Legacy QQBot mention ids must not contain '<' or '>'.",
+                parameterName);
         }
     }
 }

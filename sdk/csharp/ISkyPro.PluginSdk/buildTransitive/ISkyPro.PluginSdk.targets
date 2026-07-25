@@ -1,0 +1,31 @@
+<Project>
+  <PropertyGroup>
+    <ISkyProPackagePluginOnPublish Condition="'$(ISkyProPackagePluginOnPublish)' == ''">true</ISkyProPackagePluginOnPublish>
+    <ISkyProPluginManifest Condition="'$(ISkyProPluginManifest)' == ''">$(MSBuildProjectDirectory)\manifest.json</ISkyProPluginManifest>
+    <ISkyProPluginPackagePath Condition="'$(ISkyProPluginPackagePath)' == ''">$(MSBuildProjectDirectory)\artifacts\$(AssemblyName).zip</ISkyProPluginPackagePath>
+  </PropertyGroup>
+
+  <Target Name="_ISkyProIncludePluginManifest"
+          AfterTargets="ComputeFilesToPublish"
+          Condition="'$(ISkyProPackagePluginOnPublish)' == 'true' and Exists('$(ISkyProPluginManifest)')">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+                             Condition="'%(ResolvedFileToPublish.RelativePath)' == 'manifest.json'" />
+      <ResolvedFileToPublish Include="$(ISkyProPluginManifest)">
+        <RelativePath>manifest.json</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_ISkyProCreatePluginPackage"
+          AfterTargets="Publish"
+          Condition="'$(ISkyProPackagePluginOnPublish)' == 'true' and Exists('$(ISkyProPluginManifest)')">
+    <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(ISkyProPluginPackagePath)'))" />
+    <Delete Files="$(ISkyProPluginPackagePath)" />
+    <ZipDirectory SourceDirectory="$(PublishDir)"
+                  DestinationFile="$(ISkyProPluginPackagePath)"
+                  Overwrite="true" />
+    <Message Importance="high" Text="ISkyPro plugin package: $(ISkyProPluginPackagePath)" />
+  </Target>
+</Project>

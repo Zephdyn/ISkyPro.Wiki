@@ -15,7 +15,8 @@ public sealed record TextPart(string Text) : MessagePart;
 
 public sealed record MentionPart(
     MentionTarget Target,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Id = null) : MessagePart;
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Id = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] QqBotMentionFormat? QqBotFormat = null) : MessagePart;
 
 public sealed record CompositePart(IReadOnlyList<MessagePart> Parts) : MessagePart;
 
@@ -27,6 +28,19 @@ public enum MentionTarget
 
     [JsonStringEnumMemberName("everyone")]
     Everyone
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter<QqBotMentionFormat>))]
+public enum QqBotMentionFormat
+{
+    [JsonStringEnumMemberName("current")]
+    Current,
+
+    [JsonStringEnumMemberName("legacy")]
+    Legacy,
+
+    [JsonStringEnumMemberName("legacy-bang")]
+    LegacyBang
 }
 
 public sealed record UserRef(

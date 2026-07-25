@@ -20,3 +20,17 @@ _, err := message.Reply(
 ```
 
 Use `pluginContext.Messages.Group(id).Send(...)` for proactive messages.
+
+## Package a stdio plugin
+
+The runnable sample builds a native executable and packages it with a generated
+release manifest:
+
+```powershell
+Set-Location samples\stdio-go-plugin
+go run ./tools/package-plugin
+```
+
+Use `-goos` and `-goarch` for cross-compilation. The ZIP is written under
+`artifacts/`; target machines do not need Go because the package contains the
+compiled binary.
