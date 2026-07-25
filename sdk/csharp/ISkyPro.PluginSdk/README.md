@@ -12,12 +12,24 @@ await StdioPluginV2Host.RunAsync(new MyPlugin());
 return 0;
 ```
 
+Message handlers receive a bound `MessageContext`:
+
+```csharp
+await message.ReplyAsync(At.User(message.Sender), " hello");
+
+await context.Messages
+    .Group(groupOpenId)
+    .SendAsync("proactive message");
+```
+
 Implement `IISkyProPluginV2`, keep one static `manifest.json` beside the plugin,
 and reserve stdout for protocol frames. `StdioPluginV2Host` loads that manifest
 from the working directory or application output directory. Application logs
 must use stderr or `IISkyProPluginV2Context.WriteLogAsync`.
 
-Generated catalog methods return `JsonElement` results and expose permission,
+`MessageContext.ReplyAsync` and `context.Messages` use structured text/mention
+parts; SDK code never emits QQ markup. Generated low-level catalog methods return
+`JsonElement` results and expose permission,
 stability, request/response model, and default-enabled metadata. The runtime
 supports initialize negotiation, bounded concurrent event dispatch,
 bidirectional JSON-RPC request multiplexing, request timeouts, runtime-token

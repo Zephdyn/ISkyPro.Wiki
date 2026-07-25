@@ -10,7 +10,8 @@
       "stability": "stable",
       "requestModel": "GroupTextMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "messages.replyMarkdown",
@@ -20,7 +21,8 @@
       "stability": "preview",
       "requestModel": "GroupMarkdownMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "messages.replyMedia",
@@ -30,7 +32,8 @@
       "stability": "preview",
       "requestModel": "GroupMediaMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "messages.sendGroupText",
@@ -40,7 +43,8 @@
       "stability": "stable",
       "requestModel": "GroupTextMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "messages.sendC2CText",
@@ -50,7 +54,8 @@
       "stability": "stable",
       "requestModel": "C2CTextMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "messages.sendChannelText",
@@ -60,7 +65,8 @@
       "stability": "stable",
       "requestModel": "ChannelTextMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "messages.sendDirectMessage",
@@ -70,7 +76,8 @@
       "stability": "stable",
       "requestModel": "DirectTextMessageRequest",
       "responseModel": "MessageResponse",
-      "defaultEnabled": true
+      "defaultEnabled": true,
+      "sdkExposed": false
     },
     {
       "name": "media.uploadGroupFile",

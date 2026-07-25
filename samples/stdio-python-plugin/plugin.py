@@ -11,14 +11,13 @@ from iskypro_sdk_v2 import StdioJsonRpcPlugin  # noqa: E402
 PLUGIN_ID = "top.iskypro.sample.python-stdio"
 
 
-def on_event(event, context):
-    event_id = event.get("eventId", "")
-    content = (event.get("message") or {}).get("content", "")
-    reference = event.get("messageReference") or {}
+def on_event(message, context):
+    event_id = message.event_id
+    content = message.text
     print(f"python sample received {event_id}", file=sys.stderr)
     context.log_write(f"python sample handled {event_id}")
     if content:
-        context.reply_text(reference, f"python echo: {content}")
+        message.reply(f"python echo: {content}")
     return {"accepted": True}
 
 

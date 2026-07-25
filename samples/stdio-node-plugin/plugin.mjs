@@ -7,14 +7,13 @@ if (!process.argv.includes("--iskypro-stdio")) {
   process.exit(2);
 }
 
-async function onEvent(event, context) {
-  const eventId = event.eventId ?? "";
-  const content = event.message?.content ?? "";
-  const reference = event.messageReference ?? {};
+async function onEvent(message, context) {
+  const eventId = message.eventId;
+  const content = message.text;
   console.error(`node sample received ${eventId}`);
   await context.logWrite(`node sample handled ${eventId}`);
   if (content.length > 0) {
-    await context.replyText(reference, `node echo: ${content}`);
+    await message.reply(`node echo: ${content}`);
   }
 
   return { accepted: true };

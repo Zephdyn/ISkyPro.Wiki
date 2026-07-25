@@ -32,6 +32,213 @@ const (
 
 type JsonObject map[string]any
 
+type UserRef struct {
+	Provider     string
+	MentionID    string
+	UserOpenID   string
+	MemberOpenID string
+	UnionOpenID  string
+	DisplayName  string
+}
+
+type MessagePart interface {
+	appendWire([]JsonObject) ([]JsonObject, error)
+}
+
+type textPart struct {
+	text string
+}
+
+func Text(value string) MessagePart {
+	return textPart{text: value}
+}
+
+func (p textPart) appendWire(parts []JsonObject) ([]JsonObject, error) {
+	return append(parts, JsonObject{"type": "text", "text": p.text}), nil
+}
+
+type mentionPart struct {
+	target string
+	id     string
+}
+
+func AtUser(id string) MessagePart {
+	return mentionPart{target: "user", id: id}
+}
+
+func AtUserRef(user UserRef) MessagePart {
+	return AtUser(user.MentionID)
+}
+
+func AtEveryone() MessagePart {
+	return mentionPart{target: "everyone"}
+}
+
+func (p mentionPart) appendWire(parts []JsonObject) ([]JsonObject, error) {
+	if p.target == "user" {
+		if err := validateID(p.id, "mention id"); err != nil {
+			return nil, err
+		}
+		return append(parts, JsonObject{"type": "mention", "target": "user", "id": p.id}), nil
+	}
+	if p.target == "everyone" {
+		return append(parts, JsonObject{"type": "mention", "target": "everyone"}), nil
+	}
+	return nil, errors.New("unsupported mention target")
+}
+
+type compositePart struct {
+	parts []MessagePart
+}
+
+func AtUsers(ids ...string) MessagePart {
+	parts := make([]MessagePart, 0, len(ids)*2)
+	for index, id := range ids {
+		if index > 0 {
+			parts = append(parts, Text(" "))
+		}
+		parts = append(parts, AtUser(id))
+	}
+	return compositePart{parts: parts}
+}
+
+func AtUserRefs(users ...UserRef) MessagePart {
+	parts := make([]MessagePart, 0, len(users)*2)
+	for index, user := range users {
+		if index > 0 {
+			parts = append(parts, Text(" "))
+		}
+		parts = append(parts, AtUserRef(user))
+	}
+	return compositePart{parts: parts}
+}
+
+func (p compositePart) appendWire(parts []JsonObject) ([]JsonObject, error) {
+	if len(p.parts) == 0 {
+		return nil, errors.New("AtUsers requires at least one user")
+	}
+	if (len(p.parts)+1)/2 > 20 {
+		return nil, errors.New("AtUsers supports at most 20 users")
+	}
+	var err error
+	for _, child := range p.parts {
+		parts, err = child.appendWire(parts)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return parts, nil
+}
+
+type MessageContext struct {
+	EventID      string
+	EventType    string
+	Timestamp    any
+	Source       string
+	Bot          JsonObject
+	Conversation JsonObject
+	Sender       UserRef
+	ID           string
+	Text         string
+	Attachments  []any
+	Mentions     []UserRef
+	RawPayload   JsonObject
+
+	reference JsonObject
+	context   *PluginContext
+}
+
+func (m *MessageContext) Reply(ctx context.Context, parts ...MessagePart) (any, error) {
+	message, err := normalizeMessage(parts)
+	if err != nil {
+		return nil, err
+	}
+	return m.context.Invoke(ctx, "messages.reply", JsonObject{
+		"reference": m.reference,
+		"message":   message,
+	})
+}
+
+type MessageService struct {
+	context *PluginContext
+}
+
+func (s MessageService) Group(id string) MessageTarget {
+	return MessageTarget{context: s.context, target: JsonObject{"type": "group", "id": id}}
+}
+
+func (s MessageService) Channel(id string) MessageTarget {
+	return MessageTarget{context: s.context, target: JsonObject{"type": "channel", "id": id}}
+}
+
+func (s MessageService) User(id string) MessageTarget {
+	return MessageTarget{context: s.context, target: JsonObject{"type": "user", "id": id}}
+}
+
+func (s MessageService) DirectMessage(id string) MessageTarget {
+	return MessageTarget{context: s.context, target: JsonObject{"type": "direct", "id": id}}
+}
+
+type MessageTarget struct {
+	context *PluginContext
+	target  JsonObject
+}
+
+func (t MessageTarget) Send(ctx context.Context, parts ...MessagePart) (any, error) {
+	if err := validateID(stringValue(t.target["id"]), "message target id"); err != nil {
+		return nil, err
+	}
+	message, err := normalizeMessage(parts)
+	if err != nil {
+		return nil, err
+	}
+	return t.context.Invoke(ctx, "messages.send", JsonObject{
+		"target":  t.target,
+		"message": message,
+	})
+}
+
+func normalizeMessage(parts []MessagePart) (JsonObject, error) {
+	wire := []JsonObject{}
+	var err error
+	for _, part := range parts {
+		if part == nil {
+			return nil, errors.New("message parts must not contain nil")
+		}
+		wire, err = part.appendWire(wire)
+		if err != nil {
+			return nil, err
+		}
+	}
+	normalized := []JsonObject{}
+	for _, part := range wire {
+		if stringValue(part["type"]) == "text" && stringValue(part["text"]) == "" {
+			continue
+		}
+		if stringValue(part["type"]) == "text" && len(normalized) > 0 && stringValue(normalized[len(normalized)-1]["type"]) == "text" {
+			normalized[len(normalized)-1]["text"] = stringValue(normalized[len(normalized)-1]["text"]) + stringValue(part["text"])
+			continue
+		}
+		normalized = append(normalized, part)
+	}
+	if len(normalized) == 0 {
+		return nil, errors.New("message must contain at least one non-empty part")
+	}
+	return JsonObject{"parts": normalized}, nil
+}
+
+func validateID(value string, label string) error {
+	if strings.TrimSpace(value) == "" {
+		return fmt.Errorf("%s must not be empty", label)
+	}
+	for _, character := range value {
+		if character < 32 || character == 127 {
+			return fmt.Errorf("%s must not contain control characters", label)
+		}
+	}
+	return nil
+}
+
 type SdkMethod struct {
 	Name           string
 	Permission     string
@@ -47,11 +254,12 @@ type EventAck struct {
 	Error    any
 }
 
-type EventHandler func(context.Context, JsonObject, *PluginContext) (EventAck, error)
+type EventHandler func(context.Context, *MessageContext, *PluginContext) (EventAck, error)
 
 type JsonRpcError struct {
 	Code    int
 	Message string
+	Data    any
 }
 
 func (e *JsonRpcError) Error() string {
@@ -191,15 +399,18 @@ func (c *rpcConnection) closeWithError(err error) {
 
 type PluginContext struct {
 	PluginID string
+	Messages MessageService
 
 	connection *rpcConnection
 }
 
 func newRuntimePluginContext(pluginID string, connection *rpcConnection) *PluginContext {
-	return &PluginContext{
+	context := &PluginContext{
 		PluginID:   pluginID,
 		connection: connection,
 	}
+	context.Messages = MessageService{context: context}
+	return context
 }
 
 func (c *PluginContext) Invoke(ctx context.Context, method string, parameters JsonObject) (any, error) {
@@ -214,13 +425,6 @@ func (c *PluginContext) LogWrite(ctx context.Context, message string, level stri
 		level = "Information"
 	}
 	return c.Invoke(ctx, "log.write", JsonObject{"level": level, "message": message})
-}
-
-func (c *PluginContext) ReplyText(ctx context.Context, messageReference JsonObject, content string) (any, error) {
-	return c.Invoke(ctx, "messages.replyText", JsonObject{
-		"messageReference": messageReference,
-		"content":          content,
-	})
 }
 
 type StdioJsonRpcPlugin struct {
@@ -384,7 +588,8 @@ func (p *StdioJsonRpcPlugin) handleInitialize(id any, parameters JsonObject) err
 		"capabilities": []string{
 			"events.message",
 			"log.write",
-			"messages.replyText",
+			"messages.reply",
+			"messages.send",
 			"bidirectional-requests",
 			"concurrent-events",
 			"graceful-shutdown",
@@ -436,7 +641,8 @@ func (p *StdioJsonRpcPlugin) scheduleEvent(
 		}
 
 		pluginContext := newRuntimePluginContext(p.PluginID, p.connection)
-		ack, err := onEvent(ctx, event, pluginContext)
+		message := createMessageContext(event, pluginContext)
+		ack, err := onEvent(ctx, message, pluginContext)
 		if err != nil {
 			ack = EventAck{Accepted: false, EventID: stringValue(event["eventId"]), Error: err.Error()}
 		}
@@ -587,6 +793,49 @@ func parseJsonRpcError(value any) error {
 	return &JsonRpcError{
 		Code:    intValue(object["code"], jsonRpcPluginError),
 		Message: stringValueOrJson(object["message"], value),
+		Data:    object["data"],
+	}
+}
+
+func createMessageContext(event JsonObject, pluginContext *PluginContext) *MessageContext {
+	message := asObject(event["message"])
+	sender := asObject(event["sender"])
+	mentions := []UserRef{}
+	if values, ok := message["mentions"].([]any); ok {
+		for _, value := range values {
+			mentions = append(mentions, userRefFromObject(asObject(value)))
+		}
+	}
+	attachments := []any{}
+	if values, ok := message["attachments"].([]any); ok {
+		attachments = values
+	}
+	return &MessageContext{
+		EventID:      stringValue(event["eventId"]),
+		EventType:    stringValue(event["eventType"]),
+		Timestamp:    event["timestamp"],
+		Source:       stringValue(event["source"]),
+		Bot:          asObject(event["bot"]),
+		Conversation: asObject(event["conversation"]),
+		Sender:       userRefFromObject(sender),
+		ID:           stringValue(message["id"]),
+		Text:         stringValue(message["content"]),
+		Attachments:  attachments,
+		Mentions:     mentions,
+		RawPayload:   asObject(event["rawPayload"]),
+		reference:    asObject(event["messageReference"]),
+		context:      pluginContext,
+	}
+}
+
+func userRefFromObject(value JsonObject) UserRef {
+	return UserRef{
+		Provider:     stringValue(value["provider"]),
+		MentionID:    stringValue(value["mentionId"]),
+		UserOpenID:   stringValue(value["userOpenId"]),
+		MemberOpenID: stringValue(value["memberOpenId"]),
+		UnionOpenID:  stringValue(value["unionOpenId"]),
+		DisplayName:  stringValue(value["displayName"]),
 	}
 }
 

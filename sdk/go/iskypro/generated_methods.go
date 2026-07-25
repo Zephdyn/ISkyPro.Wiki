@@ -17,13 +17,6 @@ var SDKMethods = map[string]SdkMethod{
 	"MediaUploadGroupFile":                  {Name: "media.uploadGroupFile", Permission: "media.upload", Stability: "stable", RequestModel: "GroupFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
 	"MembersGetMember":                      {Name: "members.getMember", Permission: "members.read", Stability: "stable", RequestModel: "", ResponseModel: "Member", DefaultEnabled: true},
 	"MembersListMembers":                    {Name: "members.listMembers", Permission: "members.read", Stability: "stable", RequestModel: "", ResponseModel: "MemberList", DefaultEnabled: true},
-	"MessagesReplyMarkdown":                 {Name: "messages.replyMarkdown", Permission: "messages.reply", Stability: "preview", RequestModel: "GroupMarkdownMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
-	"MessagesReplyMedia":                    {Name: "messages.replyMedia", Permission: "messages.reply", Stability: "preview", RequestModel: "GroupMediaMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
-	"MessagesReplyText":                     {Name: "messages.replyText", Permission: "messages.reply", Stability: "stable", RequestModel: "GroupTextMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
-	"MessagesSendC2CText":                   {Name: "messages.sendC2CText", Permission: "messages.send", Stability: "stable", RequestModel: "C2CTextMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
-	"MessagesSendChannelText":               {Name: "messages.sendChannelText", Permission: "messages.send", Stability: "stable", RequestModel: "ChannelTextMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
-	"MessagesSendDirectMessage":             {Name: "messages.sendDirectMessage", Permission: "messages.send", Stability: "stable", RequestModel: "DirectTextMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
-	"MessagesSendGroupText":                 {Name: "messages.sendGroupText", Permission: "messages.send", Stability: "stable", RequestModel: "GroupTextMessageRequest", ResponseModel: "MessageResponse", DefaultEnabled: true},
 	"PermissionsGetApiPermissions":          {Name: "permissions.getApiPermissions", Permission: "permissions.manage", Stability: "stable", RequestModel: "", ResponseModel: "ApiPermissionList", DefaultEnabled: true},
 	"PermissionsRequestApiPermissionDemand": {Name: "permissions.requestApiPermissionDemand", Permission: "permissions.manage", Stability: "stable", RequestModel: "ApiPermissionDemandRequest", ResponseModel: "ApiPermissionDemand", DefaultEnabled: true},
 	"UnsafeRawOpenApi":                      {Name: "unsafe.rawOpenApi", Permission: "unsafe.raw-open-api", Stability: "unsafe", RequestModel: "RawOpenApiRequest", ResponseModel: "RawOpenApiResponse", DefaultEnabled: false},
@@ -43,13 +36,6 @@ var SDKMethodPermissions = map[string]string{
 	"media.uploadGroupFile":                  "media.upload",
 	"members.getMember":                      "members.read",
 	"members.listMembers":                    "members.read",
-	"messages.replyMarkdown":                 "messages.reply",
-	"messages.replyMedia":                    "messages.reply",
-	"messages.replyText":                     "messages.reply",
-	"messages.sendC2CText":                   "messages.send",
-	"messages.sendChannelText":               "messages.send",
-	"messages.sendDirectMessage":             "messages.send",
-	"messages.sendGroupText":                 "messages.send",
 	"permissions.getApiPermissions":          "permissions.manage",
 	"permissions.requestApiPermissionDemand": "permissions.manage",
 	"unsafe.rawOpenApi":                      "unsafe.raw-open-api",
@@ -99,34 +85,6 @@ func (c *PluginContext) MembersGetMember(ctx context.Context, parameters JsonObj
 
 func (c *PluginContext) MembersListMembers(ctx context.Context, parameters JsonObject) (any, error) {
 	return c.Invoke(ctx, "members.listMembers", parameters)
-}
-
-func (c *PluginContext) MessagesReplyMarkdown(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.replyMarkdown", parameters)
-}
-
-func (c *PluginContext) MessagesReplyMedia(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.replyMedia", parameters)
-}
-
-func (c *PluginContext) MessagesReplyText(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.replyText", parameters)
-}
-
-func (c *PluginContext) MessagesSendC2CText(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.sendC2CText", parameters)
-}
-
-func (c *PluginContext) MessagesSendChannelText(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.sendChannelText", parameters)
-}
-
-func (c *PluginContext) MessagesSendDirectMessage(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.sendDirectMessage", parameters)
-}
-
-func (c *PluginContext) MessagesSendGroupText(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "messages.sendGroupText", parameters)
 }
 
 func (c *PluginContext) PermissionsGetApiPermissions(ctx context.Context, parameters JsonObject) (any, error) {

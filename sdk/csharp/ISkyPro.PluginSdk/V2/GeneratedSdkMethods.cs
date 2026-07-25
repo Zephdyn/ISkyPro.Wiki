@@ -27,13 +27,6 @@ public static class PluginV2SdkMethods
     public const string MediaUploadGroupFile = "media.uploadGroupFile";
     public const string MembersGetMember = "members.getMember";
     public const string MembersListMembers = "members.listMembers";
-    public const string MessagesReplyMarkdown = "messages.replyMarkdown";
-    public const string MessagesReplyMedia = "messages.replyMedia";
-    public const string MessagesReplyText = "messages.replyText";
-    public const string MessagesSendC2CText = "messages.sendC2CText";
-    public const string MessagesSendChannelText = "messages.sendChannelText";
-    public const string MessagesSendDirectMessage = "messages.sendDirectMessage";
-    public const string MessagesSendGroupText = "messages.sendGroupText";
     public const string PermissionsGetApiPermissions = "permissions.getApiPermissions";
     public const string PermissionsRequestApiPermissionDemand = "permissions.requestApiPermissionDemand";
     public const string UnsafeRawOpenApi = "unsafe.rawOpenApi";
@@ -54,13 +47,6 @@ public static class PluginV2SdkMethods
             [MediaUploadGroupFile] = new(MediaUploadGroupFile, "media.upload", "stable", "GroupFileUploadRequest", "FileUploadResponse", true),
             [MembersGetMember] = new(MembersGetMember, "members.read", "stable", null, "Member", true),
             [MembersListMembers] = new(MembersListMembers, "members.read", "stable", null, "MemberList", true),
-            [MessagesReplyMarkdown] = new(MessagesReplyMarkdown, "messages.reply", "preview", "GroupMarkdownMessageRequest", "MessageResponse", true),
-            [MessagesReplyMedia] = new(MessagesReplyMedia, "messages.reply", "preview", "GroupMediaMessageRequest", "MessageResponse", true),
-            [MessagesReplyText] = new(MessagesReplyText, "messages.reply", "stable", "GroupTextMessageRequest", "MessageResponse", true),
-            [MessagesSendC2CText] = new(MessagesSendC2CText, "messages.send", "stable", "C2CTextMessageRequest", "MessageResponse", true),
-            [MessagesSendChannelText] = new(MessagesSendChannelText, "messages.send", "stable", "ChannelTextMessageRequest", "MessageResponse", true),
-            [MessagesSendDirectMessage] = new(MessagesSendDirectMessage, "messages.send", "stable", "DirectTextMessageRequest", "MessageResponse", true),
-            [MessagesSendGroupText] = new(MessagesSendGroupText, "messages.send", "stable", "GroupTextMessageRequest", "MessageResponse", true),
             [PermissionsGetApiPermissions] = new(PermissionsGetApiPermissions, "permissions.manage", "stable", null, "ApiPermissionList", true),
             [PermissionsRequestApiPermissionDemand] = new(PermissionsRequestApiPermissionDemand, "permissions.manage", "stable", "ApiPermissionDemandRequest", "ApiPermissionDemand", true),
             [UnsafeRawOpenApi] = new(UnsafeRawOpenApi, "unsafe.raw-open-api", "unsafe", "RawOpenApiRequest", "RawOpenApiResponse", false),
@@ -163,62 +149,6 @@ public static class GeneratedPluginV2ContextExtensions
         CancellationToken cancellationToken = default)
     {
         return context.InvokeWithResultAsync(PluginV2SdkMethods.MembersListMembers, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesReplyMarkdownAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesReplyMarkdown, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesReplyMediaAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesReplyMedia, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesReplyTextAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesReplyText, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesSendC2CTextAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesSendC2CText, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesSendChannelTextAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesSendChannelText, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesSendDirectMessageAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesSendDirectMessage, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> MessagesSendGroupTextAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.MessagesSendGroupText, parameters ?? EmptyParameters, cancellationToken);
     }
 
     public static ValueTask<JsonElement> PermissionsGetApiPermissionsAsync(

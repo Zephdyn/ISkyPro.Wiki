@@ -51,7 +51,10 @@ def load_version() -> str:
 
 def load_endpoints() -> list[dict[str, object]]:
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
-    return sorted(catalog["endpoints"], key=lambda item: item["name"])
+    return sorted(
+        (item for item in catalog["endpoints"] if item.get("sdkExposed", True)),
+        key=lambda item: item["name"],
+    )
 
 
 def csharp_literal(value: object) -> str:

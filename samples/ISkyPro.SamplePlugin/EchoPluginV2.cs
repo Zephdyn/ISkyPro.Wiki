@@ -5,32 +5,32 @@ namespace ISkyPro.SamplePlugin;
 
 public sealed class EchoPluginV2 : IISkyProPluginV2
 {
-    public async ValueTask<PluginSdkV2EventAck> OnEventAsync(
-        PluginSdkV2EventEnvelope pluginEvent,
+    public async ValueTask<PluginSdkV2EventAck> OnMessageAsync(
+        MessageContext message,
         IISkyProPluginV2Context context,
         CancellationToken cancellationToken)
     {
-        if (!string.Equals(pluginEvent.EventType, "message.created", StringComparison.Ordinal))
+        if (!string.Equals(message.EventType, "message.created", StringComparison.Ordinal))
         {
-            return new PluginSdkV2EventAck(pluginEvent.EventId, Accepted: true, Error: null);
+            return new PluginSdkV2EventAck(message.EventId, Accepted: true, Error: null);
         }
 
-        var content = pluginEvent.Message.Content.Trim();
+        var content = message.Text.Trim();
         if (content.Length == 0)
         {
-            return new PluginSdkV2EventAck(pluginEvent.EventId, Accepted: true, Error: null);
+            return new PluginSdkV2EventAck(message.EventId, Accepted: true, Error: null);
         }
 
-        var rawMessageId = pluginEvent.RawPayload.TryGetProperty("id", out var id)
+        var rawMessageId = message.RawPayload.TryGetProperty("id", out var id)
             ? id.GetString()
-            : pluginEvent.Message.Id;
+            : message.Id;
         await context.WriteLogAsync("Information", $"Echo v2 received {rawMessageId}.", cancellationToken);
-        await context.ReplyTextAsync(pluginEvent.MessageReference, $"echo: {content}", cancellationToken);
+        await message.ReplyAsync(cancellationToken, $"echo: {content}");
         await context.InvokeAsync(
             "users.getCurrentBot",
             new Dictionary<string, object?>(),
             cancellationToken);
 
-        return new PluginSdkV2EventAck(pluginEvent.EventId, Accepted: true, Error: null);
+        return new PluginSdkV2EventAck(message.EventId, Accepted: true, Error: null);
     }
 }

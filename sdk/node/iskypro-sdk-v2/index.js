@@ -27,10 +27,11 @@ function normalizeRequestTimeout(value, fallback = defaultRequestTimeoutMs) {
 }
 
 export class JsonRpcError extends Error {
-  constructor(code, message) {
+  constructor(code, message, data = undefined) {
     super(message);
     this.name = "JsonRpcError";
     this.code = code;
+    this.data = data;
   }
 }
 
@@ -165,6 +166,142 @@ export function writeFrame(message, fd = 1) {
   fs.writeSync(fd, payload);
 }
 
+function validateId(value, label) {
+  if (
+    typeof value !== "string" ||
+    value.trim().length === 0 ||
+    [...value].some((character) => character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127)
+  ) {
+    throw new TypeError(`${label} must not be empty or contain control characters`);
+  }
+}
+
+function messagePart(payload) {
+  return Object.freeze({ __iskyproMessagePart: true, payload: Object.freeze(payload) });
+}
+
+function compositePart(parts) {
+  return Object.freeze({ __iskyproCompositePart: true, parts: Object.freeze(parts) });
+}
+
+export const at = Object.freeze({
+  user(user) {
+    const id = typeof user === "string" ? user : user?.mentionId ?? "";
+    validateId(id, "mention id");
+    return messagePart({ type: "mention", target: "user", id });
+  },
+  users(users, separator = " ") {
+    const values = [...users];
+    if (values.length === 0) {
+      throw new TypeError("at.users requires at least one user");
+    }
+    if (values.length > 20) {
+      throw new TypeError("at.users supports at most 20 users");
+    }
+    const parts = [];
+    for (const [index, user] of values.entries()) {
+      if (index > 0 && separator.length > 0) {
+        parts.push(separator);
+      }
+      parts.push(at.user(user));
+    }
+    return compositePart(parts);
+  },
+  everyone: messagePart({ type: "mention", target: "everyone" }),
+});
+
+function normalizeParts(parts) {
+  const flattened = [];
+  function append(part) {
+    if (typeof part === "string") {
+      flattened.push({ type: "text", text: part });
+      return;
+    }
+    if (part?.__iskyproMessagePart === true) {
+      flattened.push({ ...part.payload });
+      return;
+    }
+    if (part?.__iskyproCompositePart === true) {
+      for (const child of part.parts) {
+        append(child);
+      }
+      return;
+    }
+    throw new TypeError("message parts must be strings or SDK message parts");
+  }
+
+  for (const part of parts) {
+    append(part);
+  }
+  const normalized = [];
+  for (const part of flattened) {
+    if (part.type === "text" && part.text.length === 0) {
+      continue;
+    }
+    if (part.type === "text" && normalized.at(-1)?.type === "text") {
+      normalized.at(-1).text += part.text;
+    } else {
+      normalized.push(part);
+    }
+  }
+  if (normalized.length === 0) {
+    throw new TypeError("message must contain at least one non-empty part");
+  }
+  return { parts: normalized };
+}
+
+export class MessageContext {
+  constructor(event, context) {
+    this.eventId = event.eventId ?? "";
+    this.eventType = event.eventType ?? "";
+    this.timestamp = event.timestamp;
+    this.source = event.source ?? "";
+    this.bot = Object.freeze({ ...(event.bot ?? {}) });
+    this.conversation = Object.freeze({ ...(event.conversation ?? {}) });
+    this.sender = Object.freeze({ ...(event.sender ?? {}) });
+    this.id = event.message?.id ?? "";
+    this.text = event.message?.content ?? "";
+    this.attachments = Object.freeze([...(event.message?.attachments ?? [])]);
+    this.mentions = Object.freeze([...(event.message?.mentions ?? [])]);
+    this.rawPayload = event.rawPayload ?? {};
+    this.reference = Object.freeze({ ...(event.messageReference ?? {}) });
+    this.context = context;
+  }
+
+  reply(...parts) {
+    return this.context.invoke("messages.reply", {
+      reference: this.reference,
+      message: normalizeParts(parts),
+    });
+  }
+}
+
+export class MessageTarget {
+  constructor(context, type, id) {
+    validateId(id, "message target id");
+    this.context = context;
+    this.target = Object.freeze({ type, id });
+  }
+
+  send(...parts) {
+    return this.context.invoke("messages.send", {
+      target: this.target,
+      message: normalizeParts(parts),
+    });
+  }
+}
+
+export class MessageService {
+  constructor(context) {
+    this.context = context;
+  }
+
+  group(id) { return new MessageTarget(this.context, "group", id); }
+  channel(id) { return new MessageTarget(this.context, "channel", id); }
+  user(id) { return new MessageTarget(this.context, "user", id); }
+  directMessage(id) { return new MessageTarget(this.context, "direct", id); }
+}
+
 export class PluginContext extends GeneratedSdkMethods {
   constructor(pluginId, token, requestSender) {
     super();
@@ -174,6 +311,7 @@ export class PluginContext extends GeneratedSdkMethods {
     this.pluginId = pluginId;
     this.token = token;
     this.requestSender = requestSender;
+    this.messages = new MessageService(this);
   }
 
   invoke(method, parameters = {}) {
@@ -188,9 +326,6 @@ export class PluginContext extends GeneratedSdkMethods {
     return this.invoke("log.write", { level: level || "Information", message });
   }
 
-  replyText(messageReference, content) {
-    return this.invoke("messages.replyText", { messageReference, content });
-  }
 }
 
 export class StdioJsonRpcPlugin {
@@ -331,7 +466,8 @@ export class StdioJsonRpcPlugin {
       capabilities: [
         "events.message",
         "log.write",
-        "messages.replyText",
+        "messages.reply",
+        "messages.send",
         "bidirectional-requests",
         "concurrent-events",
         "graceful-shutdown",
@@ -388,9 +524,10 @@ export class StdioJsonRpcPlugin {
       this.token,
       (method, parameters) => this.sendRequest(method, parameters),
     );
+    const message = new MessageContext(event, context);
     let response;
     try {
-      const result = (await this.onEvent(event, context)) ?? {};
+      const result = (await this.onEvent(message, context)) ?? {};
       if (result === null || typeof result !== "object" || Array.isArray(result)) {
         throw new TypeError("event handler result must be an object");
       }
@@ -477,7 +614,11 @@ export class StdioJsonRpcPlugin {
     this.pending.delete(key);
     if (response.error) {
       pending.reject(
-        new JsonRpcError(response.error.code ?? -32000, response.error.message ?? String(response.error)),
+        new JsonRpcError(
+          response.error.code ?? -32000,
+          response.error.message ?? String(response.error),
+          response.error.data,
+        ),
       );
     } else {
       pending.resolve(response.result);

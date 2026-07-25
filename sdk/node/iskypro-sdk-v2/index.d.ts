@@ -16,7 +16,8 @@ export const maxPayloadLength: number;
 
 export class JsonRpcError extends Error {
   readonly code: number;
-  constructor(code: number, message: string);
+  readonly data?: unknown;
+  constructor(code: number, message: string, data?: unknown);
 }
 
 export function readFrame(fd?: number): JsonObject | null;
@@ -25,13 +26,57 @@ export function writeFrame(message: JsonObject, fd?: number): void;
 
 export type RequestSender = (method: string, parameters: JsonObject) => Promise<unknown> | unknown;
 
+export interface UserRef {
+  readonly provider: string;
+  readonly mentionId: string;
+  readonly userOpenId?: string | null;
+  readonly memberOpenId?: string | null;
+  readonly unionOpenId?: string | null;
+  readonly displayName?: string | null;
+}
+
+export interface MessagePart {}
+
+export const at: {
+  user(user: string | UserRef): MessagePart;
+  users(users: Iterable<string | UserRef>, separator?: string): MessagePart;
+  readonly everyone: MessagePart;
+};
+
+export class MessageContext {
+  readonly eventId: string;
+  readonly eventType: string;
+  readonly timestamp: unknown;
+  readonly source: string;
+  readonly bot: JsonObject;
+  readonly conversation: JsonObject;
+  readonly sender: UserRef;
+  readonly id: string;
+  readonly text: string;
+  readonly attachments: readonly unknown[];
+  readonly mentions: readonly UserRef[];
+  readonly rawPayload: JsonObject;
+  reply(...parts: Array<string | MessagePart>): Promise<unknown>;
+}
+
+export class MessageTarget {
+  send(...parts: Array<string | MessagePart>): Promise<unknown>;
+}
+
+export class MessageService {
+  group(id: string): MessageTarget;
+  channel(id: string): MessageTarget;
+  user(id: string): MessageTarget;
+  directMessage(id: string): MessageTarget;
+}
+
 export class PluginContext extends GeneratedSdkMethods {
   readonly pluginId: string;
   readonly token: string;
+  readonly messages: MessageService;
   constructor(pluginId: string, token: string, requestSender: RequestSender);
   invoke(method: string, parameters?: JsonObject): Promise<unknown>;
   logWrite(message: string, level?: string): Promise<unknown>;
-  replyText(messageReference: JsonObject, content: string): Promise<unknown>;
 }
 
 export interface StdioJsonRpcPluginOptions {
@@ -48,7 +93,7 @@ export interface EventAck {
 }
 
 export type EventHandler = (
-  event: JsonObject,
+  message: MessageContext,
   context: PluginContext,
 ) => EventAck | void | Promise<EventAck | void>;
 

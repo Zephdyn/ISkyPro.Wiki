@@ -7,10 +7,7 @@ public interface IISkyProPluginV2Context
 {
     string PluginId { get; }
 
-    ValueTask ReplyTextAsync(
-        PluginSdkV2MessageReference messageReference,
-        string content,
-        CancellationToken cancellationToken);
+    IMessageService Messages { get; }
 
     ValueTask InvokeAsync(
         string method,

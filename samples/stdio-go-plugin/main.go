@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/Zephdyn/ISkyPro.Wiki/sdk/go/iskypro/v2"
 )
@@ -24,18 +23,16 @@ func main() {
 	}
 }
 
-func onEvent(ctx context.Context, event iskypro.JsonObject, pluginContext *iskypro.PluginContext) (iskypro.EventAck, error) {
-	eventID := valueString(event["eventId"])
-	message := objectValue(event["message"])
-	reference := objectValue(event["messageReference"])
-	content := valueString(message["content"])
+func onEvent(ctx context.Context, message *iskypro.MessageContext, pluginContext *iskypro.PluginContext) (iskypro.EventAck, error) {
+	eventID := message.EventID
+	content := message.Text
 
 	fmt.Fprintf(os.Stderr, "go sample received %s\n", eventID)
 	if _, err := pluginContext.LogWrite(ctx, "go sample handled "+eventID, "Information"); err != nil {
 		return iskypro.EventAck{Accepted: false, EventID: eventID, Error: err.Error()}, nil
 	}
 	if content != "" {
-		if _, err := pluginContext.ReplyText(ctx, reference, "go echo: "+content); err != nil {
+		if _, err := message.Reply(ctx, iskypro.Text("go echo: "+content)); err != nil {
 			return iskypro.EventAck{Accepted: false, EventID: eventID, Error: err.Error()}, nil
 		}
 	}
@@ -50,28 +47,4 @@ func hasArg(expected string) bool {
 		}
 	}
 	return false
-}
-
-func objectValue(value any) iskypro.JsonObject {
-	if object, ok := value.(map[string]any); ok {
-		return iskypro.JsonObject(object)
-	}
-	if object, ok := value.(iskypro.JsonObject); ok {
-		return object
-	}
-	return iskypro.JsonObject{}
-}
-
-func valueString(value any) string {
-	if value == nil {
-		return ""
-	}
-	if text, ok := value.(string); ok {
-		return text
-	}
-	text := strings.TrimSpace(fmt.Sprint(value))
-	if text == "<nil>" {
-		return ""
-	}
-	return text
 }

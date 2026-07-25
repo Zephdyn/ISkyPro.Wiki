@@ -212,7 +212,8 @@ public static class StdioPluginV2Host
                 {
                     completion.TrySetException(new PluginSdkV2RpcException(
                         ReadErrorCode(error),
-                        ReadErrorMessage(error)));
+                        ReadErrorMessage(error),
+                        ReadErrorData(error)));
                 }
                 else
                 {
@@ -336,7 +337,8 @@ public static class StdioPluginV2Host
                 {
                     PluginSdkV2Protocol.MessageEventMethod,
                     PluginSdkV2Protocol.LogWriteMethod,
-                    "messages.replyText",
+                    PluginSdkV2Protocol.MessagesReplyMethod,
+                    PluginSdkV2Protocol.MessagesSendMethod,
                     PluginSdkV2Protocol.CapabilityBidirectionalRequests,
                     PluginSdkV2Protocol.CapabilityConcurrentEvents,
                     PluginSdkV2Protocol.CapabilityGracefulShutdown
@@ -420,10 +422,11 @@ public static class StdioPluginV2Host
                 var pluginEvent = JsonSerializer.Deserialize<PluginSdkV2EventEnvelope>(parameters, JsonOptions)
                     ?? throw new InvalidDataException("Plugin event payload is empty.");
                 var context = new StdioPluginContext(this, _manifest.PluginId);
+                var message = new MessageContext(pluginEvent, context, _runCancellationToken);
                 PluginSdkV2EventAck ack;
                 try
                 {
-                    ack = await _plugin.OnEventAsync(pluginEvent, context, _runCancellationToken);
+                    ack = await _plugin.OnMessageAsync(message, context, _runCancellationToken);
                 }
                 catch (Exception ex) when (ex is not OperationCanceledException)
                 {
@@ -703,6 +706,14 @@ public static class StdioPluginV2Host
                 : error.GetRawText();
         }
 
+        private static JsonElement? ReadErrorData(JsonElement error)
+        {
+            return error.ValueKind == JsonValueKind.Object
+                && error.TryGetProperty("data", out var data)
+                ? data.Clone()
+                : null;
+        }
+
         private static TimeSpan NormalizeTimeout(TimeSpan timeout)
         {
             if (timeout <= TimeSpan.Zero)
@@ -716,7 +727,7 @@ public static class StdioPluginV2Host
         }
     }
 
-    private sealed class StdioPluginContext : IISkyProPluginV2Context
+    private sealed class StdioPluginContext : IISkyProPluginV2Context, IPluginV2MessageTransport
     {
         private readonly HostConnection _connection;
 
@@ -728,17 +739,36 @@ public static class StdioPluginV2Host
 
         public string PluginId { get; }
 
-        public async ValueTask ReplyTextAsync(
-            PluginSdkV2MessageReference messageReference,
-            string content,
+        public IMessageService Messages => new MessageService(this);
+
+        public async ValueTask ReplyAsync(
+            PluginSdkV2MessageReference reference,
+            OutgoingMessage message,
             CancellationToken cancellationToken)
         {
+            var normalized = SdkOutgoingMessageNormalizer.Normalize(message);
             _ = await InvokeWithResultAsync(
-                "messages.replyText",
+                PluginSdkV2Protocol.MessagesReplyMethod,
                 new Dictionary<string, object?>
                 {
-                    ["messageReference"] = messageReference,
-                    ["content"] = content
+                    ["reference"] = reference,
+                    ["message"] = normalized
+                },
+                cancellationToken);
+        }
+
+        public async ValueTask SendAsync(
+            MessageTarget target,
+            OutgoingMessage message,
+            CancellationToken cancellationToken)
+        {
+            var normalized = SdkOutgoingMessageNormalizer.Normalize(message);
+            _ = await InvokeWithResultAsync(
+                PluginSdkV2Protocol.MessagesSendMethod,
+                new Dictionary<string, object?>
+                {
+                    ["target"] = target,
+                    ["message"] = normalized
                 },
                 cancellationToken);
         }
@@ -778,11 +808,14 @@ public static class StdioPluginV2Host
 
 public sealed class PluginSdkV2RpcException : Exception
 {
-    public PluginSdkV2RpcException(int code, string message)
+    public PluginSdkV2RpcException(int code, string message, JsonElement? data = null)
         : base(message)
     {
         Code = code;
+        DataElement = data;
     }
 
     public int Code { get; }
+
+    public JsonElement? DataElement { get; }
 }

@@ -5,7 +5,7 @@ import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Iterable, Mapping, Optional, Tuple, Union
 
 from .generated_methods import GeneratedSdkMethodsMixin, SDK_METHODS, SDK_VERSION
 
@@ -17,13 +17,188 @@ MAX_HEADER_LENGTH = 8 * 1024
 MAX_PAYLOAD_LENGTH = 4 * 1024 * 1024
 
 JsonObject = Dict[str, Any]
-EventHandler = Callable[[JsonObject, "PluginContext"], Optional[JsonObject]]
+EventHandler = Callable[["MessageContext", "PluginContext"], Optional[JsonObject]]
 
 
 class JsonRpcError(RuntimeError):
-    def __init__(self, code: int, message: str) -> None:
+    def __init__(self, code: int, message: str, data: Any = None) -> None:
         super().__init__(message)
         self.code = code
+        self.data = data
+
+
+@dataclass(frozen=True)
+class UserRef:
+    provider: str
+    mention_id: str
+    user_open_id: Optional[str] = None
+    member_open_id: Optional[str] = None
+    union_open_id: Optional[str] = None
+    display_name: Optional[str] = None
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "UserRef":
+        return cls(
+            provider=str(value.get("provider") or ""),
+            mention_id=str(value.get("mentionId") or ""),
+            user_open_id=_optional_string(value.get("userOpenId")),
+            member_open_id=_optional_string(value.get("memberOpenId")),
+            union_open_id=_optional_string(value.get("unionOpenId")),
+            display_name=_optional_string(value.get("displayName")),
+        )
+
+
+@dataclass(frozen=True)
+class _MessagePart:
+    payload: JsonObject
+
+
+@dataclass(frozen=True)
+class _CompositePart:
+    parts: Tuple[Any, ...]
+
+
+class _At:
+    everyone = _MessagePart({"type": "mention", "target": "everyone"})
+
+    @staticmethod
+    def user(user: Union[str, UserRef, Mapping[str, Any]]) -> _MessagePart:
+        if isinstance(user, UserRef):
+            mention_id = user.mention_id
+        elif isinstance(user, Mapping):
+            mention_id = str(user.get("mentionId") or "")
+        else:
+            mention_id = str(user or "")
+        _validate_id(mention_id, "mention id")
+        return _MessagePart(
+            {"type": "mention", "target": "user", "id": mention_id}
+        )
+
+    @classmethod
+    def users(
+        cls,
+        users: Iterable[Union[str, UserRef, Mapping[str, Any]]],
+        separator: str = " ",
+    ) -> _CompositePart:
+        values = list(users)
+        if not values:
+            raise ValueError("at.users requires at least one user")
+        if len(values) > 20:
+            raise ValueError("at.users supports at most 20 users")
+        parts = []
+        for index, user in enumerate(values):
+            if index > 0 and separator:
+                parts.append(separator)
+            parts.append(cls.user(user))
+        return _CompositePart(tuple(parts))
+
+
+at = _At()
+
+
+def _optional_string(value: Any) -> Optional[str]:
+    return str(value) if value is not None else None
+
+
+def _validate_id(value: str, label: str) -> None:
+    if not value.strip() or any(ord(character) < 32 or ord(character) == 127 for character in value):
+        raise ValueError(f"{label} must not be empty or contain control characters")
+
+
+def _normalize_parts(parts: Iterable[Any]) -> JsonObject:
+    flattened = []
+
+    def append(part: Any) -> None:
+        if isinstance(part, str):
+            flattened.append({"type": "text", "text": part})
+            return
+        if isinstance(part, _MessagePart):
+            flattened.append(dict(part.payload))
+            return
+        if isinstance(part, _CompositePart):
+            for child in part.parts:
+                append(child)
+            return
+        raise TypeError("message parts must be strings or SDK message parts")
+
+    for item in parts:
+        append(item)
+
+    normalized = []
+    for part in flattened:
+        if part.get("type") == "text" and part.get("text") == "":
+            continue
+        if (
+            part.get("type") == "text"
+            and normalized
+            and normalized[-1].get("type") == "text"
+        ):
+            normalized[-1]["text"] += str(part.get("text") or "")
+        else:
+            normalized.append(part)
+    if not normalized:
+        raise ValueError("message must contain at least one non-empty part")
+    return {"parts": normalized}
+
+
+class MessageContext:
+    def __init__(self, event: JsonObject, context: "PluginContext") -> None:
+        self.event_id = str(event.get("eventId") or "")
+        self.event_type = str(event.get("eventType") or "")
+        self.timestamp = event.get("timestamp")
+        self.source = str(event.get("source") or "")
+        self.bot = dict(event.get("bot") or {})
+        self.conversation = dict(event.get("conversation") or {})
+        sender = event.get("sender") or {}
+        self.sender = UserRef.from_dict(sender if isinstance(sender, Mapping) else {})
+        message = event.get("message") or {}
+        self.id = str(message.get("id") or "")
+        self.text = str(message.get("content") or "")
+        self.attachments = tuple(message.get("attachments") or ())
+        self.mentions = tuple(
+            UserRef.from_dict(item)
+            for item in (message.get("mentions") or ())
+            if isinstance(item, Mapping)
+        )
+        self.raw_payload = event.get("rawPayload") or {}
+        self._reference = dict(event.get("messageReference") or {})
+        self._context = context
+
+    def reply(self, *parts: Any) -> Any:
+        return self._context.invoke(
+            "messages.reply",
+            {"reference": self._reference, "message": _normalize_parts(parts)},
+        )
+
+
+class MessageTarget:
+    def __init__(self, context: "PluginContext", target_type: str, target_id: str) -> None:
+        _validate_id(target_id, "message target id")
+        self._context = context
+        self._target = {"type": target_type, "id": target_id}
+
+    def send(self, *parts: Any) -> Any:
+        return self._context.invoke(
+            "messages.send",
+            {"target": self._target, "message": _normalize_parts(parts)},
+        )
+
+
+class MessageService:
+    def __init__(self, context: "PluginContext") -> None:
+        self._context = context
+
+    def group(self, group_open_id: str) -> MessageTarget:
+        return MessageTarget(self._context, "group", group_open_id)
+
+    def channel(self, channel_id: str) -> MessageTarget:
+        return MessageTarget(self._context, "channel", channel_id)
+
+    def user(self, user_open_id: str) -> MessageTarget:
+        return MessageTarget(self._context, "user", user_open_id)
+
+    def direct_message(self, guild_id: str) -> MessageTarget:
+        return MessageTarget(self._context, "direct", guild_id)
 
 
 def _positive_int(value: Any, fallback: int) -> int:
@@ -126,6 +301,7 @@ class PluginContext(GeneratedSdkMethodsMixin):
         self.plugin_id = plugin_id
         self.token = token
         self._request_sender = request_sender
+        self.messages = MessageService(self)
 
     def invoke(self, method: str, parameters: Optional[JsonObject] = None) -> Any:
         if not method or not method.strip():
@@ -136,16 +312,6 @@ class PluginContext(GeneratedSdkMethodsMixin):
 
     def log_write(self, message: str, level: str = "Information") -> Any:
         return self.invoke("log.write", {"level": level or "Information", "message": message})
-
-    def reply_text(self, message_reference: JsonObject, content: str) -> Any:
-        return self.invoke(
-            "messages.replyText",
-            {
-                "messageReference": message_reference,
-                "content": content,
-            },
-        )
-
 
 class StdioJsonRpcPlugin:
     def __init__(
@@ -286,7 +452,8 @@ class StdioJsonRpcPlugin:
                 "capabilities": [
                     "events.message",
                     "log.write",
-                    "messages.replyText",
+                    "messages.reply",
+                    "messages.send",
                     "bidirectional-requests",
                     "concurrent-events",
                     "graceful-shutdown",
@@ -331,8 +498,9 @@ class StdioJsonRpcPlugin:
                 self.token,
                 request_sender=self._send_request,
             )
+            message = MessageContext(event, context)
             try:
-                result = (self._on_event or (lambda _event, _context: {}))(event, context) or {}
+                result = (self._on_event or (lambda _message, _context: {}))(message, context) or {}
                 if not isinstance(result, dict):
                     raise TypeError("event handler result must be an object")
                 response = {
@@ -407,7 +575,8 @@ class StdioJsonRpcPlugin:
             error = response["error"]
             code = int(error.get("code", -32000)) if isinstance(error, dict) else -32000
             message = error.get("message") if isinstance(error, dict) else str(error)
-            pending.error = JsonRpcError(code, str(message))
+            data = error.get("data") if isinstance(error, dict) else None
+            pending.error = JsonRpcError(code, str(message), data)
         else:
             pending.result = response.get("result")
         pending.completed.set()
@@ -445,10 +614,15 @@ __all__ = [
     "JsonRpcError",
     "MAX_HEADER_LENGTH",
     "MAX_PAYLOAD_LENGTH",
+    "MessageContext",
+    "MessageService",
+    "MessageTarget",
     "PluginContext",
     "SDK_METHODS",
     "SDK_VERSION",
     "StdioJsonRpcPlugin",
+    "UserRef",
+    "at",
     "read_frame",
     "write_frame",
 ]

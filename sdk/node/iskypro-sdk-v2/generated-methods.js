@@ -13,13 +13,6 @@ export const sdkMethods = Object.freeze({
   mediaUploadGroupFile: Object.freeze({ name: "media.uploadGroupFile", permission: "media.upload", stability: "stable", requestModel: "GroupFileUploadRequest", responseModel: "FileUploadResponse", defaultEnabled: true }),
   membersGetMember: Object.freeze({ name: "members.getMember", permission: "members.read", stability: "stable", requestModel: null, responseModel: "Member", defaultEnabled: true }),
   membersListMembers: Object.freeze({ name: "members.listMembers", permission: "members.read", stability: "stable", requestModel: null, responseModel: "MemberList", defaultEnabled: true }),
-  messagesReplyMarkdown: Object.freeze({ name: "messages.replyMarkdown", permission: "messages.reply", stability: "preview", requestModel: "GroupMarkdownMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
-  messagesReplyMedia: Object.freeze({ name: "messages.replyMedia", permission: "messages.reply", stability: "preview", requestModel: "GroupMediaMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
-  messagesReplyText: Object.freeze({ name: "messages.replyText", permission: "messages.reply", stability: "stable", requestModel: "GroupTextMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
-  messagesSendC2CText: Object.freeze({ name: "messages.sendC2CText", permission: "messages.send", stability: "stable", requestModel: "C2CTextMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
-  messagesSendChannelText: Object.freeze({ name: "messages.sendChannelText", permission: "messages.send", stability: "stable", requestModel: "ChannelTextMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
-  messagesSendDirectMessage: Object.freeze({ name: "messages.sendDirectMessage", permission: "messages.send", stability: "stable", requestModel: "DirectTextMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
-  messagesSendGroupText: Object.freeze({ name: "messages.sendGroupText", permission: "messages.send", stability: "stable", requestModel: "GroupTextMessageRequest", responseModel: "MessageResponse", defaultEnabled: true }),
   permissionsGetApiPermissions: Object.freeze({ name: "permissions.getApiPermissions", permission: "permissions.manage", stability: "stable", requestModel: null, responseModel: "ApiPermissionList", defaultEnabled: true }),
   permissionsRequestApiPermissionDemand: Object.freeze({ name: "permissions.requestApiPermissionDemand", permission: "permissions.manage", stability: "stable", requestModel: "ApiPermissionDemandRequest", responseModel: "ApiPermissionDemand", defaultEnabled: true }),
   unsafeRawOpenApi: Object.freeze({ name: "unsafe.rawOpenApi", permission: "unsafe.raw-open-api", stability: "unsafe", requestModel: "RawOpenApiRequest", responseModel: "RawOpenApiResponse", defaultEnabled: false }),
@@ -114,62 +107,6 @@ export class GeneratedSdkMethods {
    */
   membersListMembers(parameters = {}) {
     return this.invoke("members.listMembers", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesReplyMarkdown(parameters = {}) {
-    return this.invoke("messages.replyMarkdown", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesReplyMedia(parameters = {}) {
-    return this.invoke("messages.replyMedia", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesReplyText(parameters = {}) {
-    return this.invoke("messages.replyText", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesSendC2CText(parameters = {}) {
-    return this.invoke("messages.sendC2CText", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesSendChannelText(parameters = {}) {
-    return this.invoke("messages.sendChannelText", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesSendDirectMessage(parameters = {}) {
-    return this.invoke("messages.sendDirectMessage", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  messagesSendGroupText(parameters = {}) {
-    return this.invoke("messages.sendGroupText", parameters);
   }
 
   /**

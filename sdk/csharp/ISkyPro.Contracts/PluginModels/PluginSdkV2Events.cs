@@ -10,7 +10,7 @@ public sealed record PluginSdkV2EventEnvelope(
     string Source,
     BotAccountContext Bot,
     PluginSdkV2ConversationContext Conversation,
-    PluginSdkV2SenderContext Sender,
+    UserRef Sender,
     PluginSdkV2MessageContext Message,
     PluginSdkV2MessageReference MessageReference,
     JsonElement RawPayload);
@@ -23,17 +23,11 @@ public sealed record PluginSdkV2ConversationContext(
     string? GroupOpenId,
     string? C2COpenId);
 
-public sealed record PluginSdkV2SenderContext(
-    string? UserOpenId,
-    string? MemberOpenId,
-    string? UnionOpenId,
-    string? DisplayName);
-
 public sealed record PluginSdkV2MessageContext(
     string Id,
     string Content,
     IReadOnlyList<PluginSdkV2MessageAttachment> Attachments,
-    IReadOnlyList<string> Mentions);
+    IReadOnlyList<UserRef> Mentions);
 
 public sealed record PluginSdkV2MessageAttachment(
     string Id,

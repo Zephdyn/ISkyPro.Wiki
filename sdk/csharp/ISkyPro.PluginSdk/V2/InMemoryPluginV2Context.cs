@@ -3,10 +3,11 @@ using System.Text.Json;
 
 namespace ISkyPro.PluginSdk.V2;
 
-public sealed class InMemoryPluginV2Context : IISkyProPluginV2Context
+public sealed class InMemoryPluginV2Context : IISkyProPluginV2Context, IPluginV2MessageTransport
 {
     private readonly List<PluginV2SdkCall> _sdkCalls = new();
     private readonly List<PluginV2LogEntry> _logs = new();
+    private readonly List<PluginV2OutgoingMessage> _outgoingMessages = new();
     private readonly Dictionary<string, Queue<JsonElement>> _results = new(StringComparer.Ordinal);
 
     public InMemoryPluginV2Context(string pluginId)
@@ -16,9 +17,20 @@ public sealed class InMemoryPluginV2Context : IISkyProPluginV2Context
 
     public string PluginId { get; }
 
+    public IMessageService Messages => new MessageService(this);
+
     public IReadOnlyList<PluginV2SdkCall> SdkCalls => _sdkCalls;
 
     public IReadOnlyList<PluginV2LogEntry> Logs => _logs;
+
+    public IReadOnlyList<PluginV2OutgoingMessage> OutgoingMessages => _outgoingMessages;
+
+    public MessageContext CreateMessageContext(
+        PluginSdkV2EventEnvelope pluginEvent,
+        CancellationToken cancellationToken = default)
+    {
+        return new MessageContext(pluginEvent, this, cancellationToken);
+    }
 
     public void EnqueueResult(string method, object? result)
     {
@@ -32,23 +44,40 @@ public sealed class InMemoryPluginV2Context : IISkyProPluginV2Context
         results.Enqueue(JsonSerializer.SerializeToElement(result));
     }
 
-    public ValueTask ReplyTextAsync(
-        PluginSdkV2MessageReference messageReference,
-        string content,
+    ValueTask IPluginV2MessageTransport.ReplyAsync(
+        PluginSdkV2MessageReference reference,
+        OutgoingMessage message,
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            throw new ArgumentException("Reply content is required.", nameof(content));
-        }
-
+        ArgumentNullException.ThrowIfNull(reference);
+        ArgumentNullException.ThrowIfNull(message);
+        _outgoingMessages.Add(new PluginV2OutgoingMessage(reference, null, message));
         _sdkCalls.Add(new PluginV2SdkCall(
-            "messages.replyText",
+            PluginSdkV2Protocol.MessagesReplyMethod,
             new Dictionary<string, object?>
             {
-                ["messageReference"] = messageReference,
-                ["content"] = content
+                ["reference"] = reference,
+                ["message"] = message
+            }));
+        return ValueTask.CompletedTask;
+    }
+
+    ValueTask IPluginV2MessageTransport.SendAsync(
+        MessageTarget target,
+        OutgoingMessage message,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(message);
+        _outgoingMessages.Add(new PluginV2OutgoingMessage(null, target, message));
+        _sdkCalls.Add(new PluginV2SdkCall(
+            PluginSdkV2Protocol.MessagesSendMethod,
+            new Dictionary<string, object?>
+            {
+                ["target"] = target,
+                ["message"] = message
             }));
         return ValueTask.CompletedTask;
     }
@@ -115,3 +144,8 @@ public sealed record PluginV2LogEntry(
     DateTimeOffset Timestamp,
     string Level,
     string Message);
+
+public sealed record PluginV2OutgoingMessage(
+    PluginSdkV2MessageReference? Reference,
+    MessageTarget? Target,
+    OutgoingMessage Message);

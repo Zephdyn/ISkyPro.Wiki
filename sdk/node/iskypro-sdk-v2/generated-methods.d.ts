@@ -26,13 +26,6 @@ export class GeneratedSdkMethods {
   mediaUploadGroupFile(parameters?: JsonObject): Promise<unknown>;
   membersGetMember(parameters?: JsonObject): Promise<unknown>;
   membersListMembers(parameters?: JsonObject): Promise<unknown>;
-  messagesReplyMarkdown(parameters?: JsonObject): Promise<unknown>;
-  messagesReplyMedia(parameters?: JsonObject): Promise<unknown>;
-  messagesReplyText(parameters?: JsonObject): Promise<unknown>;
-  messagesSendC2CText(parameters?: JsonObject): Promise<unknown>;
-  messagesSendChannelText(parameters?: JsonObject): Promise<unknown>;
-  messagesSendDirectMessage(parameters?: JsonObject): Promise<unknown>;
-  messagesSendGroupText(parameters?: JsonObject): Promise<unknown>;
   permissionsGetApiPermissions(parameters?: JsonObject): Promise<unknown>;
   permissionsRequestApiPermissionDemand(parameters?: JsonObject): Promise<unknown>;
   unsafeRawOpenApi(parameters?: JsonObject): Promise<unknown>;

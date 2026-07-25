@@ -14,13 +14,6 @@ SDK_METHODS = {
     "media_upload_group_file": {"name": "media.uploadGroupFile", "permission": "media.upload", "stability": "stable", "request_model": 'GroupFileUploadRequest', "response_model": 'FileUploadResponse', "default_enabled": True},
     "members_get_member": {"name": "members.getMember", "permission": "members.read", "stability": "stable", "request_model": None, "response_model": 'Member', "default_enabled": True},
     "members_list_members": {"name": "members.listMembers", "permission": "members.read", "stability": "stable", "request_model": None, "response_model": 'MemberList', "default_enabled": True},
-    "messages_reply_markdown": {"name": "messages.replyMarkdown", "permission": "messages.reply", "stability": "preview", "request_model": 'GroupMarkdownMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
-    "messages_reply_media": {"name": "messages.replyMedia", "permission": "messages.reply", "stability": "preview", "request_model": 'GroupMediaMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
-    "messages_reply_text": {"name": "messages.replyText", "permission": "messages.reply", "stability": "stable", "request_model": 'GroupTextMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
-    "messages_send_c2c_text": {"name": "messages.sendC2CText", "permission": "messages.send", "stability": "stable", "request_model": 'C2CTextMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
-    "messages_send_channel_text": {"name": "messages.sendChannelText", "permission": "messages.send", "stability": "stable", "request_model": 'ChannelTextMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
-    "messages_send_direct_message": {"name": "messages.sendDirectMessage", "permission": "messages.send", "stability": "stable", "request_model": 'DirectTextMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
-    "messages_send_group_text": {"name": "messages.sendGroupText", "permission": "messages.send", "stability": "stable", "request_model": 'GroupTextMessageRequest', "response_model": 'MessageResponse', "default_enabled": True},
     "permissions_get_api_permissions": {"name": "permissions.getApiPermissions", "permission": "permissions.manage", "stability": "stable", "request_model": None, "response_model": 'ApiPermissionList', "default_enabled": True},
     "permissions_request_api_permission_demand": {"name": "permissions.requestApiPermissionDemand", "permission": "permissions.manage", "stability": "stable", "request_model": 'ApiPermissionDemandRequest', "response_model": 'ApiPermissionDemand', "default_enabled": True},
     "unsafe_raw_open_api": {"name": "unsafe.rawOpenApi", "permission": "unsafe.raw-open-api", "stability": "unsafe", "request_model": 'RawOpenApiRequest', "response_model": 'RawOpenApiResponse', "default_enabled": False},
@@ -84,41 +77,6 @@ class GeneratedSdkMethodsMixin:
         self, parameters: Optional[Mapping[str, Any]] = None
     ) -> Any:
         return self.invoke("members.listMembers", dict(parameters or {}))
-
-    def messages_reply_markdown(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.replyMarkdown", dict(parameters or {}))
-
-    def messages_reply_media(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.replyMedia", dict(parameters or {}))
-
-    def messages_reply_text(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.replyText", dict(parameters or {}))
-
-    def messages_send_c2c_text(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.sendC2CText", dict(parameters or {}))
-
-    def messages_send_channel_text(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.sendChannelText", dict(parameters or {}))
-
-    def messages_send_direct_message(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.sendDirectMessage", dict(parameters or {}))
-
-    def messages_send_group_text(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("messages.sendGroupText", dict(parameters or {}))
 
     def permissions_get_api_permissions(
         self, parameters: Optional[Mapping[str, Any]] = None
