@@ -1,0 +1,35 @@
+{
+  "pluginId": "top.iskypro.demo.group-repeat",
+  "name": "QQ群聊 Markdown @ 复读示例",
+  "version": "0.3.0",
+  "author": "ISkyPro",
+  "description": "使用 QQ 群 Markdown 消息和类型化 mention 回复发送者的公开示例。",
+  "protocolVersion": 2,
+  "sdkVersion": "2.0.0",
+  "transport": {
+    "type": "stdio-jsonrpc",
+    "stdio": {
+      "command": "dotnet",
+      "args": [ "RepeatPlugin.dll", "--iskypro-stdio" ],
+      "workingDirectory": ".",
+      "environment": {}
+    }
+  },
+  "supportedPlatforms": [
+    { "platform": "windows", "architectures": [ "x64", "arm64" ] },
+    { "platform": "linux", "architectures": [ "x64", "arm64" ] },
+    { "platform": "osx", "architectures": [ "x64", "arm64" ] }
+  ],
+  "eventSubscriptions": [
+    { "eventType": "message.created", "botAccountIds": [], "conversationIds": [] }
+  ],
+  "permissions": [ "messages.reply" ],
+  "commands": [],
+  "filters": [],
+  "concurrency": {
+    "maxConcurrentEvents": 2,
+    "queueCapacity": 32,
+    "allowSameConversationConcurrency": false,
+    "overflowPolicy": "reject-new"
+  }
+}

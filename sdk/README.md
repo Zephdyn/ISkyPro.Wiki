@@ -38,6 +38,7 @@ Runnable stdio samples include packaging commands that bundle their SDK/runtime
 dependencies:
 
 - C#: `dotnet publish samples/ISkyPro.SamplePlugin/ISkyPro.SamplePlugin.csproj -c Release`
+- C# QQBot Markdown @ repeat: `dotnet publish samples/QQBotMarkdownRepeatPlugin/QQBotMarkdownRepeatPlugin.csproj -c Release`
 - Python: run `python package.py` in `samples/stdio-python-plugin`
 - Node.js: run `npm run package:plugin` in `samples/stdio-node-plugin`
 - Go: run `go run ./tools/package-plugin` in `samples/stdio-go-plugin`

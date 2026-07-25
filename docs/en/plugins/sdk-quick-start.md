@@ -57,10 +57,40 @@ Repository samples:
 - `samples/stdio-node-plugin`
 - `samples/stdio-go-plugin`
 - `samples/ISkyPro.SamplePlugin/EchoPluginV2.cs`
+- `samples/QQBotMarkdownRepeatPlugin`
 
 The canonical SDK source is under `sdk/` in this public repository. After changing
 the API catalog, run `python tools/plugin-sdk-stub-generator/generate.py` to replace
 the generated method surfaces for all four languages.
+
+## Markdown group messages
+
+Structured messages can select Markdown format while keeping mentions typed, so
+plugins do not need to concatenate provider markup:
+
+```csharp
+await message.ReplyMarkdownAsync(
+    At.User(message.Sender),
+    " **hello**");
+```
+
+Python, Node.js, and Go use `reply_markdown`, `replyMarkdown`, and
+`ReplyMarkdown`, respectively. Markdown currently supports QQ group targets.
+Main sends `msg_type = 2` with `markdown.content`. `<` and `>` in ordinary text
+parts remain escaped; only typed mentions generate `<qqbot-at-user ... />`.
+
+::: warning Compatibility observation (2026-07-25)
+In QQ group testing on 2026-07-25, `<qqbot-at-user ... />`, `<@id>`, and `<@!id>`
+were all displayed literally in ordinary `msg_type = 0` text. The current
+`<qqbot-at-user ... />` form triggered an @ when sent with Markdown
+`msg_type = 2` and `markdown.content`. This records server and client behavior on
+that date, not a permanent compatibility guarantee. Tencent may change parsing,
+so verify the [latest official group-message documentation](https://bot.q.qq.com/wiki/develop/api-v2/autogen/api/v2_groups_group_openid_messages.post.html#schema-messagemarkdown)
+and the target client.
+:::
+
+The installable `samples/QQBotMarkdownRepeatPlugin` demonstrates this flow with
+the `复读 hello` command.
 
 ## Package stdio plugins
 
@@ -83,8 +113,9 @@ Default output:
 artifacts/<AssemblyName>.zip
 ```
 
-See `samples/ISkyPro.SamplePlugin`. The publish target includes DLLs,
-`.deps.json`, `.runtimeconfig.json`, SDK dependencies, and the manifest.
+See `samples/ISkyPro.SamplePlugin` and `samples/QQBotMarkdownRepeatPlugin`. The
+publish target includes DLLs, `.deps.json`, `.runtimeconfig.json`, SDK
+dependencies, and the manifest.
 
 ### Python
 
@@ -130,10 +161,10 @@ need Go. Produce a separate ZIP for every target OS and architecture.
 2. The zip root or its single top-level directory must contain `manifest.json`.
 3. Open the WebUI Plugins page and switch to Modern.
 4. Upload the zip.
-5. To replace an installed version, enable overwrite.
+5. When the same plugin ID is detected, review the old and new plugin details in the confirmation dialog before replacing it.
 6. To run immediately, enable start after install.
 
-Installation does not execute the plugin. It only reads the zip and manifest. Stop a running plugin before updating it.
+Installation does not execute code from the new package; it only reads the zip and manifest. When an update is confirmed for a running plugin, ISkyPro stops the old version and resumes it after replacement.
 
 ## Deploy HTTP plugins
 

@@ -15,6 +15,9 @@ await new StdioJsonRpcPlugin("top.example.plugin").run(async (message, context) 
 Use `--iskypro-stdio` as the explicit plugin entry argument and reserve stdout
 for JSON-RPC frames. Application logs must go to stderr or `context.logWrite`.
 Use `context.messages.group(...).send(...parts)` for proactive messages.
+Use `message.replyMarkdown(...parts)` or `sendMarkdown(...parts)` for QQ group
+Markdown messages. Mentions remain structured and Main sends `msg_type = 2`
+with `markdown.content`.
 
 ## Package a stdio plugin
 

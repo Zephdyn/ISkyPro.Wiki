@@ -109,6 +109,10 @@ public interface IMessageTarget
 
     ValueTask SendAsync(CancellationToken cancellationToken, params MessagePart[] parts);
 
+    ValueTask SendMarkdownAsync(params MessagePart[] parts);
+
+    ValueTask SendMarkdownAsync(CancellationToken cancellationToken, params MessagePart[] parts);
+
     ValueTask SendAsync(OutgoingMessage message, CancellationToken cancellationToken = default);
 }
 
@@ -171,6 +175,24 @@ public sealed class MessageContext
 
     public ValueTask ReplyAsync(CancellationToken cancellationToken, params MessagePart[] parts)
         => ReplyAsync(new OutgoingMessage { Parts = parts }, cancellationToken);
+
+    public ValueTask ReplyMarkdownAsync(params MessagePart[] parts)
+        => ReplyAsync(
+            new OutgoingMessage
+            {
+                Format = OutgoingMessageFormat.Markdown,
+                Parts = parts
+            },
+            _eventCancellationToken);
+
+    public ValueTask ReplyMarkdownAsync(CancellationToken cancellationToken, params MessagePart[] parts)
+        => ReplyAsync(
+            new OutgoingMessage
+            {
+                Format = OutgoingMessageFormat.Markdown,
+                Parts = parts
+            },
+            cancellationToken);
 
     public ValueTask ReplyAsync(
         OutgoingMessage message,
@@ -262,6 +284,22 @@ internal sealed class MessageTargetClient : IMessageTarget
 
     public ValueTask SendAsync(CancellationToken cancellationToken, params MessagePart[] parts)
         => SendAsync(new OutgoingMessage { Parts = parts }, cancellationToken);
+
+    public ValueTask SendMarkdownAsync(params MessagePart[] parts)
+        => SendAsync(new OutgoingMessage
+        {
+            Format = OutgoingMessageFormat.Markdown,
+            Parts = parts
+        });
+
+    public ValueTask SendMarkdownAsync(CancellationToken cancellationToken, params MessagePart[] parts)
+        => SendAsync(
+            new OutgoingMessage
+            {
+                Format = OutgoingMessageFormat.Markdown,
+                Parts = parts
+            },
+            cancellationToken);
 
     public ValueTask SendAsync(
         OutgoingMessage message,

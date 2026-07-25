@@ -198,7 +198,18 @@ type MessageContext struct {
 }
 
 func (m *MessageContext) Reply(ctx context.Context, parts ...MessagePart) (any, error) {
-	message, err := normalizeMessage(parts)
+	message, err := normalizeMessage(parts, "text")
+	if err != nil {
+		return nil, err
+	}
+	return m.context.Invoke(ctx, "messages.reply", JsonObject{
+		"reference": m.reference,
+		"message":   message,
+	})
+}
+
+func (m *MessageContext) ReplyMarkdown(ctx context.Context, parts ...MessagePart) (any, error) {
+	message, err := normalizeMessage(parts, "markdown")
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +248,7 @@ func (t MessageTarget) Send(ctx context.Context, parts ...MessagePart) (any, err
 	if err := validateID(stringValue(t.target["id"]), "message target id"); err != nil {
 		return nil, err
 	}
-	message, err := normalizeMessage(parts)
+	message, err := normalizeMessage(parts, "text")
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +258,25 @@ func (t MessageTarget) Send(ctx context.Context, parts ...MessagePart) (any, err
 	})
 }
 
-func normalizeMessage(parts []MessagePart) (JsonObject, error) {
+func (t MessageTarget) SendMarkdown(ctx context.Context, parts ...MessagePart) (any, error) {
+	if err := validateID(stringValue(t.target["id"]), "message target id"); err != nil {
+		return nil, err
+	}
+	message, err := normalizeMessage(parts, "markdown")
+	if err != nil {
+		return nil, err
+	}
+	return t.context.Invoke(ctx, "messages.send", JsonObject{
+		"target":  t.target,
+		"message": message,
+	})
+}
+
+func normalizeMessage(parts []MessagePart, messageFormat string) (JsonObject, error) {
+	if messageFormat != "text" && messageFormat != "markdown" {
+		return nil, errors.New("message format must be text or markdown")
+	}
+
 	wire := []JsonObject{}
 	var err error
 	for _, part := range parts {
@@ -273,7 +302,11 @@ func normalizeMessage(parts []MessagePart) (JsonObject, error) {
 	if len(normalized) == 0 {
 		return nil, errors.New("message must contain at least one non-empty part")
 	}
-	return JsonObject{"parts": normalized}, nil
+	message := JsonObject{"parts": normalized}
+	if messageFormat != "text" {
+		message["format"] = messageFormat
+	}
+	return message, nil
 }
 
 func validateID(value string, label string) error {

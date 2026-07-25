@@ -51,8 +51,21 @@ public sealed record UserRef(
     string? UnionOpenId,
     string? DisplayName);
 
+[JsonConverter(typeof(JsonStringEnumConverter<OutgoingMessageFormat>))]
+public enum OutgoingMessageFormat
+{
+    [JsonStringEnumMemberName("text")]
+    Text,
+
+    [JsonStringEnumMemberName("markdown")]
+    Markdown
+}
+
 public sealed record OutgoingMessage
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public OutgoingMessageFormat Format { get; init; }
+
     public IReadOnlyList<MessagePart> Parts { get; init; } = Array.Empty<MessagePart>();
 }
 
@@ -89,6 +102,7 @@ public static class PluginSdkV2MessageErrorCodes
     public const string MentionUnsupportedTarget = "message.mention.unsupported_target";
     public const string MentionEveryoneUnsupportedTarget = "message.mention_everyone.unsupported_target";
     public const string MentionEveryonePermissionDenied = "message.mention_everyone.permission_denied";
+    public const string FormatUnsupportedTarget = "message.format.unsupported_target";
     public const string TargetInvalid = "message.target.invalid";
     public const string ReferenceExpired = "message.reference.expired";
 }

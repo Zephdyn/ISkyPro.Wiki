@@ -57,9 +57,37 @@ manifest 中声明 stdio 启动方式：
 - `samples/stdio-node-plugin`
 - `samples/stdio-go-plugin`
 - `samples/ISkyPro.SamplePlugin/EchoPluginV2.cs`
+- `samples/QQBotMarkdownRepeatPlugin`
 
 SDK 唯一源码位于本公开仓库的 `sdk/`。更新 API catalog 后运行
 `python tools/plugin-sdk-stub-generator/generate.py` 即可同时替换四语言生成方法。
+
+## Markdown 群消息
+
+结构化消息可选择 Markdown 格式，同时继续使用类型化 @，不需要插件拼接平台标签：
+
+```csharp
+await message.ReplyMarkdownAsync(
+    At.User(message.Sender),
+    " **你好**");
+```
+
+Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
+`ReplyMarkdown`。目前仅支持 QQ 群目标；Main 会按官方群消息协议发送
+`msg_type = 2` 和 `markdown.content`。普通文本片段中的 `<` / `>` 仍会转义，
+只有类型化 mention 会生成 `<qqbot-at-user ... />`。
+
+::: warning 实测兼容性记录（2026-07-25）
+截至 2026-07-25 的 QQ 群实机测试，普通文本 `msg_type = 0` 中的
+`<qqbot-at-user ... />`、`<@id>` 和 `<@!id>` 都会显示为普通文本；使用 Markdown
+的 `msg_type = 2` 与 `markdown.content` 后，`<qqbot-at-user ... />` 可以正常触发
+@。这是当日服务端和客户端行为的实测记录，不是永久兼容保证；腾讯后续可能调整解析
+规则，请同时核对[最新官方群消息接口文档](https://bot.q.qq.com/wiki/develop/api-v2/autogen/api/v2_groups_group_openid_messages.post.html#schema-messagemarkdown)
+与目标客户端表现。
+:::
+
+可安装的完整 @ 复读示例位于 `samples/QQBotMarkdownRepeatPlugin`，命令为
+`复读 你好`。
 
 ## 打包 stdio 插件
 
@@ -79,7 +107,9 @@ dotnet publish .\MyPlugin.csproj -c Release
 artifacts/<AssemblyName>.zip
 ```
 
-完整样例：`samples/ISkyPro.SamplePlugin`。发布目标会把 DLL、`.deps.json`、`.runtimeconfig.json`、SDK 依赖和 manifest 一起打包。
+完整样例：`samples/ISkyPro.SamplePlugin` 和
+`samples/QQBotMarkdownRepeatPlugin`。发布目标会把 DLL、`.deps.json`、
+`.runtimeconfig.json`、SDK 依赖和 manifest 一起打包。
 
 ### Python
 
@@ -121,10 +151,11 @@ Go 包内是已经编译好的本机程序，目标机器不需要安装 Go。�
 2. zip 根目录或唯一顶层目录下必须有 `manifest.json`。
 3. 打开 WebUI 插件页，切到“新插件”。
 4. 上传 zip。
-5. 如需覆盖旧版本，勾选覆盖已安装插件。
+5. 如检测到同 ID 插件，确认框会显示新旧版本和插件信息；确认后才会覆盖。
 6. 需要立即运行时，勾选安装后启动。
 
-安装阶段不会执行插件，只读取 zip 和 manifest。运行中的插件更新前需要先停止。
+安装阶段不会执行新包，只读取 zip 和 manifest。确认更新运行中的插件后，框架会自动停止旧版本，
+完成替换后恢复运行。
 
 ## 部署 HTTP 插件
 

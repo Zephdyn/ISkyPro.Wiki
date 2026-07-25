@@ -17,7 +17,7 @@ public static class StdioJsonRpcFraming
         ReadOnlyMemory<byte> payload,
         CancellationToken cancellationToken)
     {
-        ValidatePayload(payload.Span);
+        using var validatedPayload = ParseAndValidatePayload(payload.Span);
         var header = Encoding.ASCII.GetBytes($"Content-Length: {payload.Length}\r\n\r\n");
         await stream.WriteAsync(header, cancellationToken);
         await stream.WriteAsync(payload, cancellationToken);
@@ -34,18 +34,14 @@ public static class StdioJsonRpcFraming
             return null;
         }
 
-        if (payloadLength <= 0 || payloadLength > MaxPayloadLength)
-        {
-            throw new InvalidDataException($"Invalid JSON-RPC payload length: {payloadLength}.");
-        }
-
         var rented = ArrayPool<byte>.Shared.Rent(payloadLength.Value);
         try
         {
             var payload = rented.AsMemory(0, payloadLength.Value);
             await ReadExactOrEndAsync(stream, payload, cancellationToken);
-            ValidatePayload(payload.Span);
-            return JsonDocument.Parse(payload);
+            // JsonDocument.Parse(ReadOnlyMemory<byte>) retains the supplied memory. The read buffer
+            // comes from ArrayPool and is returned below, so the document must own a copy first.
+            return ParseAndValidatePayload(payload.Span);
         }
         finally
         {
@@ -117,50 +113,60 @@ public static class StdioJsonRpcFraming
         return contentLength ?? throw new InvalidDataException("stdio-jsonrpc Content-Length header is missing.");
     }
 
-    private static void ValidatePayload(ReadOnlySpan<byte> payload)
+    private static JsonDocument ParseAndValidatePayload(ReadOnlySpan<byte> payload)
     {
         if (payload.Length <= 0 || payload.Length > MaxPayloadLength)
         {
             throw new InvalidDataException($"Invalid JSON-RPC payload length: {payload.Length}.");
         }
 
-        using var document = JsonDocument.Parse(payload.ToArray());
-        var root = document.RootElement;
-        if (root.ValueKind != JsonValueKind.Object)
+        var document = JsonDocument.Parse(payload.ToArray());
+        try
         {
-            throw new InvalidDataException("JSON-RPC payload must be an object.");
-        }
-
-        if (!root.TryGetProperty("jsonrpc", out var jsonRpc)
-            || jsonRpc.ValueKind != JsonValueKind.String
-            || !string.Equals(jsonRpc.GetString(), PluginSdkV2Protocol.JsonRpcVersion, StringComparison.Ordinal))
-        {
-            throw new InvalidDataException("JSON-RPC payload must declare jsonrpc 2.0.");
-        }
-
-        var hasMethod = root.TryGetProperty("method", out var method);
-        var hasResult = root.TryGetProperty("result", out _);
-        var hasError = root.TryGetProperty("error", out _);
-        var hasId = root.TryGetProperty("id", out _);
-
-        if (hasMethod)
-        {
-            if (method.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(method.GetString()))
+            var root = document.RootElement;
+            if (root.ValueKind != JsonValueKind.Object)
             {
-                throw new InvalidDataException("JSON-RPC method must be a non-empty string.");
+                throw new InvalidDataException("JSON-RPC payload must be an object.");
             }
 
-            return;
-        }
+            if (!root.TryGetProperty("jsonrpc", out var jsonRpc)
+                || jsonRpc.ValueKind != JsonValueKind.String
+                || !string.Equals(jsonRpc.GetString(), PluginSdkV2Protocol.JsonRpcVersion, StringComparison.Ordinal))
+            {
+                throw new InvalidDataException("JSON-RPC payload must declare jsonrpc 2.0.");
+            }
 
-        if (hasResult == hasError)
-        {
-            throw new InvalidDataException("JSON-RPC response must contain exactly one of result or error.");
-        }
+            var hasMethod = root.TryGetProperty("method", out var method);
+            var hasResult = root.TryGetProperty("result", out _);
+            var hasError = root.TryGetProperty("error", out _);
+            var hasId = root.TryGetProperty("id", out _);
 
-        if (!hasId)
+            if (hasMethod)
+            {
+                if (method.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(method.GetString()))
+                {
+                    throw new InvalidDataException("JSON-RPC method must be a non-empty string.");
+                }
+
+                return document;
+            }
+
+            if (hasResult == hasError)
+            {
+                throw new InvalidDataException("JSON-RPC response must contain exactly one of result or error.");
+            }
+
+            if (!hasId)
+            {
+                throw new InvalidDataException("JSON-RPC response must contain id.");
+            }
+
+            return document;
+        }
+        catch
         {
-            throw new InvalidDataException("JSON-RPC response must contain id.");
+            document.Dispose();
+            throw;
         }
     }
 

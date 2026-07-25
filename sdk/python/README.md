@@ -19,6 +19,9 @@ Use `--iskypro-stdio` as the explicit plugin entry argument and reserve stdout
 for JSON-RPC frames. Application logs must go to stderr or `context.log_write`.
 Use `message.reply(*parts)` for bound replies and
 `context.messages.group(...).send(*parts)` for proactive messages.
+Use `message.reply_markdown(*parts)` or `send_markdown(*parts)` for QQ group
+Markdown messages. The runtime keeps mentions structured and Main sends
+`msg_type = 2` with `markdown.content`.
 
 ## Package a stdio plugin
 

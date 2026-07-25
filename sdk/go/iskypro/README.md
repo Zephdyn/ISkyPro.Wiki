@@ -20,6 +20,9 @@ _, err := message.Reply(
 ```
 
 Use `pluginContext.Messages.Group(id).Send(...)` for proactive messages.
+Use `message.ReplyMarkdown(...)` or `SendMarkdown(...)` for QQ group Markdown
+messages. Mentions remain structured and Main sends `msg_type = 2` with
+`markdown.content`.
 
 ## Package a stdio plugin
 

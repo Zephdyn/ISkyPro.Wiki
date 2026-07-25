@@ -118,7 +118,10 @@ def _validate_qqbot_mention_format(mention_id: str, value: Optional[str]) -> Non
         raise ValueError("legacy QQBot mention ids must not contain '<' or '>'")
 
 
-def _normalize_parts(parts: Iterable[Any]) -> JsonObject:
+def _normalize_parts(parts: Iterable[Any], message_format: str = "text") -> JsonObject:
+    if message_format not in ("text", "markdown"):
+        raise ValueError("message format must be text or markdown")
+
     flattened = []
 
     def append(part: Any) -> None:
@@ -151,7 +154,10 @@ def _normalize_parts(parts: Iterable[Any]) -> JsonObject:
             normalized.append(part)
     if not normalized:
         raise ValueError("message must contain at least one non-empty part")
-    return {"parts": normalized}
+    message = {"parts": normalized}
+    if message_format != "text":
+        message["format"] = message_format
+    return message
 
 
 class MessageContext:
@@ -183,6 +189,15 @@ class MessageContext:
             {"reference": self._reference, "message": _normalize_parts(parts)},
         )
 
+    def reply_markdown(self, *parts: Any) -> Any:
+        return self._context.invoke(
+            "messages.reply",
+            {
+                "reference": self._reference,
+                "message": _normalize_parts(parts, "markdown"),
+            },
+        )
+
 
 class MessageTarget:
     def __init__(self, context: "PluginContext", target_type: str, target_id: str) -> None:
@@ -194,6 +209,15 @@ class MessageTarget:
         return self._context.invoke(
             "messages.send",
             {"target": self._target, "message": _normalize_parts(parts)},
+        )
+
+    def send_markdown(self, *parts: Any) -> Any:
+        return self._context.invoke(
+            "messages.send",
+            {
+                "target": self._target,
+                "message": _normalize_parts(parts, "markdown"),
+            },
         )
 
 

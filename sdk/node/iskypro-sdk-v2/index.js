@@ -221,7 +221,11 @@ export const at = Object.freeze({
   everyone: messagePart({ type: "mention", target: "everyone" }),
 });
 
-function normalizeParts(parts) {
+function normalizeParts(parts, messageFormat = "text") {
+  if (!["text", "markdown"].includes(messageFormat)) {
+    throw new TypeError("message format must be text or markdown");
+  }
+
   const flattened = [];
   function append(part) {
     if (typeof part === "string") {
@@ -258,7 +262,10 @@ function normalizeParts(parts) {
   if (normalized.length === 0) {
     throw new TypeError("message must contain at least one non-empty part");
   }
-  return { parts: normalized };
+  return {
+    parts: normalized,
+    ...(messageFormat === "text" ? {} : { format: messageFormat }),
+  };
 }
 
 export class MessageContext {
@@ -285,6 +292,13 @@ export class MessageContext {
       message: normalizeParts(parts),
     });
   }
+
+  replyMarkdown(...parts) {
+    return this.context.invoke("messages.reply", {
+      reference: this.reference,
+      message: normalizeParts(parts, "markdown"),
+    });
+  }
 }
 
 export class MessageTarget {
@@ -298,6 +312,13 @@ export class MessageTarget {
     return this.context.invoke("messages.send", {
       target: this.target,
       message: normalizeParts(parts),
+    });
+  }
+
+  sendMarkdown(...parts) {
+    return this.context.invoke("messages.send", {
+      target: this.target,
+      message: normalizeParts(parts, "markdown"),
     });
   }
 }

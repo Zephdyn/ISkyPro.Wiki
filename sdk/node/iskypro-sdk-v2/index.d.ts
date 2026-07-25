@@ -63,10 +63,12 @@ export class MessageContext {
   readonly mentions: readonly UserRef[];
   readonly rawPayload: JsonObject;
   reply(...parts: Array<string | MessagePart>): Promise<unknown>;
+  replyMarkdown(...parts: Array<string | MessagePart>): Promise<unknown>;
 }
 
 export class MessageTarget {
   send(...parts: Array<string | MessagePart>): Promise<unknown>;
+  sendMarkdown(...parts: Array<string | MessagePart>): Promise<unknown>;
 }
 
 export class MessageService {

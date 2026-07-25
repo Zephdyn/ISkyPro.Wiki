@@ -16,6 +16,7 @@ Message handlers receive a bound `MessageContext`:
 
 ```csharp
 await message.ReplyAsync(At.User(message.Sender), " hello");
+await message.ReplyMarkdownAsync(At.User(message.Sender), " **hello**");
 
 await context.Messages
     .Group(groupOpenId)
@@ -27,8 +28,10 @@ and reserve stdout for protocol frames. `StdioPluginV2Host` loads that manifest
 from the working directory or application output directory. Application logs
 must use stderr or `IISkyProPluginV2Context.WriteLogAsync`.
 
-`MessageContext.ReplyAsync` and `context.Messages` use structured text/mention
-parts; SDK code never emits QQ markup. Generated low-level catalog methods return
+`MessageContext.ReplyAsync`, `ReplyMarkdownAsync`, and `context.Messages` use
+structured text/mention parts; SDK code never emits QQ markup. Markdown is
+currently supported for QQ group targets and is sent as `msg_type = 2` with
+`markdown.content`. Generated low-level catalog methods return
 `JsonElement` results and expose permission,
 stability, request/response model, and default-enabled metadata. The runtime
 supports initialize negotiation, bounded concurrent event dispatch,
