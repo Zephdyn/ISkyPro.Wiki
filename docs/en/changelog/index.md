@@ -1,9 +1,11 @@
 # Changelog
 
-This directory records public ISkyPro release notes. Release publishing should maintain two user-facing sources:
+This directory contains public release notes for ISkyPro users and plugin developers. Starting with 2.0.0, entries should stay concise and consistent, lead with observable changes, and highlight upgrade and plugin-development impact without expanding into application internals.
+
+Release publishing should maintain two public sources:
 
 - GitHub Release body: a quick preview for WebUI update prompts or update panels.
-- Wiki changelog pages: complete change details and release context.
+- Wiki changelog pages: the complete public release and upgrade reference.
 
 ## Versions
 
