@@ -92,6 +92,19 @@ public static class At
     }
 }
 
+public static class Image
+{
+    public static MessagePart FromFile(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath) || filePath.Any(char.IsControl))
+        {
+            throw new ArgumentException("Image file path must not be empty or contain control characters.", nameof(filePath));
+        }
+
+        return new ImagePart(filePath);
+    }
+}
+
 public interface IMessageService
 {
     IMessageTarget Group(string groupOpenId);
@@ -359,7 +372,7 @@ internal static class SdkOutgoingMessageNormalizer
                     Flatten(child, target);
                 }
                 break;
-            case TextPart or MentionPart:
+            case TextPart or MentionPart or ImagePart:
                 target.Add(part);
                 break;
             default:

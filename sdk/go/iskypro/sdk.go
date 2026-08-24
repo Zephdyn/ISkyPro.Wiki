@@ -65,6 +65,24 @@ func (p textPart) appendWire(parts []JsonObject) ([]JsonObject, error) {
 	return append(parts, JsonObject{"type": "text", "text": p.text}), nil
 }
 
+type imagePart struct {
+	filePath string
+}
+
+func Image(filePath string) MessagePart {
+	if err := validateID(filePath, "image file path"); err != nil {
+		panic(err)
+	}
+	return imagePart{filePath: filePath}
+}
+
+func (p imagePart) appendWire(parts []JsonObject) ([]JsonObject, error) {
+	if err := validateID(p.filePath, "image file path"); err != nil {
+		return nil, err
+	}
+	return append(parts, JsonObject{"type": "image", "filePath": p.filePath}), nil
+}
+
 type mentionPart struct {
 	target      string
 	id          string

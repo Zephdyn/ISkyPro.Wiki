@@ -49,6 +49,8 @@ export const at: {
   readonly everyone: MessagePart;
 };
 
+export function image(filePath: string): MessagePart;
+
 export class MessageContext {
   readonly eventId: string;
   readonly eventType: string;

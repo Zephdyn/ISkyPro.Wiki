@@ -6,12 +6,15 @@ namespace ISkyPro.Contracts.PluginModels;
 [JsonDerivedType(typeof(TextPart), "text")]
 [JsonDerivedType(typeof(MentionPart), "mention")]
 [JsonDerivedType(typeof(CompositePart), "composite")]
+[JsonDerivedType(typeof(ImagePart), "image")]
 public abstract record MessagePart
 {
     public static implicit operator MessagePart(string text) => new TextPart(text);
 }
 
 public sealed record TextPart(string Text) : MessagePart;
+
+public sealed record ImagePart(string FilePath) : MessagePart;
 
 public sealed record MentionPart(
     MentionTarget Target,
@@ -103,6 +106,9 @@ public static class PluginSdkV2MessageErrorCodes
     public const string MentionEveryoneUnsupportedTarget = "message.mention_everyone.unsupported_target";
     public const string MentionEveryonePermissionDenied = "message.mention_everyone.permission_denied";
     public const string FormatUnsupportedTarget = "message.format.unsupported_target";
+    public const string ImageInvalid = "message.image.invalid";
+    public const string ImageTooMany = "message.image.too_many";
+    public const string ImageFormatUnsupported = "message.image.format_unsupported";
     public const string TargetInvalid = "message.target.invalid";
     public const string ReferenceExpired = "message.reference.expired";
 }

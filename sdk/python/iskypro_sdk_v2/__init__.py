@@ -102,6 +102,17 @@ class _At:
 at = _At()
 
 
+def image(file_path: str) -> _MessagePart:
+    """Create a local image part (uploaded and sent as rich media by Main).
+
+    ``file_path`` is the absolute path of the image file on the machine that
+    runs ISkyPro. The message can contain at most one image part and cannot be
+    combined with markdown format.
+    """
+    _validate_id(file_path, "image file path")
+    return _MessagePart({"type": "image", "filePath": file_path})
+
+
 def _optional_string(value: Any) -> Optional[str]:
     return str(value) if value is not None else None
 
@@ -660,6 +671,7 @@ __all__ = [
     "StdioJsonRpcPlugin",
     "UserRef",
     "at",
+    "image",
     "read_frame",
     "write_frame",
 ]

@@ -221,6 +221,11 @@ export const at = Object.freeze({
   everyone: messagePart({ type: "mention", target: "everyone" }),
 });
 
+export function image(filePath) {
+  validateId(filePath, "image file path");
+  return messagePart({ type: "image", filePath });
+}
+
 function normalizeParts(parts, messageFormat = "text") {
   if (!["text", "markdown"].includes(messageFormat)) {
     throw new TypeError("message format must be text or markdown");
