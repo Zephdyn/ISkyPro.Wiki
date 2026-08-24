@@ -1,6 +1,6 @@
 {
   "name": "@iskypro/plugin-sdk-v2",
-  "version": "2.0.0",
+  "version": "2.1.0-preview.1",
   "description": "ISkyPro Plugin SDK v2 stdio-jsonrpc runtime",
   "license": "Apache-2.0",
   "repository": {

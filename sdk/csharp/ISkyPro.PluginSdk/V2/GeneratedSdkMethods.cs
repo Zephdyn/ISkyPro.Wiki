@@ -14,7 +14,7 @@ public sealed record PluginV2SdkMethodDescriptor(
 
 public static class PluginV2SdkMethods
 {
-    public const string SdkVersion = "2.0.0";
+    public const string SdkVersion = "2.1.0-preview.1";
 
     public const string ChannelsCreateSubChannel = "channels.createSubChannel";
     public const string ChannelsDeleteSubChannel = "channels.deleteSubChannel";

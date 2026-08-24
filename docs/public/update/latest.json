@@ -1,13 +1,13 @@
 {
-  "version": "2.0.0",
-  "tag": "v2.0.0",
-  "title": "ISkyPro 2.0.0",
-  "date": "2026-07-25",
-  "channel": "stable",
-  "changelog": "/changelog/v2-0-0",
+  "version": "2.1.0-preview.1",
+  "tag": "v2.1.0-preview.1",
+  "title": "ISkyPro 2.1.0-preview.1",
+  "date": "2026-08-25",
+  "channel": "preview",
+  "changelog": "/changelog/v2-1-0-preview-1",
   "summary": [
-    "Plugin SDK v2 的 C#、Python、Node.js 和 Go 实现进入稳定支持，并统一迁入公开 Wiki 仓库。",
-    "四语言 SDK 由同一 QQBot API catalog 生成，发布前会进行跨语言构建与解压验证。",
-    "Go SDK 目录统一为 sdk/go/iskypro，module path 遵循 Go Modules 的 /v2 规则。"
+    "新增 OneBot 平台网关：支持 v11 / v12 协议、反向 WebSocket、CQ 码富媒体、出站限速与多网关聚合状态。",
+    "WebUI 登录页支持按平台选择 QQBot 或 OneBot 配置，前端改为模块化平台架构。",
+    "Plugin SDK v2 结构化消息新增 image part，可发送本地图片富媒体。"
   ]
 }
