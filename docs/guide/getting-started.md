@@ -111,6 +111,19 @@ Bot ID / AppID 和 Secret 只来自你自己的 QQ 机器人后台。不要把 S
 - [QQBot 事件配置](/guide/qqbot-events)
 - [Webhook 与反向代理](/guide/webhook-and-proxy)
 
+## 接入 OneBot 平台
+
+2.1.0 起，ISkyPro 支持 OneBot 平台网关，可与其他 OneBot 兼容客户端/协议端并行运行。
+OneBot 网关与 QQBot 网关相互独立：
+
+- 正向 WebSocket：由 ISkyPro 主动连接 OneBot 协议端地址。
+- 反向 WebSocket：OneBot 协议端连接 ISkyPro 的 `/onebot/ws` 接入点，可配置
+  `access_token` 校验。
+- 消息协议支持 OneBot v11 与 v12；发送层支持图片、@、回复、语音等 CQ 码富媒体，并带出站限速。
+
+在 WebUI 登录页选择“OneBot”平台，或直接编辑配置文件中的 `onebot` 节启用。多平台状态可在
+网关页查看。
+
 ## 长期运行入口
 
 Windows 长期运行建议安装 Windows Service。每个实例使用一个独立目录和一个独立服务名：

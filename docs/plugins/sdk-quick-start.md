@@ -89,6 +89,21 @@ Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
 可安装的完整 @ 复读示例位于 `samples/QQBotMarkdownRepeatPlugin`，命令为
 `复读 你好`。
 
+## 发送本地图片
+
+结构化消息支持 `image` part，可发送运行 ISkyPro 的机器上的本地图片（群聊、私聊均可）：
+
+```csharp
+await message.ReplyAsync(
+    Image.FromFile(@"C:\news\daily_news_latest.png"),
+    " 每日新闻");
+```
+
+Python、Node.js 和 Go 对应使用 `image(...)` 和 `Image(filePath)`。Main 会把图片上传到
+QQ 服务器（私聊 `v2/users/{openid}/files`、群聊 `v2/groups/{openid}/files`），再以富媒体
+`msg_type = 7` 发送。一条消息最多包含一个 `image` part，且不能与 Markdown 格式组合；
+发送多张图片请拆成多条消息。`image` part 不使用低层 `media.uploadC2CFile` 授权 stub。
+
 ## 打包 stdio 插件
 
 不要直接压缩源码目录。正式 ZIP 必须包含插件入口、运行依赖和根目录 `manifest.json`。仓库样例提供了可直接运行的打包入口：

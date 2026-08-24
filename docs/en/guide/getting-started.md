@@ -111,6 +111,21 @@ The quick start only requires login and mode selection. Group message permission
 - [QQBot Events](/en/guide/qqbot-events)
 - [Webhook and Reverse Proxy](/en/guide/webhook-and-proxy)
 
+## Connecting the OneBot Platform
+
+Since 2.1.0, ISkyPro supports an OneBot platform gateway that can run alongside
+other OneBot-compatible clients/protocol implementations. The OneBot and QQBot
+gateways are independent of each other:
+
+- Forward WebSocket: ISkyPro actively connects to the OneBot protocol endpoint.
+- Reverse WebSocket: the OneBot protocol endpoint connects to ISkyPro's
+  `/onebot/ws` endpoint, with optional `access_token` validation.
+- Message protocols support OneBot v11 and v12; the send layer supports CQ-code
+  rich media such as images, mentions, replies, and voice, with outbound throttling.
+
+Select the "OneBot" platform on the WebUI login page, or enable the `onebot`
+section in the configuration file. Multi-platform state is visible on the gateway page.
+
 ## Long-Running Entry Point
 
 For long-running Windows deployments, install a Windows Service. Each instance should use its own directory and service name:

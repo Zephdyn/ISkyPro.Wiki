@@ -92,6 +92,24 @@ and the target client.
 The installable `samples/QQBotMarkdownRepeatPlugin` demonstrates this flow with
 the `复读 hello` command.
 
+## Send a local image
+
+Structured messages support an `image` part for local image files on the machine
+running ISkyPro (both group and private chats):
+
+```csharp
+await message.ReplyAsync(
+    Image.FromFile(@"C:\news\daily_news_latest.png"),
+    " Daily news");
+```
+
+Python, Node.js, and Go use `image(...)` and `Image(filePath)` respectively. Main
+uploads the image to the QQ server (`v2/users/{openid}/files` for private chats,
+`v2/groups/{openid}/files` for groups) and sends it as rich media `msg_type = 7`.
+A message allows at most one `image` part and cannot combine it with Markdown
+format; send additional images as separate messages. The `image` part does not
+use the low-level `media.uploadC2CFile` authorization stub.
+
 ## Package stdio plugins
 
 Do not simply zip the source directory. A release ZIP must contain the entry
