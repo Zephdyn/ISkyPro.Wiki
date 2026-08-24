@@ -1,0 +1,20 @@
+* text=auto
+
+# Binary files - never normalize
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.dll binary
+*.exe binary
+*.pdb binary
+*.zip binary
+*.7z binary
+*.rar binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.sqlite binary
+*.db binary
