@@ -107,13 +107,13 @@ public static class Image
 
 public interface IMessageService
 {
-    IMessageTarget Group(string groupOpenId);
+    IMessageTarget Group(string groupOpenId, string? platform = null);
 
-    IMessageTarget Channel(string channelId);
+    IMessageTarget Channel(string channelId, string? platform = null);
 
-    IMessageTarget User(string userOpenId);
+    IMessageTarget User(string userOpenId, string? platform = null);
 
-    IMessageTarget DirectMessage(string guildId);
+    IMessageTarget DirectMessage(string guildId, string? platform = null);
 }
 
 public interface IMessageTarget
@@ -258,26 +258,26 @@ internal sealed class MessageService : IMessageService
         _transport = transport;
     }
 
-    public IMessageTarget Group(string groupOpenId)
-        => Create(PluginSdkV2MessageTargetTypes.Group, groupOpenId);
+    public IMessageTarget Group(string groupOpenId, string? platform = null)
+        => Create(PluginSdkV2MessageTargetTypes.Group, groupOpenId, platform);
 
-    public IMessageTarget Channel(string channelId)
-        => Create(PluginSdkV2MessageTargetTypes.Channel, channelId);
+    public IMessageTarget Channel(string channelId, string? platform = null)
+        => Create(PluginSdkV2MessageTargetTypes.Channel, channelId, platform);
 
-    public IMessageTarget User(string userOpenId)
-        => Create(PluginSdkV2MessageTargetTypes.User, userOpenId);
+    public IMessageTarget User(string userOpenId, string? platform = null)
+        => Create(PluginSdkV2MessageTargetTypes.User, userOpenId, platform);
 
-    public IMessageTarget DirectMessage(string guildId)
-        => Create(PluginSdkV2MessageTargetTypes.DirectMessage, guildId);
+    public IMessageTarget DirectMessage(string guildId, string? platform = null)
+        => Create(PluginSdkV2MessageTargetTypes.DirectMessage, guildId, platform);
 
-    private IMessageTarget Create(string type, string id)
+    private IMessageTarget Create(string type, string id, string? platform = null)
     {
         if (string.IsNullOrWhiteSpace(id) || id.Any(char.IsControl))
         {
             throw new ArgumentException("Message target id must not be empty or contain control characters.", nameof(id));
         }
 
-        return new MessageTargetClient(_transport, new MessageTarget(type, id));
+        return new MessageTargetClient(_transport, new MessageTarget(type, id, platform));
     }
 }
 

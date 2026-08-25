@@ -74,10 +74,10 @@ export class MessageTarget {
 }
 
 export class MessageService {
-  group(id: string): MessageTarget;
-  channel(id: string): MessageTarget;
-  user(id: string): MessageTarget;
-  directMessage(id: string): MessageTarget;
+  group(id: string, platform?: string): MessageTarget;
+  channel(id: string, platform?: string): MessageTarget;
+  user(id: string, platform?: string): MessageTarget;
+  directMessage(id: string, platform?: string): MessageTarget;
 }
 
 export class PluginContext extends GeneratedSdkMethods {

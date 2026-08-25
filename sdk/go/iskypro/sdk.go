@@ -241,20 +241,28 @@ type MessageService struct {
 	context *PluginContext
 }
 
-func (s MessageService) Group(id string) MessageTarget {
-	return MessageTarget{context: s.context, target: JsonObject{"type": "group", "id": id}}
+func (s MessageService) Group(id string, platform ...string) MessageTarget {
+	return newMessageTarget(s.context, "group", id, platform)
 }
 
-func (s MessageService) Channel(id string) MessageTarget {
-	return MessageTarget{context: s.context, target: JsonObject{"type": "channel", "id": id}}
+func (s MessageService) Channel(id string, platform ...string) MessageTarget {
+	return newMessageTarget(s.context, "channel", id, platform)
 }
 
-func (s MessageService) User(id string) MessageTarget {
-	return MessageTarget{context: s.context, target: JsonObject{"type": "user", "id": id}}
+func (s MessageService) User(id string, platform ...string) MessageTarget {
+	return newMessageTarget(s.context, "user", id, platform)
 }
 
-func (s MessageService) DirectMessage(id string) MessageTarget {
-	return MessageTarget{context: s.context, target: JsonObject{"type": "direct", "id": id}}
+func (s MessageService) DirectMessage(id string, platform ...string) MessageTarget {
+	return newMessageTarget(s.context, "direct", id, platform)
+}
+
+func newMessageTarget(context *PluginContext, targetType string, id string, platform []string) MessageTarget {
+	target := JsonObject{"type": targetType, "id": id}
+	if len(platform) > 0 && platform[0] != "" {
+		target["platform"] = platform[0]
+	}
+	return MessageTarget{context: context, target: target}
 }
 
 type MessageTarget struct {

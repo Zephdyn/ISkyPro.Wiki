@@ -72,7 +72,11 @@ public sealed record OutgoingMessage
     public IReadOnlyList<MessagePart> Parts { get; init; } = Array.Empty<MessagePart>();
 }
 
-public sealed record MessageTarget(string Type, string Id);
+public sealed record MessageTarget(
+    string Type,
+    string Id,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    string? Platform = null);
 
 public sealed record MessageSendResult(
     bool Accepted,

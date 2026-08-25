@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Text.Json;
 using ISkyPro.Contracts.BotModels;
 
@@ -40,7 +41,9 @@ public sealed record PluginSdkV2MessageReference(
     string TargetType,
     string TargetId,
     DateTimeOffset? ReplyUntil,
-    IReadOnlyList<string> Restrictions);
+    IReadOnlyList<string> Restrictions,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    string? Platform = null);
 
 public sealed record PluginSdkV2EventAck(
     string EventId,

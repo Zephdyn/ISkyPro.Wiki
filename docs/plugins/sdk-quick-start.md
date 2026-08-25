@@ -89,6 +89,31 @@ Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
 可安装的完整 @ 复读示例位于 `samples/QQBotMarkdownRepeatPlugin`，命令为
 `复读 你好`。
 
+## 指定目标平台
+
+`messages.send` 的主动发送目标支持可选 `platform` 参数，缺省为 `"qqbot"`。
+当 ISkyPro 已接入 OneBot 时，可显式把目标平台设为 `"onebot"`：
+
+```csharp
+await context.Messages.Group("123456", "onebot").SendAsync("你好");
+```
+
+```python
+context.messages.group("123456", "onebot").send("你好")
+```
+
+```js
+context.messages.group("123456", "onebot").send("你好");
+```
+
+```go
+sdk.Messages.Group("123456", "onebot").Send(ctx, "你好")
+```
+
+`message.reply()` 不需要传平台：Main 会根据事件里的 `source` / `messageReference.platform`
+自动路由；旧版 C# 插件即使剥离了 `platform` 字段，也会使用 Main 最近一次向该插件
+分发事件时记录的平台。
+
 ## 发送本地图片
 
 结构化消息支持 `image` part，可发送运行 ISkyPro 的机器上的本地图片（群聊、私聊均可）：
