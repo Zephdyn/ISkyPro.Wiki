@@ -14,6 +14,7 @@ The first 2.1.0 preview adds an OneBot platform gateway, an optional platform-se
 
 - sdk: Added image sending to structured messages. The C#, Python, Node.js, and Go SDKs provide `Image.FromFile`, `image()`, `image(filePath)`, and `Image(filePath)` respectively; pass a local image path on the machine running ISkyPro to send a group or private-chat image (rich media `msg_type = 7`). A message allows at most one image and cannot be combined with Markdown; send additional images as separate messages.
 - sdk: Made the Plugin SDK v2 messaging path platform-neutral. `messageReference` and the `messages.send` target now support an optional `platform` field; Main adds OneBot v2 event mapping and CQ-code sending, and already-compiled C# plugins replying inside OneBot events are routed through the plugin's last event platform automatically.
+- sdk: Low-level catalog methods now forward to the real QQBot OpenAPI instead of returning placeholders. `unsafe.rawOpenApi` remains disabled by default, but can invoke arbitrary QQBot OpenAPI endpoints when the global allow switch is enabled and the plugin declares the permission.
 
 ## ⚙️ Configuration
 

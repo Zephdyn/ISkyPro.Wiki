@@ -14,6 +14,7 @@
 
 - sdk: 结构化消息新增图片发送：四语言 SDK 分别提供 `Image.FromFile`、`image()`、`image(filePath)`、`Image(filePath)`，传入 ISkyPro 所在机器上的本地图片路径即可发送群聊或私聊图片（富媒体 `msg_type = 7`）。一条消息最多包含一个图片，且不能与 Markdown 组合；多张图片请拆成多条消息。
 - sdk: Plugin SDK v2 消息链路升级为平台无关：`messageReference` 与 `messages.send` 的 `target` 支持可选 `platform`；Main 新增 OneBot v2 事件映射和 CQ 码发送，已编译旧 C# 插件在 OneBot 事件内回复也会通过最近事件平台自动路由到 OneBot。
+- sdk: 低层 catalog 方法已从占位改为真实 QQBot OpenAPI 转发；`unsafe.rawOpenApi` 仍默认关闭，开启全局允许开关并声明权限后可调用任意 QQBot OpenAPI。
 
 ## ⚙️ Configuration
 
