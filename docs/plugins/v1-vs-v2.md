@@ -22,7 +22,7 @@ ISkyPro/
 - 适合已有 ISky 框架 v1 / 易语言 DLL 插件。
 - 由独立 `isky.exe` x86 宿主运行。
 - 同一 v1 插件的消息回调保持串行，保留 v1 返回值拦截语义。
-- WebUI 可扫描、上传、启用、禁用、重启、调整排序、打开设置和卸载。
+- WebUI 插件页以卡片列表统一管理：可搜索、按类型/状态筛选、查看详情、扫描、上传、启用、禁用、重启、打开设置和卸载。
 - v1 插件 ABI 和 `message.dll` 兼容层继续保留。
 
 ISky v1 插件仅支持 Windows 包。Linux x64 包不包含 `isky.exe`、`message.dll` 或 v1 插件 ABI 兼容层。
@@ -46,7 +46,7 @@ ISkyPro/
 - stdout 只允许 JSON-RPC 协议帧，普通日志写 stderr 或 `log.write`。
 - 插件进程由 Main 启动、停止、重启和监控。
 - 支持 typed + raw 事件、`messageReference` 延迟回复、权限声明和 settings schema。
-- WebUI v2 插件页可安装 zip、查看状态、启动、停止、重启、禁用、卸载和打开设置。
+- WebUI「安装插件」选项卡可安装 v2+ zip 插件包或注册 HTTP 插件；插件列表可查看状态、启动、停止、重启、禁用、卸载和打开设置。
 
 HTTP v2 插件不放入 `plugins-v2/`，也不上传 ZIP。它作为独立 Web 服务运行，通过
 `GET /iskypro/plugin/manifest` 和 `POST /iskypro/plugin/events/message` 接入，用户只在

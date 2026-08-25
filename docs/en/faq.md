@@ -34,7 +34,7 @@ ISky v1 plugins depend on the original ISky framework DLL ABI and a 32-bit runti
 
 ## Why did a newly uploaded ISkyPro v2+ plugin not start?
 
-Successful installation does not always start the plugin. Confirm that start after install was selected during upload, or start it manually from the v2 plugins tab. Stop a running plugin before updating it.
+Successful installation does not always start the plugin. Confirm that start after install was selected during upload, or start it manually from the plugin list page. Stop a running plugin before updating it.
 
 ## Does update-check failure affect runtime?
 

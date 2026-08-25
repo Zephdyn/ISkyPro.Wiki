@@ -177,7 +177,7 @@ need Go. Produce a separate ZIP for every target OS and architecture.
 
 1. Use the language packaging command above to create an installable ZIP. A custom pipeline must also include the entry point, dependencies, and root `manifest.json`.
 2. The zip root or its single top-level directory must contain `manifest.json`.
-3. Open the WebUI Plugins page and switch to ISkyPro v2+ Plugins.
+3. Open the WebUI Plugins page, go to the Install plugins tab, and pick Install v2+ plugin package.
 4. Upload the zip.
 5. When the same plugin ID is detected, review the old and new plugin details in the confirmation dialog before replacing it.
 6. To run immediately, enable start after install.
