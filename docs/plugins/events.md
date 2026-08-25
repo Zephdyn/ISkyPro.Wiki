@@ -15,9 +15,16 @@ Plugin SDK v2 事件同时提供规范字段和完整 `rawPayload`。规范字�
 
 ## 群消息
 
-常见 QQBot 事件：`GROUP_MESSAGE_CREATE`。
+常见 QQBot 事件：`GROUP_AT_MESSAGE_CREATE`（群聊全量消息仅私域开放）。
 
-在 SDK v2 中通常映射为消息事件，`conversation.type` 为 `group`，`messageReference.targetType` 为 `group`。回复时优先使用 `messageReference` 调用 `messages.replyText`。
+在 SDK v2 中通常映射为消息事件，`conversation.type` 为 `group`，`messageReference.targetType` 为 `group`。回复时使用事件绑定的 `message.ReplyAsync(...)`（底层为 `messages.reply`），不需要手工传递 `messageReference`。
+
+## 媒体与提及
+
+QQ 媒体消息（图片/视频/语音/文件）的 `message.attachments` 数组已自动填充，每项包含
+`url`、`content_type`、`size` 等字段；频道消息中被 @ 的用户会填充到 `message.mentions`
+（`id`/`username`）。纯文本消息两者的数组为空；`rawPayload` 仍保留完整原始字段
+（如附件尺寸、文件名）。
 
 ## C2C / 单聊消息
 

@@ -129,6 +129,57 @@ QQ 服务器（私聊 `v2/users/{openid}/files`、群聊 `v2/groups/{openid}/fil
 `msg_type = 7` 发送。一条消息最多包含一个 `image` part，且不能与 Markdown 格式组合；
 发送多张图片请拆成多条消息。`image` part 不使用低层 `media.uploadC2CFile` 授权 stub。
 
+## 发送远程图片
+
+机器上没有图片文件、但图片有公网 URL 时，使用 `image-url` part。Main 会走 QQ 官方
+URL 直传流程（`file_type=1` + `url` + `srv_send_msg=false` → `file_info` → 富媒体
+`msg_type = 7`），仅支持群聊与单聊目标：
+
+```csharp
+await message.ReplyAsync(
+    Image.FromUrl("https://example.com/news_banner.png"),
+    " 每日新闻");
+```
+
+```python
+await message.reply(image_url("https://example.com/news_banner.png"), " 每日新闻")
+```
+
+```js
+await message.reply(imageUrl("https://example.com/news_banner.png"), " 每日新闻");
+```
+
+```go
+err := message.Reply(ctx, iskypro.ImageUrl("https://example.com/news_banner.png"), iskypro.Text(" 每日新闻"))
+```
+
+文字子频道/频道私信的目标暂不支持远程 URL 图片，请改用本地文件路径。本地 base64
+`file_data` 上传路径作为兼容能力保留（官方文档未列出该字段，可能仍可用），未做迁移。
+
+## 撤回消息
+
+插件可以撤回**机器人自己发送**的消息（QQ 平台限制：发送超过 2 分钟不可撤回；
+文字子频道/频道私信撤回仅私域机器人可用）。需要 manifest 声明 `messages.recall`
+权限：
+
+```csharp
+await context.Messages.Group("group-openid").RecallAsync("platform-message-id");
+```
+
+```python
+context.messages.group("group-openid").recall("platform-message-id")
+```
+
+```js
+await context.messages.group("group-openid").recall("platform-message-id");
+```
+
+```go
+err := sdk.Messages.Group("group-openid").Recall(ctx, "platform-message-id")
+```
+
+消息 ID 取发送成功响应返回的 `id`（`MessageSendResult.MessageId`）。
+
 ## 打包 stdio 插件
 
 不要直接压缩源码目录。正式 ZIP 必须包含插件入口、运行依赖和根目录 `manifest.json`。仓库样例提供了可直接运行的打包入口：

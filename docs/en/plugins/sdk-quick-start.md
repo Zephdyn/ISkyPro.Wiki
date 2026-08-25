@@ -110,6 +110,62 @@ A message allows at most one `image` part and cannot combine it with Markdown
 format; send additional images as separate messages. The `image` part does not
 use the low-level `media.uploadC2CFile` authorization stub.
 
+## Send a remote image
+
+When the image is not available as a local file but has a public URL, use the
+`image-url` part. Main performs the official QQ URL upload flow
+(`file_type=1` + `url` + `srv_send_msg=false` → `file_info` → rich media
+`msg_type = 7`); only group and C2C targets are supported:
+
+```csharp
+await message.ReplyAsync(
+    Image.FromUrl("https://example.com/news_banner.png"),
+    " Daily news");
+```
+
+```python
+await message.reply(image_url("https://example.com/news_banner.png"), " Daily news")
+```
+
+```js
+await message.reply(imageUrl("https://example.com/news_banner.png"), " Daily news");
+```
+
+```go
+err := message.Reply(ctx, iskypro.ImageUrl("https://example.com/news_banner.png"), iskypro.Text(" Daily news"))
+```
+
+Channel and direct-message targets do not support remote URL images yet; use a
+local file path instead. The local base64 `file_data` upload path is kept as a
+compatibility capability (the official docs do not list the field, which does
+not prove it is unusable) and is not migrated.
+
+## Recall a message
+
+A plugin can recall messages **it sent itself** (QQ limits: messages older than
+2 minutes cannot be recalled; text-channel/direct-message recall works only for
+private-domain bots). The manifest must declare the `messages.recall`
+permission:
+
+```csharp
+await context.Messages.Group("group-openid").RecallAsync("platform-message-id");
+```
+
+```python
+context.messages.group("group-openid").recall("platform-message-id")
+```
+
+```js
+await context.messages.group("group-openid").recall("platform-message-id");
+```
+
+```go
+err := sdk.Messages.Group("group-openid").Recall(ctx, "platform-message-id")
+```
+
+The message id is the `id` returned by the successful send response
+(`MessageSendResult.MessageId`).
+
 ## Package stdio plugins
 
 Do not simply zip the source directory. A release ZIP must contain the entry

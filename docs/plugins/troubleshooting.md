@@ -37,7 +37,7 @@ fmt.Println("hello")
 
 ## 无权限
 
-SDK API 调用会按 manifest `permissions` 校验。调用 `messages.reply` 需要 `messages.reply`，读取当前机器人资料需要 `users.read`。
+SDK API 调用会按 manifest `permissions` 校验。调用 `messages.reply` 需要 `messages.reply`，主动发送需要 `messages.send`，撤回需要 `messages.recall`，读取当前机器人资料需要 `users.read`。QQ 平台错误（如 22009 消息超频）会以 JSON-RPC error `data.errorCode`（`qq.api.<errCode>`）返回，插件可以按错误码分支处理。
 
 ## HTTP 插件注册失败
 

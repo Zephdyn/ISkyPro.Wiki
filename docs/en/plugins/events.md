@@ -15,9 +15,21 @@ Common fields:
 
 ## Group Messages
 
-Common QQBot event: `GROUP_MESSAGE_CREATE`.
+Common QQBot event: `GROUP_AT_MESSAGE_CREATE` (full group message streams are
+private-domain only).
 
-In SDK v2, it is usually mapped as a message event with `conversation.type` set to `group` and `messageReference.targetType` set to `group`. Prefer `messages.replyText` with the event `messageReference` when replying.
+In SDK v2, it is usually mapped as a message event with `conversation.type` set to
+`group` and `messageReference.targetType` set to `group`. Reply with the
+event-bound `message.ReplyAsync(...)` (the underlying method is `messages.reply`);
+you never pass `messageReference` manually.
+
+## Media and Mentions
+
+For QQ media messages (image/video/voice/file), `message.attachments` is filled
+with one entry per file (`url`, `content_type`, `size`, ...). Users mentioned in
+guild messages are filled into `message.mentions` (`id`/`username`). Both arrays
+are empty for plain-text messages; `rawPayload` keeps the complete original
+fields (for example attachment dimensions and file names).
 
 ## C2C / Direct Messages
 

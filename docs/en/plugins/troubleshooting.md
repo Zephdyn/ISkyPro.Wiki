@@ -37,7 +37,11 @@ Return an ACK quickly after receiving an event. For slow HTTP calls, database wo
 
 ## Missing Permission
 
-SDK API calls are checked against manifest `permissions`. `messages.reply` requires `messages.reply`; reading the current bot profile requires `users.read`.
+SDK API calls are checked against manifest `permissions`. `messages.reply` requires
+`messages.reply`; active sends need `messages.send`; recalls need `messages.recall`;
+reading the current bot profile requires `users.read`. QQ platform errors (for
+example 22009 message rate limit) arrive with a JSON-RPC error `data.errorCode`
+(`qq.api.<errCode>`), so plugins can branch on stable error codes.
 
 ## HTTP Plugin Registration Failure
 
