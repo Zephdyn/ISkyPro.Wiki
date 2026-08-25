@@ -15,10 +15,8 @@ Common fields:
 
 ## Group Messages
 
-Common QQBot event: `GROUP_AT_MESSAGE_CREATE` (full group message streams are
-private-domain only).
-
-In SDK v2, it is usually mapped as a message event with `conversation.type` set to
+Common QQBot event: `GROUP_AT_MESSAGE_CREATE`. Once ISkyPro receives a group
+message event it is mapped to a message event with `conversation.type` set to
 `group` and `messageReference.targetType` set to `group`. Reply with the
 event-bound `message.ReplyAsync(...)` (the underlying method is `messages.reply`);
 you never pass `messageReference` manually.

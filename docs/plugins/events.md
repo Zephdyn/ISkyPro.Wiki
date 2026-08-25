@@ -15,9 +15,10 @@ Plugin SDK v2 事件同时提供规范字段和完整 `rawPayload`。规范字�
 
 ## 群消息
 
-常见 QQBot 事件：`GROUP_AT_MESSAGE_CREATE`（群聊全量消息仅私域开放）。
-
-在 SDK v2 中通常映射为消息事件，`conversation.type` 为 `group`，`messageReference.targetType` 为 `group`。回复时使用事件绑定的 `message.ReplyAsync(...)`（底层为 `messages.reply`），不需要手工传递 `messageReference`。
+常见 QQBot 事件：`GROUP_AT_MESSAGE_CREATE`。ISkyPro 收到群聊消息事件后映射为
+消息事件，`conversation.type` 为 `group`，`messageReference.targetType` 为
+`group`。回复时使用事件绑定的 `message.ReplyAsync(...)`（底层为
+`messages.reply`），不需要手工传递 `messageReference`。
 
 ## 媒体与提及
 
