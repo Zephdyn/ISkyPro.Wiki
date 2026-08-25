@@ -113,6 +113,24 @@ def image(file_path: str) -> _MessagePart:
     return _MessagePart({"type": "image", "filePath": file_path})
 
 
+def image_url(url: str) -> _MessagePart:
+    """Create a remote image part (uploaded via the official url flow by Main).
+
+    ``url`` must be an absolute http(s) url. Main uploads it through
+    ``/v2/groups/{openid}/files`` or ``/v2/users/{openid}/files``
+    (``srv_send_msg=false``) and sends it as rich media. Not supported for
+    channel/direct targets. The message can contain at most one image part and
+    cannot be combined with markdown format.
+    """
+    if (
+        not url.strip()
+        or len(url) > 2048
+        or not (url.startswith("http://") or url.startswith("https://"))
+    ):
+        raise ValueError("image url must be an absolute http(s) url of at most 2048 characters")
+    return _MessagePart({"type": "image-url", "url": url})
+
+
 def _optional_string(value: Any) -> Optional[str]:
     return str(value) if value is not None else None
 
@@ -237,6 +255,13 @@ class MessageTarget:
                 "target": self._target,
                 "message": _normalize_parts(parts, "markdown"),
             },
+        )
+
+    def recall(self, message_id: str) -> Any:
+        _validate_id(message_id, "message id")
+        return self._context.invoke(
+            "messages.recall",
+            {"target": self._target, "messageId": message_id},
         )
 
 

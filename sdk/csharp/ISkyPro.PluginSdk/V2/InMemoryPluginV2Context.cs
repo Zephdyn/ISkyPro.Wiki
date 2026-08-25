@@ -82,6 +82,28 @@ public sealed class InMemoryPluginV2Context : IISkyProPluginV2Context, IPluginV2
         return ValueTask.CompletedTask;
     }
 
+    ValueTask IPluginV2MessageTransport.RecallAsync(
+        MessageTarget target,
+        string messageId,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        ArgumentNullException.ThrowIfNull(target);
+        if (string.IsNullOrWhiteSpace(messageId))
+        {
+            throw new ArgumentException("Message id to recall must not be empty.", nameof(messageId));
+        }
+
+        _sdkCalls.Add(new PluginV2SdkCall(
+            PluginSdkV2Protocol.MessagesRecallMethod,
+            new Dictionary<string, object?>
+            {
+                ["target"] = target,
+                ["messageId"] = messageId
+            }));
+        return ValueTask.CompletedTask;
+    }
+
     public ValueTask InvokeAsync(
         string method,
         IReadOnlyDictionary<string, object?> parameters,

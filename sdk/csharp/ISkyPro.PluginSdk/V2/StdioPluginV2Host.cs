@@ -773,6 +773,21 @@ public static class StdioPluginV2Host
                 cancellationToken);
         }
 
+        public async ValueTask RecallAsync(
+            MessageTarget target,
+            string messageId,
+            CancellationToken cancellationToken)
+        {
+            _ = await InvokeWithResultAsync(
+                PluginSdkV2Protocol.MessagesRecallMethod,
+                new Dictionary<string, object?>
+                {
+                    ["target"] = target,
+                    ["messageId"] = messageId
+                },
+                cancellationToken);
+        }
+
         public async ValueTask InvokeAsync(
             string method,
             IReadOnlyDictionary<string, object?> parameters,

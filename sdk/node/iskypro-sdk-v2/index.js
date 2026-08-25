@@ -226,6 +226,18 @@ export function image(filePath) {
   return messagePart({ type: "image", filePath });
 }
 
+export function imageUrl(url) {
+  if (
+    typeof url !== "string" ||
+    url.trim().length === 0 ||
+    url.length > 2048 ||
+    (!url.startsWith("http://") && !url.startsWith("https://"))
+  ) {
+    throw new TypeError("image url must be an absolute http(s) url of at most 2048 characters");
+  }
+  return messagePart({ type: "image-url", url });
+}
+
 function normalizeParts(parts, messageFormat = "text") {
   if (!["text", "markdown"].includes(messageFormat)) {
     throw new TypeError("message format must be text or markdown");
@@ -324,6 +336,16 @@ export class MessageTarget {
     return this.context.invoke("messages.send", {
       target: this.target,
       message: normalizeParts(parts, "markdown"),
+    });
+  }
+
+  recall(messageId) {
+    if (typeof messageId !== "string" || messageId.trim().length === 0) {
+      throw new TypeError("recall requires a non-empty messageId");
+    }
+    return this.context.invoke("messages.recall", {
+      target: this.target,
+      messageId,
     });
   }
 }

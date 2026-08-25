@@ -25,17 +25,6 @@
       "sdkExposed": false
     },
     {
-      "name": "messages.replyMedia",
-      "method": "POST",
-      "path": "v2/groups/{groupOpenId}/messages",
-      "permission": "messages.reply",
-      "stability": "preview",
-      "requestModel": "GroupMediaMessageRequest",
-      "responseModel": "MessageResponse",
-      "defaultEnabled": true,
-      "sdkExposed": false
-    },
-    {
       "name": "messages.sendGroupText",
       "method": "POST",
       "path": "v2/groups/{groupOpenId}/messages",
@@ -120,23 +109,123 @@
       "defaultEnabled": true
     },
     {
-      "name": "users.getUser",
+      "name": "groups.getGroupInfo",
       "method": "GET",
-      "path": "users/{userId}",
-      "permission": "users.read",
-      "stability": "preview",
+      "path": "v2/groups/{groupOpenId}/info",
+      "permission": "groups.read",
+      "stability": "stable",
       "requestModel": null,
-      "responseModel": "User",
+      "responseModel": "Group",
       "defaultEnabled": true
     },
     {
-      "name": "groups.getGroupInfo",
+      "name": "groups.getBotState",
       "method": "GET",
-      "path": "v2/groups/{groupOpenId}",
+      "path": "v2/groups/{groupOpenId}/bot_state",
       "permission": "groups.read",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "BotState",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.getRestrictChatSetting",
+      "method": "GET",
+      "path": "v2/groups/{groupOpenId}/restrict_chat_setting",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "RestrictChatSetting",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.setRestrictChatSetting",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/restrict_chat_setting",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": "SetRestrictChatSettingRequest",
+      "responseModel": "Empty",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.listJoinRequests",
+      "method": "GET",
+      "path": "v2/groups/{groupOpenId}/join_request_list",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "JoinRequestList",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.approveJoinRequest",
+      "method": "POST",
+      "path": "v2/groups/{groupOpenId}/approval_join_request/{memberOpenId}",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": "JoinRequestApprovalRequest",
+      "responseModel": "Empty",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.listJoinApprovalStrategies",
+      "method": "GET",
+      "path": "v2/groups/join_approval_strategy",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "JoinApprovalStrategyList",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.createJoinApprovalStrategy",
+      "method": "POST",
+      "path": "v2/groups/join_approval_strategy",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": "CreateJoinApprovalStrategyRequest",
+      "responseModel": "JoinApprovalStrategy",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.updateJoinApprovalStrategy",
+      "method": "PATCH",
+      "path": "v2/groups/join_approval_strategy/{strategyId}",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": "UpdateJoinApprovalStrategyRequest",
+      "responseModel": "JoinApprovalStrategy",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.deleteJoinApprovalStrategy",
+      "method": "DELETE",
+      "path": "v2/groups/join_approval_strategy/{strategyId}",
+      "permission": "groups.manage",
+      "stability": "stable",
+      "requestModel": null,
+      "responseModel": "Empty",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.executeJoinApprovalStrategy",
+      "method": "POST",
+      "path": "v2/groups/join_approval_strategy/{strategyId}/execute",
+      "permission": "groups.manage",
       "stability": "preview",
       "requestModel": null,
-      "responseModel": "Group",
+      "responseModel": "Empty",
+      "defaultEnabled": true
+    },
+    {
+      "name": "groups.updateJoinApprovalStrategyWhitelist",
+      "method": "POST",
+      "path": "v2/groups/join_approval_strategy/{strategyId}/whitelist_users",
+      "permission": "groups.manage",
+      "stability": "preview",
+      "requestModel": "JoinApprovalStrategyWhitelistRequest",
+      "responseModel": "Empty",
       "defaultEnabled": true
     },
     {

@@ -19,7 +19,18 @@ export class GeneratedSdkMethods {
   channelsDeleteSubChannel(parameters?: JsonObject): Promise<unknown>;
   channelsGetChannel(parameters?: JsonObject): Promise<unknown>;
   channelsUpdateSubChannel(parameters?: JsonObject): Promise<unknown>;
+  groupsApproveJoinRequest(parameters?: JsonObject): Promise<unknown>;
+  groupsCreateJoinApprovalStrategy(parameters?: JsonObject): Promise<unknown>;
+  groupsDeleteJoinApprovalStrategy(parameters?: JsonObject): Promise<unknown>;
+  groupsExecuteJoinApprovalStrategy(parameters?: JsonObject): Promise<unknown>;
+  groupsGetBotState(parameters?: JsonObject): Promise<unknown>;
   groupsGetGroupInfo(parameters?: JsonObject): Promise<unknown>;
+  groupsGetRestrictChatSetting(parameters?: JsonObject): Promise<unknown>;
+  groupsListJoinApprovalStrategies(parameters?: JsonObject): Promise<unknown>;
+  groupsListJoinRequests(parameters?: JsonObject): Promise<unknown>;
+  groupsSetRestrictChatSetting(parameters?: JsonObject): Promise<unknown>;
+  groupsUpdateJoinApprovalStrategy(parameters?: JsonObject): Promise<unknown>;
+  groupsUpdateJoinApprovalStrategyWhitelist(parameters?: JsonObject): Promise<unknown>;
   guildsGetGuild(parameters?: JsonObject): Promise<unknown>;
   mediaUploadC2CFile(parameters?: JsonObject): Promise<unknown>;
   mediaUploadChannelFile(parameters?: JsonObject): Promise<unknown>;
@@ -30,5 +41,4 @@ export class GeneratedSdkMethods {
   permissionsRequestApiPermissionDemand(parameters?: JsonObject): Promise<unknown>;
   unsafeRawOpenApi(parameters?: JsonObject): Promise<unknown>;
   usersGetCurrentBot(parameters?: JsonObject): Promise<unknown>;
-  usersGetUser(parameters?: JsonObject): Promise<unknown>;
 }

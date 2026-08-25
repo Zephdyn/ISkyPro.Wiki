@@ -6,41 +6,61 @@ import "context"
 const SDKVersion = "2.1.0-preview.1"
 
 var SDKMethods = map[string]SdkMethod{
-	"ChannelsCreateSubChannel":              {Name: "channels.createSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "CreateChannelRequest", ResponseModel: "Channel", DefaultEnabled: true},
-	"ChannelsDeleteSubChannel":              {Name: "channels.deleteSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "", ResponseModel: "Empty", DefaultEnabled: true},
-	"ChannelsGetChannel":                    {Name: "channels.getChannel", Permission: "guilds.read", Stability: "stable", RequestModel: "", ResponseModel: "Channel", DefaultEnabled: true},
-	"ChannelsUpdateSubChannel":              {Name: "channels.updateSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "UpdateChannelRequest", ResponseModel: "Channel", DefaultEnabled: true},
-	"GroupsGetGroupInfo":                    {Name: "groups.getGroupInfo", Permission: "groups.read", Stability: "preview", RequestModel: "", ResponseModel: "Group", DefaultEnabled: true},
-	"GuildsGetGuild":                        {Name: "guilds.getGuild", Permission: "guilds.read", Stability: "stable", RequestModel: "", ResponseModel: "Guild", DefaultEnabled: true},
-	"MediaUploadC2CFile":                    {Name: "media.uploadC2CFile", Permission: "media.upload", Stability: "stable", RequestModel: "C2CFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
-	"MediaUploadChannelFile":                {Name: "media.uploadChannelFile", Permission: "media.upload", Stability: "preview", RequestModel: "ChannelFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
-	"MediaUploadGroupFile":                  {Name: "media.uploadGroupFile", Permission: "media.upload", Stability: "stable", RequestModel: "GroupFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
-	"MembersGetMember":                      {Name: "members.getMember", Permission: "members.read", Stability: "stable", RequestModel: "", ResponseModel: "Member", DefaultEnabled: true},
-	"MembersListMembers":                    {Name: "members.listMembers", Permission: "members.read", Stability: "stable", RequestModel: "", ResponseModel: "MemberList", DefaultEnabled: true},
-	"PermissionsGetApiPermissions":          {Name: "permissions.getApiPermissions", Permission: "permissions.manage", Stability: "stable", RequestModel: "", ResponseModel: "ApiPermissionList", DefaultEnabled: true},
-	"PermissionsRequestApiPermissionDemand": {Name: "permissions.requestApiPermissionDemand", Permission: "permissions.manage", Stability: "stable", RequestModel: "ApiPermissionDemandRequest", ResponseModel: "ApiPermissionDemand", DefaultEnabled: true},
-	"UnsafeRawOpenApi":                      {Name: "unsafe.rawOpenApi", Permission: "unsafe.raw-open-api", Stability: "unsafe", RequestModel: "RawOpenApiRequest", ResponseModel: "RawOpenApiResponse", DefaultEnabled: false},
-	"UsersGetCurrentBot":                    {Name: "users.getCurrentBot", Permission: "users.read", Stability: "stable", RequestModel: "", ResponseModel: "BotUser", DefaultEnabled: true},
-	"UsersGetUser":                          {Name: "users.getUser", Permission: "users.read", Stability: "preview", RequestModel: "", ResponseModel: "User", DefaultEnabled: true},
+	"ChannelsCreateSubChannel":                  {Name: "channels.createSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "CreateChannelRequest", ResponseModel: "Channel", DefaultEnabled: true},
+	"ChannelsDeleteSubChannel":                  {Name: "channels.deleteSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "", ResponseModel: "Empty", DefaultEnabled: true},
+	"ChannelsGetChannel":                        {Name: "channels.getChannel", Permission: "guilds.read", Stability: "stable", RequestModel: "", ResponseModel: "Channel", DefaultEnabled: true},
+	"ChannelsUpdateSubChannel":                  {Name: "channels.updateSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "UpdateChannelRequest", ResponseModel: "Channel", DefaultEnabled: true},
+	"GroupsApproveJoinRequest":                  {Name: "groups.approveJoinRequest", Permission: "groups.manage", Stability: "stable", RequestModel: "JoinRequestApprovalRequest", ResponseModel: "Empty", DefaultEnabled: true},
+	"GroupsCreateJoinApprovalStrategy":          {Name: "groups.createJoinApprovalStrategy", Permission: "groups.manage", Stability: "stable", RequestModel: "CreateJoinApprovalStrategyRequest", ResponseModel: "JoinApprovalStrategy", DefaultEnabled: true},
+	"GroupsDeleteJoinApprovalStrategy":          {Name: "groups.deleteJoinApprovalStrategy", Permission: "groups.manage", Stability: "stable", RequestModel: "", ResponseModel: "Empty", DefaultEnabled: true},
+	"GroupsExecuteJoinApprovalStrategy":         {Name: "groups.executeJoinApprovalStrategy", Permission: "groups.manage", Stability: "preview", RequestModel: "", ResponseModel: "Empty", DefaultEnabled: true},
+	"GroupsGetBotState":                         {Name: "groups.getBotState", Permission: "groups.read", Stability: "stable", RequestModel: "", ResponseModel: "BotState", DefaultEnabled: true},
+	"GroupsGetGroupInfo":                        {Name: "groups.getGroupInfo", Permission: "groups.read", Stability: "stable", RequestModel: "", ResponseModel: "Group", DefaultEnabled: true},
+	"GroupsGetRestrictChatSetting":              {Name: "groups.getRestrictChatSetting", Permission: "groups.manage", Stability: "stable", RequestModel: "", ResponseModel: "RestrictChatSetting", DefaultEnabled: true},
+	"GroupsListJoinApprovalStrategies":          {Name: "groups.listJoinApprovalStrategies", Permission: "groups.manage", Stability: "stable", RequestModel: "", ResponseModel: "JoinApprovalStrategyList", DefaultEnabled: true},
+	"GroupsListJoinRequests":                    {Name: "groups.listJoinRequests", Permission: "groups.manage", Stability: "stable", RequestModel: "", ResponseModel: "JoinRequestList", DefaultEnabled: true},
+	"GroupsSetRestrictChatSetting":              {Name: "groups.setRestrictChatSetting", Permission: "groups.manage", Stability: "stable", RequestModel: "SetRestrictChatSettingRequest", ResponseModel: "Empty", DefaultEnabled: true},
+	"GroupsUpdateJoinApprovalStrategy":          {Name: "groups.updateJoinApprovalStrategy", Permission: "groups.manage", Stability: "stable", RequestModel: "UpdateJoinApprovalStrategyRequest", ResponseModel: "JoinApprovalStrategy", DefaultEnabled: true},
+	"GroupsUpdateJoinApprovalStrategyWhitelist": {Name: "groups.updateJoinApprovalStrategyWhitelist", Permission: "groups.manage", Stability: "preview", RequestModel: "JoinApprovalStrategyWhitelistRequest", ResponseModel: "Empty", DefaultEnabled: true},
+	"GuildsGetGuild":                            {Name: "guilds.getGuild", Permission: "guilds.read", Stability: "stable", RequestModel: "", ResponseModel: "Guild", DefaultEnabled: true},
+	"MediaUploadC2CFile":                        {Name: "media.uploadC2CFile", Permission: "media.upload", Stability: "stable", RequestModel: "C2CFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
+	"MediaUploadChannelFile":                    {Name: "media.uploadChannelFile", Permission: "media.upload", Stability: "preview", RequestModel: "ChannelFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
+	"MediaUploadGroupFile":                      {Name: "media.uploadGroupFile", Permission: "media.upload", Stability: "stable", RequestModel: "GroupFileUploadRequest", ResponseModel: "FileUploadResponse", DefaultEnabled: true},
+	"MembersGetMember":                          {Name: "members.getMember", Permission: "members.read", Stability: "stable", RequestModel: "", ResponseModel: "Member", DefaultEnabled: true},
+	"MembersListMembers":                        {Name: "members.listMembers", Permission: "members.read", Stability: "stable", RequestModel: "", ResponseModel: "MemberList", DefaultEnabled: true},
+	"PermissionsGetApiPermissions":              {Name: "permissions.getApiPermissions", Permission: "permissions.manage", Stability: "stable", RequestModel: "", ResponseModel: "ApiPermissionList", DefaultEnabled: true},
+	"PermissionsRequestApiPermissionDemand":     {Name: "permissions.requestApiPermissionDemand", Permission: "permissions.manage", Stability: "stable", RequestModel: "ApiPermissionDemandRequest", ResponseModel: "ApiPermissionDemand", DefaultEnabled: true},
+	"UnsafeRawOpenApi":                          {Name: "unsafe.rawOpenApi", Permission: "unsafe.raw-open-api", Stability: "unsafe", RequestModel: "RawOpenApiRequest", ResponseModel: "RawOpenApiResponse", DefaultEnabled: false},
+	"UsersGetCurrentBot":                        {Name: "users.getCurrentBot", Permission: "users.read", Stability: "stable", RequestModel: "", ResponseModel: "BotUser", DefaultEnabled: true},
 }
 
 var SDKMethodPermissions = map[string]string{
-	"channels.createSubChannel":              "channels.manage",
-	"channels.deleteSubChannel":              "channels.manage",
-	"channels.getChannel":                    "guilds.read",
-	"channels.updateSubChannel":              "channels.manage",
-	"groups.getGroupInfo":                    "groups.read",
-	"guilds.getGuild":                        "guilds.read",
-	"media.uploadC2CFile":                    "media.upload",
-	"media.uploadChannelFile":                "media.upload",
-	"media.uploadGroupFile":                  "media.upload",
-	"members.getMember":                      "members.read",
-	"members.listMembers":                    "members.read",
-	"permissions.getApiPermissions":          "permissions.manage",
-	"permissions.requestApiPermissionDemand": "permissions.manage",
-	"unsafe.rawOpenApi":                      "unsafe.raw-open-api",
-	"users.getCurrentBot":                    "users.read",
-	"users.getUser":                          "users.read",
+	"channels.createSubChannel":                  "channels.manage",
+	"channels.deleteSubChannel":                  "channels.manage",
+	"channels.getChannel":                        "guilds.read",
+	"channels.updateSubChannel":                  "channels.manage",
+	"groups.approveJoinRequest":                  "groups.manage",
+	"groups.createJoinApprovalStrategy":          "groups.manage",
+	"groups.deleteJoinApprovalStrategy":          "groups.manage",
+	"groups.executeJoinApprovalStrategy":         "groups.manage",
+	"groups.getBotState":                         "groups.read",
+	"groups.getGroupInfo":                        "groups.read",
+	"groups.getRestrictChatSetting":              "groups.manage",
+	"groups.listJoinApprovalStrategies":          "groups.manage",
+	"groups.listJoinRequests":                    "groups.manage",
+	"groups.setRestrictChatSetting":              "groups.manage",
+	"groups.updateJoinApprovalStrategy":          "groups.manage",
+	"groups.updateJoinApprovalStrategyWhitelist": "groups.manage",
+	"guilds.getGuild":                            "guilds.read",
+	"media.uploadC2CFile":                        "media.upload",
+	"media.uploadChannelFile":                    "media.upload",
+	"media.uploadGroupFile":                      "media.upload",
+	"members.getMember":                          "members.read",
+	"members.listMembers":                        "members.read",
+	"permissions.getApiPermissions":              "permissions.manage",
+	"permissions.requestApiPermissionDemand":     "permissions.manage",
+	"unsafe.rawOpenApi":                          "unsafe.raw-open-api",
+	"users.getCurrentBot":                        "users.read",
 }
 
 func (c *PluginContext) ChannelsCreateSubChannel(ctx context.Context, parameters JsonObject) (any, error) {
@@ -59,8 +79,52 @@ func (c *PluginContext) ChannelsUpdateSubChannel(ctx context.Context, parameters
 	return c.Invoke(ctx, "channels.updateSubChannel", parameters)
 }
 
+func (c *PluginContext) GroupsApproveJoinRequest(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.approveJoinRequest", parameters)
+}
+
+func (c *PluginContext) GroupsCreateJoinApprovalStrategy(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.createJoinApprovalStrategy", parameters)
+}
+
+func (c *PluginContext) GroupsDeleteJoinApprovalStrategy(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.deleteJoinApprovalStrategy", parameters)
+}
+
+func (c *PluginContext) GroupsExecuteJoinApprovalStrategy(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.executeJoinApprovalStrategy", parameters)
+}
+
+func (c *PluginContext) GroupsGetBotState(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.getBotState", parameters)
+}
+
 func (c *PluginContext) GroupsGetGroupInfo(ctx context.Context, parameters JsonObject) (any, error) {
 	return c.Invoke(ctx, "groups.getGroupInfo", parameters)
+}
+
+func (c *PluginContext) GroupsGetRestrictChatSetting(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.getRestrictChatSetting", parameters)
+}
+
+func (c *PluginContext) GroupsListJoinApprovalStrategies(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.listJoinApprovalStrategies", parameters)
+}
+
+func (c *PluginContext) GroupsListJoinRequests(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.listJoinRequests", parameters)
+}
+
+func (c *PluginContext) GroupsSetRestrictChatSetting(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.setRestrictChatSetting", parameters)
+}
+
+func (c *PluginContext) GroupsUpdateJoinApprovalStrategy(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.updateJoinApprovalStrategy", parameters)
+}
+
+func (c *PluginContext) GroupsUpdateJoinApprovalStrategyWhitelist(ctx context.Context, parameters JsonObject) (any, error) {
+	return c.Invoke(ctx, "groups.updateJoinApprovalStrategyWhitelist", parameters)
 }
 
 func (c *PluginContext) GuildsGetGuild(ctx context.Context, parameters JsonObject) (any, error) {
@@ -101,8 +165,4 @@ func (c *PluginContext) UnsafeRawOpenApi(ctx context.Context, parameters JsonObj
 
 func (c *PluginContext) UsersGetCurrentBot(ctx context.Context, parameters JsonObject) (any, error) {
 	return c.Invoke(ctx, "users.getCurrentBot", parameters)
-}
-
-func (c *PluginContext) UsersGetUser(ctx context.Context, parameters JsonObject) (any, error) {
-	return c.Invoke(ctx, "users.getUser", parameters)
 }

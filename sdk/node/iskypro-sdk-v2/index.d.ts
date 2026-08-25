@@ -50,6 +50,7 @@ export const at: {
 };
 
 export function image(filePath: string): MessagePart;
+export function imageUrl(url: string): MessagePart;
 
 export class MessageContext {
   readonly eventId: string;
@@ -71,6 +72,7 @@ export class MessageContext {
 export class MessageTarget {
   send(...parts: Array<string | MessagePart>): Promise<unknown>;
   sendMarkdown(...parts: Array<string | MessagePart>): Promise<unknown>;
+  recall(messageId: string): Promise<unknown>;
 }
 
 export class MessageService {

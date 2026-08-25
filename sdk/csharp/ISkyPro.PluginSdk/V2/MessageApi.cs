@@ -103,6 +103,21 @@ public static class Image
 
         return new ImagePart(filePath);
     }
+
+    public static MessagePart FromUrl(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url)
+            || !Uri.TryCreate(url, UriKind.Absolute, out var parsed)
+            || parsed.Scheme is not ("http" or "https")
+            || url.Length > 2048)
+        {
+            throw new ArgumentException(
+                "Image url must be an absolute http(s) url of at most 2048 characters.",
+                nameof(url));
+        }
+
+        return new ImageUrlPart(url);
+    }
 }
 
 public interface IMessageService
@@ -127,6 +142,8 @@ public interface IMessageTarget
     ValueTask SendMarkdownAsync(CancellationToken cancellationToken, params MessagePart[] parts);
 
     ValueTask SendAsync(OutgoingMessage message, CancellationToken cancellationToken = default);
+
+    ValueTask RecallAsync(string messageId, CancellationToken cancellationToken = default);
 }
 
 public sealed class MessageContext
@@ -247,6 +264,11 @@ internal interface IPluginV2MessageTransport
         MessageTarget target,
         OutgoingMessage message,
         CancellationToken cancellationToken);
+
+    ValueTask RecallAsync(
+        MessageTarget target,
+        string messageId,
+        CancellationToken cancellationToken);
 }
 
 internal sealed class MessageService : IMessageService
@@ -321,6 +343,16 @@ internal sealed class MessageTargetClient : IMessageTarget
         ArgumentNullException.ThrowIfNull(message);
         return _transport.SendAsync(_target, message, cancellationToken);
     }
+
+    public ValueTask RecallAsync(string messageId, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(messageId))
+        {
+            throw new ArgumentException("Message id to recall must not be empty.", nameof(messageId));
+        }
+
+        return _transport.RecallAsync(_target, messageId, cancellationToken);
+    }
 }
 
 internal static class SdkOutgoingMessageNormalizer
@@ -372,7 +404,7 @@ internal static class SdkOutgoingMessageNormalizer
                     Flatten(child, target);
                 }
                 break;
-            case TextPart or MentionPart or ImagePart:
+            case TextPart or MentionPart or ImagePart or ImageUrlPart:
                 target.Add(part);
                 break;
             default:

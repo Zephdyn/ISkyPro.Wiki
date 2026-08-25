@@ -83,6 +83,30 @@ func (p imagePart) appendWire(parts []JsonObject) ([]JsonObject, error) {
 	return append(parts, JsonObject{"type": "image", "filePath": p.filePath}), nil
 }
 
+type imageUrlPart struct {
+	url string
+}
+
+// ImageUrl creates a remote image part. Main uploads the url through the
+// official files upload flow (group/c2c targets) and sends it as rich media;
+// channel/direct targets do not support url images.
+func ImageUrl(url string) MessagePart {
+	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+		panic("image url must be an absolute http(s) url")
+	}
+	if len(url) > 2048 {
+		panic("image url must be at most 2048 characters")
+	}
+	return imageUrlPart{url: url}
+}
+
+func (p imageUrlPart) appendWire(parts []JsonObject) ([]JsonObject, error) {
+	if !strings.HasPrefix(p.url, "http://") && !strings.HasPrefix(p.url, "https://") {
+		return nil, errors.New("image url must be an absolute http(s) url")
+	}
+	return append(parts, JsonObject{"type": "image-url", "url": p.url}), nil
+}
+
 type mentionPart struct {
 	target      string
 	id          string
@@ -295,6 +319,18 @@ func (t MessageTarget) SendMarkdown(ctx context.Context, parts ...MessagePart) (
 	return t.context.Invoke(ctx, "messages.send", JsonObject{
 		"target":  t.target,
 		"message": message,
+	})
+}
+
+// Recall recalls a message previously sent by the bot to this target
+// (platform dependent: QQ allows recall within 2 minutes of sending).
+func (t MessageTarget) Recall(ctx context.Context, messageID string) (any, error) {
+	if err := validateID(messageID, "message id"); err != nil {
+		return nil, err
+	}
+	return t.context.Invoke(ctx, "messages.recall", JsonObject{
+		"target":    t.target,
+		"messageId": messageID,
 	})
 }
 

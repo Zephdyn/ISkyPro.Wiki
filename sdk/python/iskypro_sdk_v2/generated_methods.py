@@ -7,7 +7,18 @@ SDK_METHODS = {
     "channels_delete_sub_channel": {"name": "channels.deleteSubChannel", "permission": "channels.manage", "stability": "stable", "request_model": None, "response_model": 'Empty', "default_enabled": True},
     "channels_get_channel": {"name": "channels.getChannel", "permission": "guilds.read", "stability": "stable", "request_model": None, "response_model": 'Channel', "default_enabled": True},
     "channels_update_sub_channel": {"name": "channels.updateSubChannel", "permission": "channels.manage", "stability": "stable", "request_model": 'UpdateChannelRequest', "response_model": 'Channel', "default_enabled": True},
-    "groups_get_group_info": {"name": "groups.getGroupInfo", "permission": "groups.read", "stability": "preview", "request_model": None, "response_model": 'Group', "default_enabled": True},
+    "groups_approve_join_request": {"name": "groups.approveJoinRequest", "permission": "groups.manage", "stability": "stable", "request_model": 'JoinRequestApprovalRequest', "response_model": 'Empty', "default_enabled": True},
+    "groups_create_join_approval_strategy": {"name": "groups.createJoinApprovalStrategy", "permission": "groups.manage", "stability": "stable", "request_model": 'CreateJoinApprovalStrategyRequest', "response_model": 'JoinApprovalStrategy', "default_enabled": True},
+    "groups_delete_join_approval_strategy": {"name": "groups.deleteJoinApprovalStrategy", "permission": "groups.manage", "stability": "stable", "request_model": None, "response_model": 'Empty', "default_enabled": True},
+    "groups_execute_join_approval_strategy": {"name": "groups.executeJoinApprovalStrategy", "permission": "groups.manage", "stability": "preview", "request_model": None, "response_model": 'Empty', "default_enabled": True},
+    "groups_get_bot_state": {"name": "groups.getBotState", "permission": "groups.read", "stability": "stable", "request_model": None, "response_model": 'BotState', "default_enabled": True},
+    "groups_get_group_info": {"name": "groups.getGroupInfo", "permission": "groups.read", "stability": "stable", "request_model": None, "response_model": 'Group', "default_enabled": True},
+    "groups_get_restrict_chat_setting": {"name": "groups.getRestrictChatSetting", "permission": "groups.manage", "stability": "stable", "request_model": None, "response_model": 'RestrictChatSetting', "default_enabled": True},
+    "groups_list_join_approval_strategies": {"name": "groups.listJoinApprovalStrategies", "permission": "groups.manage", "stability": "stable", "request_model": None, "response_model": 'JoinApprovalStrategyList', "default_enabled": True},
+    "groups_list_join_requests": {"name": "groups.listJoinRequests", "permission": "groups.manage", "stability": "stable", "request_model": None, "response_model": 'JoinRequestList', "default_enabled": True},
+    "groups_set_restrict_chat_setting": {"name": "groups.setRestrictChatSetting", "permission": "groups.manage", "stability": "stable", "request_model": 'SetRestrictChatSettingRequest', "response_model": 'Empty', "default_enabled": True},
+    "groups_update_join_approval_strategy": {"name": "groups.updateJoinApprovalStrategy", "permission": "groups.manage", "stability": "stable", "request_model": 'UpdateJoinApprovalStrategyRequest', "response_model": 'JoinApprovalStrategy', "default_enabled": True},
+    "groups_update_join_approval_strategy_whitelist": {"name": "groups.updateJoinApprovalStrategyWhitelist", "permission": "groups.manage", "stability": "preview", "request_model": 'JoinApprovalStrategyWhitelistRequest', "response_model": 'Empty', "default_enabled": True},
     "guilds_get_guild": {"name": "guilds.getGuild", "permission": "guilds.read", "stability": "stable", "request_model": None, "response_model": 'Guild', "default_enabled": True},
     "media_upload_c2c_file": {"name": "media.uploadC2CFile", "permission": "media.upload", "stability": "stable", "request_model": 'C2CFileUploadRequest', "response_model": 'FileUploadResponse', "default_enabled": True},
     "media_upload_channel_file": {"name": "media.uploadChannelFile", "permission": "media.upload", "stability": "preview", "request_model": 'ChannelFileUploadRequest', "response_model": 'FileUploadResponse', "default_enabled": True},
@@ -18,7 +29,6 @@ SDK_METHODS = {
     "permissions_request_api_permission_demand": {"name": "permissions.requestApiPermissionDemand", "permission": "permissions.manage", "stability": "stable", "request_model": 'ApiPermissionDemandRequest', "response_model": 'ApiPermissionDemand', "default_enabled": True},
     "unsafe_raw_open_api": {"name": "unsafe.rawOpenApi", "permission": "unsafe.raw-open-api", "stability": "unsafe", "request_model": 'RawOpenApiRequest', "response_model": 'RawOpenApiResponse', "default_enabled": False},
     "users_get_current_bot": {"name": "users.getCurrentBot", "permission": "users.read", "stability": "stable", "request_model": None, "response_model": 'BotUser', "default_enabled": True},
-    "users_get_user": {"name": "users.getUser", "permission": "users.read", "stability": "preview", "request_model": None, "response_model": 'User', "default_enabled": True},
 }
 
 
@@ -43,10 +53,65 @@ class GeneratedSdkMethodsMixin:
     ) -> Any:
         return self.invoke("channels.updateSubChannel", dict(parameters or {}))
 
+    def groups_approve_join_request(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.approveJoinRequest", dict(parameters or {}))
+
+    def groups_create_join_approval_strategy(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.createJoinApprovalStrategy", dict(parameters or {}))
+
+    def groups_delete_join_approval_strategy(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.deleteJoinApprovalStrategy", dict(parameters or {}))
+
+    def groups_execute_join_approval_strategy(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.executeJoinApprovalStrategy", dict(parameters or {}))
+
+    def groups_get_bot_state(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.getBotState", dict(parameters or {}))
+
     def groups_get_group_info(
         self, parameters: Optional[Mapping[str, Any]] = None
     ) -> Any:
         return self.invoke("groups.getGroupInfo", dict(parameters or {}))
+
+    def groups_get_restrict_chat_setting(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.getRestrictChatSetting", dict(parameters or {}))
+
+    def groups_list_join_approval_strategies(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.listJoinApprovalStrategies", dict(parameters or {}))
+
+    def groups_list_join_requests(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.listJoinRequests", dict(parameters or {}))
+
+    def groups_set_restrict_chat_setting(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.setRestrictChatSetting", dict(parameters or {}))
+
+    def groups_update_join_approval_strategy(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.updateJoinApprovalStrategy", dict(parameters or {}))
+
+    def groups_update_join_approval_strategy_whitelist(
+        self, parameters: Optional[Mapping[str, Any]] = None
+    ) -> Any:
+        return self.invoke("groups.updateJoinApprovalStrategyWhitelist", dict(parameters or {}))
 
     def guilds_get_guild(
         self, parameters: Optional[Mapping[str, Any]] = None
@@ -97,8 +162,3 @@ class GeneratedSdkMethodsMixin:
         self, parameters: Optional[Mapping[str, Any]] = None
     ) -> Any:
         return self.invoke("users.getCurrentBot", dict(parameters or {}))
-
-    def users_get_user(
-        self, parameters: Optional[Mapping[str, Any]] = None
-    ) -> Any:
-        return self.invoke("users.getUser", dict(parameters or {}))

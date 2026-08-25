@@ -6,7 +6,18 @@ export const sdkMethods = Object.freeze({
   channelsDeleteSubChannel: Object.freeze({ name: "channels.deleteSubChannel", permission: "channels.manage", stability: "stable", requestModel: null, responseModel: "Empty", defaultEnabled: true }),
   channelsGetChannel: Object.freeze({ name: "channels.getChannel", permission: "guilds.read", stability: "stable", requestModel: null, responseModel: "Channel", defaultEnabled: true }),
   channelsUpdateSubChannel: Object.freeze({ name: "channels.updateSubChannel", permission: "channels.manage", stability: "stable", requestModel: "UpdateChannelRequest", responseModel: "Channel", defaultEnabled: true }),
-  groupsGetGroupInfo: Object.freeze({ name: "groups.getGroupInfo", permission: "groups.read", stability: "preview", requestModel: null, responseModel: "Group", defaultEnabled: true }),
+  groupsApproveJoinRequest: Object.freeze({ name: "groups.approveJoinRequest", permission: "groups.manage", stability: "stable", requestModel: "JoinRequestApprovalRequest", responseModel: "Empty", defaultEnabled: true }),
+  groupsCreateJoinApprovalStrategy: Object.freeze({ name: "groups.createJoinApprovalStrategy", permission: "groups.manage", stability: "stable", requestModel: "CreateJoinApprovalStrategyRequest", responseModel: "JoinApprovalStrategy", defaultEnabled: true }),
+  groupsDeleteJoinApprovalStrategy: Object.freeze({ name: "groups.deleteJoinApprovalStrategy", permission: "groups.manage", stability: "stable", requestModel: null, responseModel: "Empty", defaultEnabled: true }),
+  groupsExecuteJoinApprovalStrategy: Object.freeze({ name: "groups.executeJoinApprovalStrategy", permission: "groups.manage", stability: "preview", requestModel: null, responseModel: "Empty", defaultEnabled: true }),
+  groupsGetBotState: Object.freeze({ name: "groups.getBotState", permission: "groups.read", stability: "stable", requestModel: null, responseModel: "BotState", defaultEnabled: true }),
+  groupsGetGroupInfo: Object.freeze({ name: "groups.getGroupInfo", permission: "groups.read", stability: "stable", requestModel: null, responseModel: "Group", defaultEnabled: true }),
+  groupsGetRestrictChatSetting: Object.freeze({ name: "groups.getRestrictChatSetting", permission: "groups.manage", stability: "stable", requestModel: null, responseModel: "RestrictChatSetting", defaultEnabled: true }),
+  groupsListJoinApprovalStrategies: Object.freeze({ name: "groups.listJoinApprovalStrategies", permission: "groups.manage", stability: "stable", requestModel: null, responseModel: "JoinApprovalStrategyList", defaultEnabled: true }),
+  groupsListJoinRequests: Object.freeze({ name: "groups.listJoinRequests", permission: "groups.manage", stability: "stable", requestModel: null, responseModel: "JoinRequestList", defaultEnabled: true }),
+  groupsSetRestrictChatSetting: Object.freeze({ name: "groups.setRestrictChatSetting", permission: "groups.manage", stability: "stable", requestModel: "SetRestrictChatSettingRequest", responseModel: "Empty", defaultEnabled: true }),
+  groupsUpdateJoinApprovalStrategy: Object.freeze({ name: "groups.updateJoinApprovalStrategy", permission: "groups.manage", stability: "stable", requestModel: "UpdateJoinApprovalStrategyRequest", responseModel: "JoinApprovalStrategy", defaultEnabled: true }),
+  groupsUpdateJoinApprovalStrategyWhitelist: Object.freeze({ name: "groups.updateJoinApprovalStrategyWhitelist", permission: "groups.manage", stability: "preview", requestModel: "JoinApprovalStrategyWhitelistRequest", responseModel: "Empty", defaultEnabled: true }),
   guildsGetGuild: Object.freeze({ name: "guilds.getGuild", permission: "guilds.read", stability: "stable", requestModel: null, responseModel: "Guild", defaultEnabled: true }),
   mediaUploadC2CFile: Object.freeze({ name: "media.uploadC2CFile", permission: "media.upload", stability: "stable", requestModel: "C2CFileUploadRequest", responseModel: "FileUploadResponse", defaultEnabled: true }),
   mediaUploadChannelFile: Object.freeze({ name: "media.uploadChannelFile", permission: "media.upload", stability: "preview", requestModel: "ChannelFileUploadRequest", responseModel: "FileUploadResponse", defaultEnabled: true }),
@@ -17,7 +28,6 @@ export const sdkMethods = Object.freeze({
   permissionsRequestApiPermissionDemand: Object.freeze({ name: "permissions.requestApiPermissionDemand", permission: "permissions.manage", stability: "stable", requestModel: "ApiPermissionDemandRequest", responseModel: "ApiPermissionDemand", defaultEnabled: true }),
   unsafeRawOpenApi: Object.freeze({ name: "unsafe.rawOpenApi", permission: "unsafe.raw-open-api", stability: "unsafe", requestModel: "RawOpenApiRequest", responseModel: "RawOpenApiResponse", defaultEnabled: false }),
   usersGetCurrentBot: Object.freeze({ name: "users.getCurrentBot", permission: "users.read", stability: "stable", requestModel: null, responseModel: "BotUser", defaultEnabled: true }),
-  usersGetUser: Object.freeze({ name: "users.getUser", permission: "users.read", stability: "preview", requestModel: null, responseModel: "User", defaultEnabled: true }),
 });
 
 export class GeneratedSdkMethods {
@@ -57,8 +67,96 @@ export class GeneratedSdkMethods {
    * @param {Record<string, unknown>} [parameters]
    * @returns {Promise<unknown>}
    */
+  groupsApproveJoinRequest(parameters = {}) {
+    return this.invoke("groups.approveJoinRequest", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsCreateJoinApprovalStrategy(parameters = {}) {
+    return this.invoke("groups.createJoinApprovalStrategy", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsDeleteJoinApprovalStrategy(parameters = {}) {
+    return this.invoke("groups.deleteJoinApprovalStrategy", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsExecuteJoinApprovalStrategy(parameters = {}) {
+    return this.invoke("groups.executeJoinApprovalStrategy", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsGetBotState(parameters = {}) {
+    return this.invoke("groups.getBotState", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
   groupsGetGroupInfo(parameters = {}) {
     return this.invoke("groups.getGroupInfo", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsGetRestrictChatSetting(parameters = {}) {
+    return this.invoke("groups.getRestrictChatSetting", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsListJoinApprovalStrategies(parameters = {}) {
+    return this.invoke("groups.listJoinApprovalStrategies", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsListJoinRequests(parameters = {}) {
+    return this.invoke("groups.listJoinRequests", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsSetRestrictChatSetting(parameters = {}) {
+    return this.invoke("groups.setRestrictChatSetting", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsUpdateJoinApprovalStrategy(parameters = {}) {
+    return this.invoke("groups.updateJoinApprovalStrategy", parameters);
+  }
+
+  /**
+   * @param {Record<string, unknown>} [parameters]
+   * @returns {Promise<unknown>}
+   */
+  groupsUpdateJoinApprovalStrategyWhitelist(parameters = {}) {
+    return this.invoke("groups.updateJoinApprovalStrategyWhitelist", parameters);
   }
 
   /**
@@ -139,14 +237,6 @@ export class GeneratedSdkMethods {
    */
   usersGetCurrentBot(parameters = {}) {
     return this.invoke("users.getCurrentBot", parameters);
-  }
-
-  /**
-   * @param {Record<string, unknown>} [parameters]
-   * @returns {Promise<unknown>}
-   */
-  usersGetUser(parameters = {}) {
-    return this.invoke("users.getUser", parameters);
   }
 
 }

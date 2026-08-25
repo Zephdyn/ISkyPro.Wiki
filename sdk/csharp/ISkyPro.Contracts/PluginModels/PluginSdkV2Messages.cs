@@ -7,6 +7,7 @@ namespace ISkyPro.Contracts.PluginModels;
 [JsonDerivedType(typeof(MentionPart), "mention")]
 [JsonDerivedType(typeof(CompositePart), "composite")]
 [JsonDerivedType(typeof(ImagePart), "image")]
+[JsonDerivedType(typeof(ImageUrlPart), "image-url")]
 public abstract record MessagePart
 {
     public static implicit operator MessagePart(string text) => new TextPart(text);
@@ -14,7 +15,11 @@ public abstract record MessagePart
 
 public sealed record TextPart(string Text) : MessagePart;
 
+/// <summary>本地图片路径(compat 路径,Main 以 base64 file_data 上传)。</summary>
 public sealed record ImagePart(string FilePath) : MessagePart;
+
+/// <summary>远程图片 URL(官方推荐路径,Main 以 url 直传方式上传后按富媒体发送)。</summary>
+public sealed record ImageUrlPart(string Url) : MessagePart;
 
 public sealed record MentionPart(
     MentionTarget Target,
@@ -81,6 +86,14 @@ public sealed record MessageTarget(
 public sealed record MessageSendResult(
     bool Accepted,
     string? MessageId,
+    MessageTarget Target);
+
+public sealed record PluginSdkV2RecallRequest(
+    MessageTarget Target,
+    string MessageId);
+
+public sealed record MessageRecallResult(
+    bool Accepted,
     MessageTarget Target);
 
 public sealed record PluginSdkV2ReplyRequest(

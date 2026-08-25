@@ -20,7 +20,18 @@ public static class PluginV2SdkMethods
     public const string ChannelsDeleteSubChannel = "channels.deleteSubChannel";
     public const string ChannelsGetChannel = "channels.getChannel";
     public const string ChannelsUpdateSubChannel = "channels.updateSubChannel";
+    public const string GroupsApproveJoinRequest = "groups.approveJoinRequest";
+    public const string GroupsCreateJoinApprovalStrategy = "groups.createJoinApprovalStrategy";
+    public const string GroupsDeleteJoinApprovalStrategy = "groups.deleteJoinApprovalStrategy";
+    public const string GroupsExecuteJoinApprovalStrategy = "groups.executeJoinApprovalStrategy";
+    public const string GroupsGetBotState = "groups.getBotState";
     public const string GroupsGetGroupInfo = "groups.getGroupInfo";
+    public const string GroupsGetRestrictChatSetting = "groups.getRestrictChatSetting";
+    public const string GroupsListJoinApprovalStrategies = "groups.listJoinApprovalStrategies";
+    public const string GroupsListJoinRequests = "groups.listJoinRequests";
+    public const string GroupsSetRestrictChatSetting = "groups.setRestrictChatSetting";
+    public const string GroupsUpdateJoinApprovalStrategy = "groups.updateJoinApprovalStrategy";
+    public const string GroupsUpdateJoinApprovalStrategyWhitelist = "groups.updateJoinApprovalStrategyWhitelist";
     public const string GuildsGetGuild = "guilds.getGuild";
     public const string MediaUploadC2CFile = "media.uploadC2CFile";
     public const string MediaUploadChannelFile = "media.uploadChannelFile";
@@ -31,7 +42,6 @@ public static class PluginV2SdkMethods
     public const string PermissionsRequestApiPermissionDemand = "permissions.requestApiPermissionDemand";
     public const string UnsafeRawOpenApi = "unsafe.rawOpenApi";
     public const string UsersGetCurrentBot = "users.getCurrentBot";
-    public const string UsersGetUser = "users.getUser";
 
     public static IReadOnlyDictionary<string, PluginV2SdkMethodDescriptor> Catalog { get; } =
         new Dictionary<string, PluginV2SdkMethodDescriptor>(StringComparer.Ordinal)
@@ -40,7 +50,18 @@ public static class PluginV2SdkMethods
             [ChannelsDeleteSubChannel] = new(ChannelsDeleteSubChannel, "channels.manage", "stable", null, "Empty", true),
             [ChannelsGetChannel] = new(ChannelsGetChannel, "guilds.read", "stable", null, "Channel", true),
             [ChannelsUpdateSubChannel] = new(ChannelsUpdateSubChannel, "channels.manage", "stable", "UpdateChannelRequest", "Channel", true),
-            [GroupsGetGroupInfo] = new(GroupsGetGroupInfo, "groups.read", "preview", null, "Group", true),
+            [GroupsApproveJoinRequest] = new(GroupsApproveJoinRequest, "groups.manage", "stable", "JoinRequestApprovalRequest", "Empty", true),
+            [GroupsCreateJoinApprovalStrategy] = new(GroupsCreateJoinApprovalStrategy, "groups.manage", "stable", "CreateJoinApprovalStrategyRequest", "JoinApprovalStrategy", true),
+            [GroupsDeleteJoinApprovalStrategy] = new(GroupsDeleteJoinApprovalStrategy, "groups.manage", "stable", null, "Empty", true),
+            [GroupsExecuteJoinApprovalStrategy] = new(GroupsExecuteJoinApprovalStrategy, "groups.manage", "preview", null, "Empty", true),
+            [GroupsGetBotState] = new(GroupsGetBotState, "groups.read", "stable", null, "BotState", true),
+            [GroupsGetGroupInfo] = new(GroupsGetGroupInfo, "groups.read", "stable", null, "Group", true),
+            [GroupsGetRestrictChatSetting] = new(GroupsGetRestrictChatSetting, "groups.manage", "stable", null, "RestrictChatSetting", true),
+            [GroupsListJoinApprovalStrategies] = new(GroupsListJoinApprovalStrategies, "groups.manage", "stable", null, "JoinApprovalStrategyList", true),
+            [GroupsListJoinRequests] = new(GroupsListJoinRequests, "groups.manage", "stable", null, "JoinRequestList", true),
+            [GroupsSetRestrictChatSetting] = new(GroupsSetRestrictChatSetting, "groups.manage", "stable", "SetRestrictChatSettingRequest", "Empty", true),
+            [GroupsUpdateJoinApprovalStrategy] = new(GroupsUpdateJoinApprovalStrategy, "groups.manage", "stable", "UpdateJoinApprovalStrategyRequest", "JoinApprovalStrategy", true),
+            [GroupsUpdateJoinApprovalStrategyWhitelist] = new(GroupsUpdateJoinApprovalStrategyWhitelist, "groups.manage", "preview", "JoinApprovalStrategyWhitelistRequest", "Empty", true),
             [GuildsGetGuild] = new(GuildsGetGuild, "guilds.read", "stable", null, "Guild", true),
             [MediaUploadC2CFile] = new(MediaUploadC2CFile, "media.upload", "stable", "C2CFileUploadRequest", "FileUploadResponse", true),
             [MediaUploadChannelFile] = new(MediaUploadChannelFile, "media.upload", "preview", "ChannelFileUploadRequest", "FileUploadResponse", true),
@@ -51,7 +72,6 @@ public static class PluginV2SdkMethods
             [PermissionsRequestApiPermissionDemand] = new(PermissionsRequestApiPermissionDemand, "permissions.manage", "stable", "ApiPermissionDemandRequest", "ApiPermissionDemand", true),
             [UnsafeRawOpenApi] = new(UnsafeRawOpenApi, "unsafe.raw-open-api", "unsafe", "RawOpenApiRequest", "RawOpenApiResponse", false),
             [UsersGetCurrentBot] = new(UsersGetCurrentBot, "users.read", "stable", null, "BotUser", true),
-            [UsersGetUser] = new(UsersGetUser, "users.read", "preview", null, "User", true),
         };
 
     public static IReadOnlyDictionary<string, string> Permissions { get; } = Catalog
@@ -95,12 +115,100 @@ public static class GeneratedPluginV2ContextExtensions
         return context.InvokeWithResultAsync(PluginV2SdkMethods.ChannelsUpdateSubChannel, parameters ?? EmptyParameters, cancellationToken);
     }
 
+    public static ValueTask<JsonElement> GroupsApproveJoinRequestAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsApproveJoinRequest, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsCreateJoinApprovalStrategyAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsCreateJoinApprovalStrategy, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsDeleteJoinApprovalStrategyAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsDeleteJoinApprovalStrategy, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsExecuteJoinApprovalStrategyAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsExecuteJoinApprovalStrategy, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsGetBotStateAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsGetBotState, parameters ?? EmptyParameters, cancellationToken);
+    }
+
     public static ValueTask<JsonElement> GroupsGetGroupInfoAsync(
         this IISkyProPluginV2Context context,
         IReadOnlyDictionary<string, object?>? parameters = null,
         CancellationToken cancellationToken = default)
     {
         return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsGetGroupInfo, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsGetRestrictChatSettingAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsGetRestrictChatSetting, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsListJoinApprovalStrategiesAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsListJoinApprovalStrategies, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsListJoinRequestsAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsListJoinRequests, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsSetRestrictChatSettingAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsSetRestrictChatSetting, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsUpdateJoinApprovalStrategyAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsUpdateJoinApprovalStrategy, parameters ?? EmptyParameters, cancellationToken);
+    }
+
+    public static ValueTask<JsonElement> GroupsUpdateJoinApprovalStrategyWhitelistAsync(
+        this IISkyProPluginV2Context context,
+        IReadOnlyDictionary<string, object?>? parameters = null,
+        CancellationToken cancellationToken = default)
+    {
+        return context.InvokeWithResultAsync(PluginV2SdkMethods.GroupsUpdateJoinApprovalStrategyWhitelist, parameters ?? EmptyParameters, cancellationToken);
     }
 
     public static ValueTask<JsonElement> GuildsGetGuildAsync(
@@ -181,14 +289,6 @@ public static class GeneratedPluginV2ContextExtensions
         CancellationToken cancellationToken = default)
     {
         return context.InvokeWithResultAsync(PluginV2SdkMethods.UsersGetCurrentBot, parameters ?? EmptyParameters, cancellationToken);
-    }
-
-    public static ValueTask<JsonElement> UsersGetUserAsync(
-        this IISkyProPluginV2Context context,
-        IReadOnlyDictionary<string, object?>? parameters = null,
-        CancellationToken cancellationToken = default)
-    {
-        return context.InvokeWithResultAsync(PluginV2SdkMethods.UsersGetUser, parameters ?? EmptyParameters, cancellationToken);
     }
 
 }

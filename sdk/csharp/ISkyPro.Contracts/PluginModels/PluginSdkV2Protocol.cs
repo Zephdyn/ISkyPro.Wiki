@@ -14,6 +14,7 @@ public static class PluginSdkV2Protocol
     public const string MessageEventMethod = "events.message";
     public const string MessagesReplyMethod = "messages.reply";
     public const string MessagesSendMethod = "messages.send";
+    public const string MessagesRecallMethod = "messages.recall";
 
     public const int DefaultRequestTimeoutMilliseconds = 30_000;
     public const int MaxHeaderLength = 8 * 1024;
@@ -36,6 +37,7 @@ public static class PluginSdkV2Permissions
 {
     public const string MessagesReply = "messages.reply";
     public const string MessagesSend = "messages.send";
+    public const string MessagesRecall = "messages.recall";
     public const string MessagesMentionEveryone = "messages.mentionEveryone";
     public const string MediaUpload = "media.upload";
     public const string UsersRead = "users.read";
