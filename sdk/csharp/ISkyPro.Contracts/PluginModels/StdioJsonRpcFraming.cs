@@ -123,50 +123,58 @@ public static class StdioJsonRpcFraming
         var document = JsonDocument.Parse(payload.ToArray());
         try
         {
-            var root = document.RootElement;
-            if (root.ValueKind != JsonValueKind.Object)
-            {
-                throw new InvalidDataException("JSON-RPC payload must be an object.");
-            }
-
-            if (!root.TryGetProperty("jsonrpc", out var jsonRpc)
-                || jsonRpc.ValueKind != JsonValueKind.String
-                || !string.Equals(jsonRpc.GetString(), PluginSdkV2Protocol.JsonRpcVersion, StringComparison.Ordinal))
-            {
-                throw new InvalidDataException("JSON-RPC payload must declare jsonrpc 2.0.");
-            }
-
-            var hasMethod = root.TryGetProperty("method", out var method);
-            var hasResult = root.TryGetProperty("result", out _);
-            var hasError = root.TryGetProperty("error", out _);
-            var hasId = root.TryGetProperty("id", out _);
-
-            if (hasMethod)
-            {
-                if (method.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(method.GetString()))
-                {
-                    throw new InvalidDataException("JSON-RPC method must be a non-empty string.");
-                }
-
-                return document;
-            }
-
-            if (hasResult == hasError)
-            {
-                throw new InvalidDataException("JSON-RPC response must contain exactly one of result or error.");
-            }
-
-            if (!hasId)
-            {
-                throw new InvalidDataException("JSON-RPC response must contain id.");
-            }
-
+            ValidatePayload(document);
             return document;
         }
         catch
         {
             document.Dispose();
             throw;
+        }
+    }
+
+    /// <summary>
+    /// 对已解析的 JSON-RPC 帧做结构校验（jsonrpc 2.0、method 或 result/error+id 二选一）。
+    /// 供 Main 侧缓冲帧读取器复用，避免两套校验逻辑漂移。
+    /// </summary>
+    public static void ValidatePayload(JsonDocument document)
+    {
+        var root = document.RootElement;
+        if (root.ValueKind != JsonValueKind.Object)
+        {
+            throw new InvalidDataException("JSON-RPC payload must be an object.");
+        }
+
+        if (!root.TryGetProperty("jsonrpc", out var jsonRpc)
+            || jsonRpc.ValueKind != JsonValueKind.String
+            || !string.Equals(jsonRpc.GetString(), PluginSdkV2Protocol.JsonRpcVersion, StringComparison.Ordinal))
+        {
+            throw new InvalidDataException("JSON-RPC payload must declare jsonrpc 2.0.");
+        }
+
+        var hasMethod = root.TryGetProperty("method", out var method);
+        var hasResult = root.TryGetProperty("result", out _);
+        var hasError = root.TryGetProperty("error", out _);
+        var hasId = root.TryGetProperty("id", out _);
+
+        if (hasMethod)
+        {
+            if (method.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(method.GetString()))
+            {
+                throw new InvalidDataException("JSON-RPC method must be a non-empty string.");
+            }
+
+            return;
+        }
+
+        if (hasResult == hasError)
+        {
+            throw new InvalidDataException("JSON-RPC response must contain exactly one of result or error.");
+        }
+
+        if (!hasId)
+        {
+            throw new InvalidDataException("JSON-RPC response must contain id.");
         }
     }
 
