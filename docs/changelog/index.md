@@ -9,7 +9,7 @@
 
 ## 版本列表
 
-- [2.1.0-preview.2](/changelog/v2-1-0-preview-2.md)
+- [2.1.0-preview.2（开发中，暂未发布）](/changelog/v2-1-0-preview-2.md)
 - [2.1.0-preview.1](/changelog/v2-1-0-preview-1.md)
 - [2.0.0](/changelog/v2-0-0.md)
 - [2.0.0-preview.4](/changelog/v2-0-0-preview-4.md)

@@ -9,7 +9,7 @@ Release publishing should maintain two public sources:
 
 ## Versions
 
-- [2.1.0-preview.2](/en/changelog/v2-1-0-preview-2.md)
+- [2.1.0-preview.2 (in development, not yet released)](/en/changelog/v2-1-0-preview-2.md)
 - [2.1.0-preview.1](/en/changelog/v2-1-0-preview-1.md)
 - [2.0.0](/en/changelog/v2-0-0.md)
 - [2.0.0-preview.4](/en/changelog/v2-0-0-preview-4.md)
