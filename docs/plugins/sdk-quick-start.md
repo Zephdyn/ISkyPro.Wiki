@@ -89,7 +89,7 @@ Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
 可安装的完整 @ 复读示例位于 `samples/QQBotMarkdownRepeatPlugin`，命令为
 `复读 你好`。
 
-## 指定目标平台
+## 指定目标平台与账号
 
 `messages.send` 的主动发送目标支持可选 `platform` 参数，缺省为 `"qqbot"`。
 当 ISkyPro 已接入 OneBot 时，可显式把目标平台设为 `"onebot"`：
@@ -97,6 +97,18 @@ Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
 ```csharp
 await context.Messages.Group("123456", "onebot").SendAsync("你好");
 ```
+
+目标还支持可选 `botAccountId` 参数（格式 `"{平台}:{账号ID}"`，如 `"qqbot:10001"`、
+`"onebot:123456"`，兼容平台侧账号 ID），缺省使用平台默认账号。当前版本每平台单账号，
+该参数为后续多平台多账号预留；事件内的 `reply` 会自动携带事件来源账号，无需手动指定：
+
+```csharp
+// 显式指定发送账号（多账号开放前请使用平台默认账号或省略）
+await context.Messages.Group("123456", "onebot", "onebot:123456").SendAsync("你好");
+```
+
+账号不存在或平台未注册时，`messages.send` / `messages.reply` 会返回稳定错误码
+`message.target.account_not_found` / `message.target.platform_not_supported`。
 
 ```python
 context.messages.group("123456", "onebot").send("你好")
