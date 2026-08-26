@@ -2,7 +2,7 @@
 
 发布日期：2026-07-05
 
-## 破坏性变更
+## 💥 破坏性变更
 
 - runtime: 主程序迁移到 .NET 10 和 ASP.NET Core，启动、发布和部署方式与旧版 ISky 主程序不同。
 - package: 主程序按 win-x64 / win-arm64 发布；旧 DLL 插件宿主作为独立 win-x86 进程发布。
