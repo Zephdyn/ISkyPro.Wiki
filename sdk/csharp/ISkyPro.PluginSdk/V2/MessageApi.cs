@@ -122,13 +122,13 @@ public static class Image
 
 public interface IMessageService
 {
-    IMessageTarget Group(string groupOpenId, string? platform = null);
+    IMessageTarget Group(string groupOpenId, string? platform = null, string? botAccountId = null);
 
-    IMessageTarget Channel(string channelId, string? platform = null);
+    IMessageTarget Channel(string channelId, string? platform = null, string? botAccountId = null);
 
-    IMessageTarget User(string userOpenId, string? platform = null);
+    IMessageTarget User(string userOpenId, string? platform = null, string? botAccountId = null);
 
-    IMessageTarget DirectMessage(string guildId, string? platform = null);
+    IMessageTarget DirectMessage(string guildId, string? platform = null, string? botAccountId = null);
 }
 
 public interface IMessageTarget
@@ -280,26 +280,26 @@ internal sealed class MessageService : IMessageService
         _transport = transport;
     }
 
-    public IMessageTarget Group(string groupOpenId, string? platform = null)
-        => Create(PluginSdkV2MessageTargetTypes.Group, groupOpenId, platform);
+    public IMessageTarget Group(string groupOpenId, string? platform = null, string? botAccountId = null)
+        => Create(PluginSdkV2MessageTargetTypes.Group, groupOpenId, platform, botAccountId);
 
-    public IMessageTarget Channel(string channelId, string? platform = null)
-        => Create(PluginSdkV2MessageTargetTypes.Channel, channelId, platform);
+    public IMessageTarget Channel(string channelId, string? platform = null, string? botAccountId = null)
+        => Create(PluginSdkV2MessageTargetTypes.Channel, channelId, platform, botAccountId);
 
-    public IMessageTarget User(string userOpenId, string? platform = null)
-        => Create(PluginSdkV2MessageTargetTypes.User, userOpenId, platform);
+    public IMessageTarget User(string userOpenId, string? platform = null, string? botAccountId = null)
+        => Create(PluginSdkV2MessageTargetTypes.User, userOpenId, platform, botAccountId);
 
-    public IMessageTarget DirectMessage(string guildId, string? platform = null)
-        => Create(PluginSdkV2MessageTargetTypes.DirectMessage, guildId, platform);
+    public IMessageTarget DirectMessage(string guildId, string? platform = null, string? botAccountId = null)
+        => Create(PluginSdkV2MessageTargetTypes.DirectMessage, guildId, platform, botAccountId);
 
-    private IMessageTarget Create(string type, string id, string? platform = null)
+    private IMessageTarget Create(string type, string id, string? platform, string? botAccountId)
     {
         if (string.IsNullOrWhiteSpace(id) || id.Any(char.IsControl))
         {
             throw new ArgumentException("Message target id must not be empty or contain control characters.", nameof(id));
         }
 
-        return new MessageTargetClient(_transport, new MessageTarget(type, id, platform));
+        return new MessageTargetClient(_transport, new MessageTarget(type, id, platform, botAccountId));
     }
 }
 

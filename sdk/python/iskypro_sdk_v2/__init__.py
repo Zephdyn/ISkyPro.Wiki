@@ -235,12 +235,15 @@ class MessageTarget:
         target_type: str,
         target_id: str,
         platform: Optional[str] = None,
+        bot_account_id: Optional[str] = None,
     ) -> None:
         _validate_id(target_id, "message target id")
         self._context = context
         self._target = {"type": target_type, "id": target_id}
         if platform is not None:
             self._target["platform"] = platform
+        if bot_account_id is not None:
+            self._target["botAccountId"] = bot_account_id
 
     def send(self, *parts: Any) -> Any:
         return self._context.invoke(
@@ -269,17 +272,37 @@ class MessageService:
     def __init__(self, context: "PluginContext") -> None:
         self._context = context
 
-    def group(self, group_open_id: str, platform: Optional[str] = None) -> MessageTarget:
-        return MessageTarget(self._context, "group", group_open_id, platform)
+    def group(
+        self,
+        group_open_id: str,
+        platform: Optional[str] = None,
+        bot_account_id: Optional[str] = None,
+    ) -> MessageTarget:
+        return MessageTarget(self._context, "group", group_open_id, platform, bot_account_id)
 
-    def channel(self, channel_id: str, platform: Optional[str] = None) -> MessageTarget:
-        return MessageTarget(self._context, "channel", channel_id, platform)
+    def channel(
+        self,
+        channel_id: str,
+        platform: Optional[str] = None,
+        bot_account_id: Optional[str] = None,
+    ) -> MessageTarget:
+        return MessageTarget(self._context, "channel", channel_id, platform, bot_account_id)
 
-    def user(self, user_open_id: str, platform: Optional[str] = None) -> MessageTarget:
-        return MessageTarget(self._context, "user", user_open_id, platform)
+    def user(
+        self,
+        user_open_id: str,
+        platform: Optional[str] = None,
+        bot_account_id: Optional[str] = None,
+    ) -> MessageTarget:
+        return MessageTarget(self._context, "user", user_open_id, platform, bot_account_id)
 
-    def direct_message(self, guild_id: str, platform: Optional[str] = None) -> MessageTarget:
-        return MessageTarget(self._context, "direct", guild_id, platform)
+    def direct_message(
+        self,
+        guild_id: str,
+        platform: Optional[str] = None,
+        bot_account_id: Optional[str] = None,
+    ) -> MessageTarget:
+        return MessageTarget(self._context, "direct", guild_id, platform, bot_account_id)
 
 
 def _positive_int(value: Any, fallback: int) -> int:

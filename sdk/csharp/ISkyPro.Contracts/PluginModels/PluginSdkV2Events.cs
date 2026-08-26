@@ -43,7 +43,9 @@ public sealed record PluginSdkV2MessageReference(
     DateTimeOffset? ReplyUntil,
     IReadOnlyList<string> Restrictions,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    string? Platform = null);
+    string? Platform = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    string? BotAccountId = null);
 
 public sealed record PluginSdkV2EventAck(
     string EventId,

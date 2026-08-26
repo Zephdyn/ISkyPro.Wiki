@@ -81,7 +81,9 @@ public sealed record MessageTarget(
     string Type,
     string Id,
     [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
-    string? Platform = null);
+    string? Platform = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    string? BotAccountId = null);
 
 public sealed record MessageSendResult(
     bool Accepted,
@@ -127,5 +129,7 @@ public static class PluginSdkV2MessageErrorCodes
     public const string ImageTooMany = "message.image.too_many";
     public const string ImageFormatUnsupported = "message.image.format_unsupported";
     public const string TargetInvalid = "message.target.invalid";
+    public const string PlatformNotSupported = "message.target.platform_not_supported";
+    public const string AccountNotFound = "message.target.account_not_found";
     public const string ReferenceExpired = "message.reference.expired";
 }

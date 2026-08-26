@@ -319,10 +319,15 @@ export class MessageContext {
 }
 
 export class MessageTarget {
-  constructor(context, type, id, platform = undefined) {
+  constructor(context, type, id, platform = undefined, botAccountId = undefined) {
     validateId(id, "message target id");
     this.context = context;
-    this.target = Object.freeze(platform === undefined ? { type, id } : { type, id, platform });
+    this.target = Object.freeze({
+      type,
+      id,
+      ...(platform === undefined ? {} : { platform }),
+      ...(botAccountId === undefined ? {} : { botAccountId }),
+    });
   }
 
   send(...parts) {
@@ -355,10 +360,10 @@ export class MessageService {
     this.context = context;
   }
 
-  group(id, platform) { return new MessageTarget(this.context, "group", id, platform); }
-  channel(id, platform) { return new MessageTarget(this.context, "channel", id, platform); }
-  user(id, platform) { return new MessageTarget(this.context, "user", id, platform); }
-  directMessage(id, platform) { return new MessageTarget(this.context, "direct", id, platform); }
+  group(id, platform, botAccountId) { return new MessageTarget(this.context, "group", id, platform, botAccountId); }
+  channel(id, platform, botAccountId) { return new MessageTarget(this.context, "channel", id, platform, botAccountId); }
+  user(id, platform, botAccountId) { return new MessageTarget(this.context, "user", id, platform, botAccountId); }
+  directMessage(id, platform, botAccountId) { return new MessageTarget(this.context, "direct", id, platform, botAccountId); }
 }
 
 export class PluginContext extends GeneratedSdkMethods {

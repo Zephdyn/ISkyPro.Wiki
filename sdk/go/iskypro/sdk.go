@@ -265,26 +265,31 @@ type MessageService struct {
 	context *PluginContext
 }
 
-func (s MessageService) Group(id string, platform ...string) MessageTarget {
-	return newMessageTarget(s.context, "group", id, platform)
+func (s MessageService) Group(id string, platformAndBotAccount ...string) MessageTarget {
+	return newMessageTarget(s.context, "group", id, platformAndBotAccount)
 }
 
-func (s MessageService) Channel(id string, platform ...string) MessageTarget {
-	return newMessageTarget(s.context, "channel", id, platform)
+func (s MessageService) Channel(id string, platformAndBotAccount ...string) MessageTarget {
+	return newMessageTarget(s.context, "channel", id, platformAndBotAccount)
 }
 
-func (s MessageService) User(id string, platform ...string) MessageTarget {
-	return newMessageTarget(s.context, "user", id, platform)
+func (s MessageService) User(id string, platformAndBotAccount ...string) MessageTarget {
+	return newMessageTarget(s.context, "user", id, platformAndBotAccount)
 }
 
-func (s MessageService) DirectMessage(id string, platform ...string) MessageTarget {
-	return newMessageTarget(s.context, "direct", id, platform)
+func (s MessageService) DirectMessage(id string, platformAndBotAccount ...string) MessageTarget {
+	return newMessageTarget(s.context, "direct", id, platformAndBotAccount)
 }
 
-func newMessageTarget(context *PluginContext, targetType string, id string, platform []string) MessageTarget {
+// newMessageTarget builds a message target; the optional selection arguments are
+// (platform, botAccountID) in order. botAccountID falls back to the platform default account.
+func newMessageTarget(context *PluginContext, targetType string, id string, selection []string) MessageTarget {
 	target := JsonObject{"type": targetType, "id": id}
-	if len(platform) > 0 && platform[0] != "" {
-		target["platform"] = platform[0]
+	if len(selection) > 0 && selection[0] != "" {
+		target["platform"] = selection[0]
+	}
+	if len(selection) > 1 && selection[1] != "" {
+		target["botAccountId"] = selection[1]
 	}
 	return MessageTarget{context: context, target: target}
 }
