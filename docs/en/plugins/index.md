@@ -14,4 +14,4 @@ Linux x64 packages support only the v2 plugin path. ISky v1 plugins depend on th
 - Startup failures or missing events: read [Troubleshooting](/en/plugins/troubleshooting).
 - SDK packages: read [SDK Downloads](/en/plugins/downloads).
 
-Plugin SDK v2 is stable starting with `2.0.0`. Public SDK sources are under `sdk/` in this repository, with runnable examples under `samples/`.
+Plugin SDK v2 is stable starting with `2.0.0`. Public SDK sources are under `sdk/` in the [ISkyPro.Wiki repository](https://github.com/Zephdyn/ISkyPro.Wiki), with runnable examples under `samples/`.

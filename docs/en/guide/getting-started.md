@@ -1,8 +1,8 @@
 # Getting Started
 
-ISkyPro is a .NET 10 rewrite of the main framework for QQBot and the ISky plugin ecosystem. It includes the main process, Web management UI, QQBot gateway, isolated ISky v1 *EPL* / x86 plugin host, `message.dll` compatibility layer, and the ISkyPro v2+ Plugin SDK.
+ISkyPro is a .NET 10 rewrite of the QQBot main framework, built for compatibility with and extension of the ISky plugin ecosystem. It consists of the main process, Web management UI, QQBot gateway, isolated ISky v1 *EPL* / x86 plugin host, `message.dll` compatibility layer, and the ISkyPro v2+ Plugin SDK.
 
-The current stable version is `2.0.0`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
+The latest stable version is `2.0.0`, and the latest released preview is `2.1.0-preview.1`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
 
 ## Requirements
 
@@ -113,7 +113,9 @@ The quick start only requires login and mode selection. Group message permission
 
 ## Connecting the OneBot Platform
 
-Since 2.1.0, ISkyPro supports an OneBot platform gateway that can run alongside
+> The following describes 2.1.0 preview behavior and may change before the stable release.
+
+Since 2.1.0, ISkyPro supports a OneBot platform gateway that can run alongside
 other OneBot-compatible clients/protocol implementations. The OneBot and QQBot
 gateways are independent of each other:
 
@@ -124,7 +126,46 @@ gateways are independent of each other:
   rich media such as images, mentions, replies, and voice, with outbound throttling.
 
 Select the "OneBot" platform on the WebUI login page, or enable the `onebot`
-section in the configuration file. Multi-platform state is visible on the gateway page.
+section in the configuration file. Multi-platform state is visible on the gateway
+page. Configuration example (`config/appsettings.json`):
+
+```json
+{
+  "ISkyPro": {
+    "OneBot": {
+      "Enabled": true,
+      "ProtocolVersion": "V11",
+      "ConnectionMode": "ForwardWebSocket",
+      "WsUrl": "ws://127.0.0.1:8080",
+      "ApiBaseUrl": "http://127.0.0.1:3000",
+      "AccessToken": "",
+      "SelfUserId": 0,
+      "DisplayName": "OneBot",
+      "ReverseWebSocketPath": "/onebot/ws",
+      "MaxReconnectBackoffSeconds": 60
+    }
+  }
+}
+```
+
+`ProtocolVersion` accepts `V11` / `V12`; `ConnectionMode` accepts
+`ForwardWebSocket` / `ReverseWebSocket` / `Http`. For reverse WebSocket and HTTP
+modes, fill in `ApiBaseUrl` and `SelfUserId` as required by the protocol
+endpoint, and keep `AccessToken` consistent with that endpoint.
+
+## Configuration Overrides
+
+Besides the WebUI and `config/appsettings.json`, environment variables and
+command-line arguments override configuration files (higher precedence):
+
+- Environment variables: `ISkyPro:WebUI:AllowRemote=true`. On platforms whose
+  environment variable names cannot contain colons (such as Windows), use the
+  double-underscore form `ISkyPro__WebUI__AllowRemote=true`.
+- Command line: `ISkyPro.exe --ISkyPro:WebUI:AllowRemote=true` (or
+  `--ISkyPro__WebUI__AllowRemote=true`).
+- Dedicated flags: `--urls` (Kestrel listen address), `--open-browser` /
+  `--no-open-browser` (control automatic browser opening), and `--service-name`
+  (service name, used with the install scripts).
 
 ## Long-Running Entry Point
 

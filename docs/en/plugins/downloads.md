@@ -2,11 +2,13 @@
 
 The canonical Plugin SDK v2 source is under `sdk/` in this public repository. You
 can clone it directly or download a language archive from the matching Release.
-The `2.1.0-preview.1` SDK is still a preview API with no stable naming freeze.
+The latest stable SDK is `2.0.0`; `2.1.0-preview.1` is the latest preview with no
+stable naming freeze.
 
-Download entry:
+Download entries:
 
-- [v2.1.0-preview.1 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.1.0-preview.1)
+- Latest preview: [v2.1.0-preview.1 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.1.0-preview.1)
+- Latest stable: [v2.0.0 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.0.0)
 
 Main application package names:
 

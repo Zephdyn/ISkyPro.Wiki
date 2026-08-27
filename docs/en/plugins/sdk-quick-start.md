@@ -1,13 +1,15 @@
 # Plugin SDK v2 Quick Start
 
-Stable release `2.0.0` officially supports C#, Python, Node.js, and Go. Choose a deployment model first:
+Stable SDK `2.0.0` officially supports C#, Python, Node.js, and Go; the latest preview is `2.1.0-preview.1`. Choose a deployment model first:
 
 | Mode | Best for | ISkyPro integration |
 | --- | --- | --- |
 | `stdio-jsonrpc` | Local plugins, full Plugin SDK v2 APIs, and lifecycle management by ISkyPro | Publish an installable ZIP containing `manifest.json`, then upload it from WebUI |
 | HTTP | Existing web applications, containers, or remote services with independently managed lifecycle | Deploy the service and register its base URL; no ZIP upload |
 
-These are not two command-line modes of one package. A stdio plugin is a local managed process; an HTTP plugin is an independently running service.
+`stdio-jsonrpc` and HTTP are two different deployment models, not two launch
+modes of one package. A stdio plugin is a local managed process; an HTTP plugin
+is an independently running service.
 
 ## Python stdio Plugin
 
@@ -59,9 +61,9 @@ Repository samples:
 - `samples/ISkyPro.SamplePlugin/EchoPluginV2.cs`
 - `samples/QQBotMarkdownRepeatPlugin`
 
-The canonical SDK source is under `sdk/` in this public repository. After changing
-the API catalog, run `python tools/plugin-sdk-stub-generator/generate.py` to replace
-the generated method surfaces for all four languages.
+The canonical SDK source is under `sdk/` in this public repository. Version and
+packaging are described under [SDK Downloads](/en/plugins/downloads), and change
+history in the [SDK changelog](/en/changelog/sdk/).
 
 ## Markdown group messages
 
@@ -89,8 +91,54 @@ so verify the [latest official group-message documentation](https://bot.q.qq.com
 and the target client.
 :::
 
-The installable `samples/QQBotMarkdownRepeatPlugin` demonstrates this flow with
-the `复读 hello` command.
+The complete example is `samples/QQBotMarkdownRepeatPlugin` (command
+`复读 hello`).
+
+## Target Platform and Account
+
+> The following describes 2.1.0-preview.2 in-development features; API and
+> behavior may change before the stable release.
+
+The proactive `messages.send` target accepts an optional `platform` parameter
+that defaults to `"qqbot"`. When ISkyPro is connected to OneBot, set the target
+platform explicitly to `"onebot"`:
+
+```csharp
+await context.Messages.Group("123456", "onebot").SendAsync("hello");
+```
+
+The target also accepts an optional `botAccountId` parameter (format
+`"{platform}:{accountId}"`, such as `"qqbot:10001"` or `"onebot:123456"`,
+compatible with the platform-side account ID) that defaults to the platform
+default account. The current release supports one account per platform; this
+parameter prepares for multiple platforms and accounts. Replies inside events
+carry the source account automatically, so no explicit account is needed:
+
+```csharp
+// Explicit account (use the platform default or omit until multi-account is enabled)
+await context.Messages.Group("123456", "onebot", "onebot:123456").SendAsync("hello");
+```
+
+When the account does not exist or the platform is not registered,
+`messages.send` / `messages.reply` return the stable error codes
+`message.target.account_not_found` / `message.target.platform_not_supported`.
+
+```python
+context.messages.group("123456", "onebot").send("hello")
+```
+
+```js
+context.messages.group("123456", "onebot").send("hello");
+```
+
+```go
+sdk.Messages.Group("123456", "onebot").Send(ctx, "hello")
+```
+
+`message.reply()` does not need a platform: Main routes by the event's
+`source` / `messageReference.platform`. Even legacy C# plugins that strip the
+`platform` field fall back to the platform recorded when Main last dispatched
+an event to that plugin.
 
 ## Send a local image
 
@@ -107,8 +155,8 @@ Python, Node.js, and Go use `image(...)` and `Image(filePath)` respectively. Mai
 uploads the image to the QQ server (`v2/users/{openid}/files` for private chats,
 `v2/groups/{openid}/files` for groups) and sends it as rich media `msg_type = 7`.
 A message allows at most one `image` part and cannot combine it with Markdown
-format; send additional images as separate messages. The `image` part does not
-use the low-level `media.uploadC2CFile` authorization stub.
+format; send additional images as separate messages. The `image` part uploads
+through Main; plugins do not need to call the low-level `media.uploadC2CFile`.
 
 ## Send a remote image
 
@@ -137,8 +185,7 @@ err := message.Reply(ctx, iskypro.ImageUrl("https://example.com/news_banner.png"
 
 Channel and direct-message targets do not support remote URL images yet; use a
 local file path instead. The local base64 `file_data` upload path is kept as a
-compatibility capability (the official docs do not list the field, which does
-not prove it is unusable) and is not migrated.
+compatibility capability and is not migrated.
 
 ## Recall a message
 

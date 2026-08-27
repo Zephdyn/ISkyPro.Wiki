@@ -24,6 +24,6 @@ features:
     details: 记录主程序、WebUI、Bot 网关、Webhook、服务模式和发布包的常用操作。
   - title: 插件生态
     details: 覆盖 ISky v1 *EPL* / x86 插件兼容边界、隔离宿主和 ISkyPro v2+ Plugin SDK 多语言支持。
-  - title: 更新提示
+  - title: 发布与更新
     details: 查看当前版本、公开更新日志、SDK 下载和新版功能摘要。
 ---

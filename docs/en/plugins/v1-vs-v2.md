@@ -22,7 +22,7 @@ Characteristics:
 - Suitable for existing ISky / E-language DLL plugins.
 - Run in the independent x86 `isky.exe` host.
 - Message callbacks remain serialized for each v1 plugin, preserving v1 return-value interception semantics.
-- The WebUI plugin page manages everything from one card list: search, type/status filters, details, scan, upload, enable, disable, restart, open settings, and uninstall.
+- Upload, enable, disable, and uninstall of v1 plugins happen on the WebUI plugin page.
 - The v1 plugin ABI and `message.dll` compatibility layer remain available.
 
 ISky v1 plugins are supported only by Windows packages. Linux x64 packages do not include `isky.exe`, `message.dll`, or the v1 plugin ABI compatibility layer.
@@ -46,7 +46,7 @@ Characteristics:
 - stdout may contain only JSON-RPC protocol frames. Ordinary logs must go to stderr or `log.write`.
 - The plugin process is started, stopped, restarted, and monitored by Main.
 - Supports typed + raw events, delayed replies through `messageReference`, permission declarations, and settings schema.
-- The WebUI Install plugins tab installs v2+ zip packages or registers HTTP plugins; the plugin list shows status and provides start, stop, restart, disable, uninstall, and open settings.
+- The WebUI Install plugins tab installs v2+ zip packages or registers HTTP plugins; the plugin list shows status and provides start, stop, restart, disable, uninstall, and open settings (v1 and v2 plugins share one list).
 
 HTTP v2 plugins do not live under `plugins-v2/` and are not uploaded as
 ZIP files. They run as independent web services, expose
@@ -59,4 +59,4 @@ lifecycle.
 - Existing ISky / *EPL* x86 DLL plugin: keep using the v1 plugin entry.
 - New plugin: prefer the ISkyPro v2+ plugin system.
 - Linux, Python / Node.js / Go, or cross-platform plugin: use the v2 plugin path.
-- v1 interception-chain semantics: use a v1 plugin, or explicitly design command / filter behavior in a v2 plugin.
+- v1 interception-chain semantics: use a v1 plugin, or design equivalent behavior in a v2 plugin through the manifest `commands` / `filters` mechanisms.

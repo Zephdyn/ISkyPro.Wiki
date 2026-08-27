@@ -29,19 +29,23 @@ console.log("hello")
 fmt.Println("hello")
 ```
 
-These all pollute stdout. Write them to stderr instead.
+All of the above pollute stdout. Plugin logs should be written to stderr, or output through the SDK's `log.write`.
 
 ## ACK Timeout
 
-Return an ACK quickly after receiving an event. For slow HTTP calls, database work, or long tasks, ACK first, then continue asynchronously inside the plugin and call SDK methods to reply.
+Return an ACK quickly after receiving an event. For time-consuming HTTP calls,
+database work, or long tasks, ACK first, then continue asynchronously inside the
+plugin and call SDK methods to reply.
 
 ## Missing Permission
 
-SDK API calls are checked against manifest `permissions`. `messages.reply` requires
-`messages.reply`; active sends need `messages.send`; recalls need `messages.recall`;
-reading the current bot profile requires `users.read`. QQ platform errors (for
-example 22009 message rate limit) arrive with a JSON-RPC error `data.errorCode`
-(`qq.api.<errCode>`), so plugins can branch on stable error codes.
+SDK API calls are checked against the manifest `permissions`: replying requires
+`messages.reply`, active sends require `messages.send`, recalls require
+`messages.recall`, and reading the current bot profile requires `users.read`. QQ
+platform errors (for example 22009 message rate limit) arrive with a JSON-RPC
+error `data.errorCode` (`qq.api.<errCode>`), so plugins can branch on stable
+error codes. Error codes evolve with the SDK; see the
+[SDK changelog](/en/changelog/sdk/).
 
 ## HTTP Plugin Registration Failure
 

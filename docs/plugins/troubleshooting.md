@@ -29,15 +29,20 @@ console.log("hello")
 fmt.Println("hello")
 ```
 
-这些都会污染 stdout。请改为 stderr。
+以上输出都会污染 stdout。插件日志应写入 stderr，或通过 SDK 的 `log.write` 输出。
 
 ## ACK 超时
 
-插件收到事件后应尽快返回 ACK。如果需要慢 HTTP、数据库或长任务，先 ACK，再在插件内部异步处理并调用 SDK 方法回复。
+插件收到事件后应尽快返回 ACK。如果插件需要耗时的 HTTP 调用、数据库操作或长任务，
+应先 ACK，再在插件内部异步处理并调用 SDK 方法回复。
 
 ## 无权限
 
-SDK API 调用会按 manifest `permissions` 校验。调用 `messages.reply` 需要 `messages.reply`，主动发送需要 `messages.send`，撤回需要 `messages.recall`，读取当前机器人资料需要 `users.read`。QQ 平台错误（如 22009 消息超频）会以 JSON-RPC error `data.errorCode`（`qq.api.<errCode>`）返回，插件可以按错误码分支处理。
+SDK API 调用会按 manifest 的 `permissions` 校验：回复事件需声明 `messages.reply`，
+主动发送需声明 `messages.send`，撤回需声明 `messages.recall`，读取当前机器人资料
+需声明 `users.read`。QQ 平台错误（如 22009 消息超频）以 JSON-RPC error 的
+`data.errorCode`（`qq.api.<errCode>`）返回，可按错误码分支处理；错误码随 SDK 变更
+更新，见 [SDK 更新日志](/changelog/sdk/)。
 
 ## HTTP 插件注册失败
 

@@ -1,11 +1,13 @@
 # SDK 下载
 
 Plugin SDK v2 的唯一源码位于本公开仓库的 `sdk/`，可直接 clone 或按语言下载同版本
-Release 压缩包。`2.1.0-preview.1` 的 SDK 仍是 preview API，不承诺稳定命名冻结。
+Release 压缩包。最新稳定版为 `2.0.0`；`2.1.0-preview.1` 为最新预览版，其 API
+尚不承诺稳定命名冻结。
 
 下载入口：
 
-- [v2.1.0-preview.1 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.1.0-preview.1)
+- 最新预览版：[v2.1.0-preview.1 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.1.0-preview.1)
+- 最新稳定版：[v2.0.0 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.0.0)
 
 主程序发布包命名：
 

@@ -6,7 +6,7 @@ When `ISkyPro.exe` or the Linux package's `ISkyPro` starts for the first time, t
 
 ## Should I use WebSocket or Webhook?
 
-Use WebSocket for local use or when you do not have a public HTTPS callback address. Use Webhook when you have configured a public callback URL on the QQ platform or the deployment is intended to receive public HTTPS callbacks.
+Use WebSocket for local use or when you do not have a public HTTPS callback address. Use Webhook when you have configured a public callback URL on the QQ platform or the deployment is intended to receive public HTTPS callbacks. See [QQBot Event Setup](/en/guide/qqbot-events) and [Webhook and Reverse Proxy](/en/guide/webhook-and-proxy) for detailed setup and troubleshooting.
 
 ## Why did login succeed but group messages are missing?
 
@@ -34,7 +34,7 @@ ISky v1 plugins depend on the original ISky framework DLL ABI and a 32-bit runti
 
 ## Why did a newly uploaded ISkyPro v2+ plugin not start?
 
-Successful installation does not always start the plugin. Confirm that start after install was selected during upload, or start it manually from the plugin list page. Stop a running plugin before updating it.
+Successful installation does not always start the plugin. Confirm that start after install was selected during upload, or start it manually from the plugin list page. When updating a running plugin, ISkyPro stops the old version and resumes it after replacement; no manual stop is needed.
 
 ## Does update-check failure affect runtime?
 
@@ -43,3 +43,16 @@ No. Update-check failure only affects newer-version prompts and download entries
 ## Why does service mode not open a browser automatically?
 
 Windows Services and Linux systemd services run in a background session and cannot open the browser like a desktop process. Open the WebUI address manually and enter the access token.
+
+## How do I access the WebUI from another machine?
+
+By default the WebUI listens on the loopback address only. Remote access requires both:
+
+1. Set `ISkyPro:WebUI:Url` to a routable listen address, for example `http://0.0.0.0:5432`.
+2. Enable remote access: set `ISkyPro:WebUI:AllowRemote` to `true`, or enable remote access in the WebUI settings.
+
+Restart ISkyPro, open `http://<server-address>:5432`, and enter the access token printed at startup. Always put remote access behind an HTTPS reverse proxy; do not expose the WebUI login page directly to the public internet.
+
+## How do I upgrade ISkyPro?
+
+Older versions can detect and download the new release from the update entry on the WebUI About page. You can also download the new release package manually and replace the old files while keeping the `config`, `data`, and plugin directories. Review the compatibility notes in the [changelog](/en/changelog/) before upgrading. SDKs are downloaded separately as `SDK-V2-<Language>-<version>.zip`; SDK archives are not used to install or update the main application.

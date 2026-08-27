@@ -22,7 +22,7 @@ All of the following must be true:
 - ISkyPro or a reverse proxy is reachable through public HTTPS.
 - The QQ Open Platform callback URL points to the actual public URL.
 - Required events are selected in QQ Open Platform event settings.
-- Group messages usually require `GROUP_MESSAGE_CREATE`.
+- Group messages require at least `GROUP_MESSAGE_CREATE`.
 
 ## Group Messages
 

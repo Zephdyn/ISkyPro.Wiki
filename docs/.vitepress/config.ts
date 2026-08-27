@@ -105,36 +105,33 @@ function buildChangelogSidebarItems(localePrefix: '' | '/en', subdir = ''): Side
     .map(({ text, link }) => ({ text, link }))
 }
 
+// ---------------------------------------------------------------------------
+// Top navigation: top-level sections switch the whole sidebar context.
+// ---------------------------------------------------------------------------
+
 const zhNav = [
-  {
-    text: '指南',
-    items: [
-      { text: '快速开始', link: '/guide/getting-started' },
-      { text: 'QQBot 事件配置', link: '/guide/qqbot-events' },
-      { text: 'Webhook 与反向代理', link: '/guide/webhook-and-proxy' }
-    ]
-  },
-  {
-    text: '插件 SDK',
-    items: [
-      { text: '插件概览', link: '/plugins/' },
-      { text: 'ISky v1 与 ISkyPro v2+', link: '/plugins/v1-vs-v2' },
-      { text: '快速实现', link: '/plugins/sdk-quick-start' },
-      { text: '事件详解', link: '/plugins/events' },
-      { text: '发布插件', link: '/plugins/publishing' },
-      { text: '故障排查', link: '/plugins/troubleshooting' },
-      { text: 'SDK 下载', link: '/plugins/downloads' },
-      { text: 'SDK 更新日志', link: '/changelog/sdk/' }
-    ]
-  },
+  { text: '指南', link: '/guide/getting-started' },
+  { text: '插件 SDK', link: '/plugins/' },
   { text: 'FAQ', link: '/faq' },
   { text: '更新日志', link: '/changelog/' },
   { text: 'GitHub', link: 'https://github.com/Zephdyn/ISkyPro.Wiki' }
 ]
 
-const zhSidebar = [
+const enNav = [
+  { text: 'Guide', link: '/en/guide/getting-started' },
+  { text: 'Plugin SDK', link: '/en/plugins/' },
+  { text: 'FAQ', link: '/en/faq' },
+  { text: 'Changelog', link: '/en/changelog/' },
+  { text: 'GitHub', link: 'https://github.com/Zephdyn/ISkyPro.Wiki' }
+]
+
+// ---------------------------------------------------------------------------
+// Sidebars: each section shows only its own tree on the left.
+// ---------------------------------------------------------------------------
+
+const zhHomeSidebar = [
   {
-    text: '指南',
+    text: '入门',
     items: [
       { text: '项目简介', link: '/' },
       { text: '快速开始', link: '/guide/getting-started' },
@@ -143,7 +140,36 @@ const zhSidebar = [
     ]
   },
   {
-    text: '插件 SDK',
+    text: '插件开发',
+    items: [
+      { text: '插件 SDK', link: '/plugins/' },
+      { text: 'SDK 下载', link: '/plugins/downloads' }
+    ]
+  },
+  {
+    text: '支持',
+    items: [
+      { text: 'FAQ', link: '/faq' },
+      { text: '更新日志', link: '/changelog/' }
+    ]
+  }
+]
+
+const zhGuideSidebar = [
+  {
+    text: '指南',
+    items: [
+      { text: '项目简介', link: '/' },
+      { text: '快速开始', link: '/guide/getting-started' },
+      { text: 'QQBot 事件配置', link: '/guide/qqbot-events' },
+      { text: 'Webhook 与反向代理', link: '/guide/webhook-and-proxy' }
+    ]
+  }
+]
+
+const zhPluginSidebar = [
+  {
+    text: '插件开发',
     items: [
       { text: '插件概览', link: '/plugins/' },
       { text: 'ISky v1 与 ISkyPro v2+', link: '/plugins/v1-vs-v2' },
@@ -154,54 +180,36 @@ const zhSidebar = [
       { text: 'SDK 下载', link: '/plugins/downloads' },
       { text: 'SDK 更新日志', link: '/changelog/sdk/' }
     ]
-  },
+  }
+]
+
+const zhChangelogSidebar = [
   {
-    text: '支持',
+    text: '更新日志',
     items: [
-      { text: 'FAQ', link: '/faq' }
+      { text: '更新日志', link: '/changelog/' },
+      ...buildChangelogSidebarItems('')
     ]
   },
   {
-    text: '发布',
+    text: 'SDK 更新日志',
     items: [
-      { text: '更新日志', link: '/changelog/' },
-      ...buildChangelogSidebarItems(''),
       { text: 'SDK 更新日志', link: '/changelog/sdk/' },
       ...buildChangelogSidebarItems('', 'sdk')
     ]
   }
 ]
 
-const enNav = [
-  {
-    text: 'Guide',
-    items: [
-      { text: 'Getting Started', link: '/en/guide/getting-started' },
-      { text: 'QQBot Events', link: '/en/guide/qqbot-events' },
-      { text: 'Webhook and Proxy', link: '/en/guide/webhook-and-proxy' }
-    ]
-  },
-  {
-    text: 'Plugin SDK',
-    items: [
-      { text: 'Overview', link: '/en/plugins/' },
-      { text: 'ISky v1 and ISkyPro v2+', link: '/en/plugins/v1-vs-v2' },
-      { text: 'Quick Start', link: '/en/plugins/sdk-quick-start' },
-      { text: 'Events', link: '/en/plugins/events' },
-      { text: 'Publishing', link: '/en/plugins/publishing' },
-      { text: 'Troubleshooting', link: '/en/plugins/troubleshooting' },
-      { text: 'SDK Downloads', link: '/en/plugins/downloads' },
-      { text: 'SDK Changelog', link: '/en/changelog/sdk/' }
-    ]
-  },
-  { text: 'FAQ', link: '/en/faq' },
-  { text: 'Changelog', link: '/en/changelog/' },
-  { text: 'GitHub', link: 'https://github.com/Zephdyn/ISkyPro.Wiki' }
-]
+const zhSidebar = {
+  '/guide/': zhGuideSidebar,
+  '/plugins/': zhPluginSidebar,
+  '/changelog/': zhChangelogSidebar,
+  '/': zhHomeSidebar
+}
 
-const enSidebar = [
+const enHomeSidebar = [
   {
-    text: 'Guide',
+    text: 'Getting Started',
     items: [
       { text: 'Overview', link: '/en/' },
       { text: 'Getting Started', link: '/en/guide/getting-started' },
@@ -210,7 +218,36 @@ const enSidebar = [
     ]
   },
   {
-    text: 'Plugin SDK',
+    text: 'Plugin Development',
+    items: [
+      { text: 'Plugin SDK', link: '/en/plugins/' },
+      { text: 'SDK Downloads', link: '/en/plugins/downloads' }
+    ]
+  },
+  {
+    text: 'Support',
+    items: [
+      { text: 'FAQ', link: '/en/faq' },
+      { text: 'Changelog', link: '/en/changelog/' }
+    ]
+  }
+]
+
+const enGuideSidebar = [
+  {
+    text: 'Guide',
+    items: [
+      { text: 'Overview', link: '/en/' },
+      { text: 'Getting Started', link: '/en/guide/getting-started' },
+      { text: 'QQBot Events', link: '/en/guide/qqbot-events' },
+      { text: 'Webhook and Proxy', link: '/en/guide/webhook-and-proxy' }
+    ]
+  }
+]
+
+const enPluginSidebar = [
+  {
+    text: 'Plugin Development',
     items: [
       { text: 'Overview', link: '/en/plugins/' },
       { text: 'ISky v1 and ISkyPro v2+', link: '/en/plugins/v1-vs-v2' },
@@ -221,23 +258,32 @@ const enSidebar = [
       { text: 'SDK Downloads', link: '/en/plugins/downloads' },
       { text: 'SDK Changelog', link: '/en/changelog/sdk/' }
     ]
-  },
+  }
+]
+
+const enChangelogSidebar = [
   {
-    text: 'Support',
+    text: 'Changelog',
     items: [
-      { text: 'FAQ', link: '/en/faq' }
+      { text: 'Changelog', link: '/en/changelog/' },
+      ...buildChangelogSidebarItems('/en')
     ]
   },
   {
-    text: 'Release',
+    text: 'SDK Changelog',
     items: [
-      { text: 'Changelog', link: '/en/changelog/' },
-      ...buildChangelogSidebarItems('/en'),
       { text: 'SDK Changelog', link: '/en/changelog/sdk/' },
       ...buildChangelogSidebarItems('/en', 'sdk')
     ]
   }
 ]
+
+const enSidebar = {
+  '/en/guide/': enGuideSidebar,
+  '/en/plugins/': enPluginSidebar,
+  '/en/changelog/': enChangelogSidebar,
+  '/en/': enHomeSidebar
+}
 
 export default defineConfig({
   lang: 'zh-CN',

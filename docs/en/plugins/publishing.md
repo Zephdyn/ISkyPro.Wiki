@@ -40,9 +40,9 @@ plugins-v2/
 
 ## Manifest Notes
 
-- `pluginId` must be stable. Do not change it casually when updating versions.
+- `pluginId` must be stable. Do not change it when updating versions.
 - Use `2` for `protocolVersion`.
-- The first local package installation path accepts only `stdio-jsonrpc`.
+- Local ZIP installation currently accepts only `stdio-jsonrpc`; HTTP plugins are not installed as ZIPs.
 - `transport.stdio.args` should include `--iskypro-stdio`.
 - Declare only permissions that are actually needed.
 - Declare fields under `settings.configSchema` when a settings form is needed.
@@ -93,7 +93,8 @@ Upload the ZIP from the WebUI “v2 plugins” tab. The installer:
 - Rejects path traversal entries.
 - Reads only the manifest and does not execute the plugin.
 - Validates the manifest.
-- Rejects overwriting a running plugin.
+- Reports a conflict when the same plugin ID is installed again; the user confirms before the update is applied.
+- Stops a running plugin before updating it and resumes it after replacement.
 - Keeps a backup of the previous version during update.
 
 Plugin data/config is not deleted by default. Data deletion should be an explicit user action, not part of a normal update.
@@ -131,5 +132,5 @@ The release page or README should state:
 - Why each plugin permission is needed.
 - Required runtime, such as Python, Node.js, or Go.
 - Configuration fields.
-- Common errors and log locations.
+- Common errors and log locations (see [Troubleshooting](/en/plugins/troubleshooting)).
 - The transport type and whether users should upload a ZIP or register a base URL.

@@ -1,13 +1,13 @@
 # Plugin SDK v2 快速实现
 
-稳定版 `2.0.0` 正式支持 C#、Python、Node.js 和 Go。开始前先选择部署方式：
+稳定 SDK `2.0.0` 正式支持 C#、Python、Node.js 和 Go，最新预览版为 `2.1.0-preview.1`。开始前先选择部署方式：
 
 | 方式 | 适合场景 | 如何接入 ISkyPro |
 | --- | --- | --- |
 | `stdio-jsonrpc` | 本地插件、需要完整 Plugin SDK v2 API、希望由 ISkyPro 管理进程生命周期 | 发布为包含 `manifest.json` 的 ZIP，在 WebUI 上传 |
 | HTTP | 已有 Web 服务、容器或远程服务，希望自己管理进程和扩缩容 | 部署 HTTP 服务，在 WebUI 注册 Base URL，不上传 ZIP |
 
-两种方式不是同一个发布包的两种启动参数。stdio 插件是本地受管进程；HTTP 插件是独立运行的服务。
+`stdio-jsonrpc` 与 HTTP 是两种不同的部署模型，不是同一发布包的两种启动参数。stdio 插件是本地受管进程；HTTP 插件是独立运行的服务。
 
 ## Python stdio 插件
 
@@ -49,7 +49,7 @@ manifest 中声明 stdio 启动方式：
 - `--iskypro-stdio` 表示进入协议模式。
 - 没有该参数时，插件应向 stderr 打印帮助并退出。
 - 进入协议模式后，不要向 stdout 写普通日志。
-- 插件必须等待 `iskypro.initialize`，不要自行假定已经授权。
+- 插件必须等待 `iskypro.initialize`，不得假定已获得授权。
 
 仓库内可直接参考：
 
@@ -59,8 +59,7 @@ manifest 中声明 stdio 启动方式：
 - `samples/ISkyPro.SamplePlugin/EchoPluginV2.cs`
 - `samples/QQBotMarkdownRepeatPlugin`
 
-SDK 唯一源码位于本公开仓库的 `sdk/`。更新 API catalog 后运行
-`python tools/plugin-sdk-stub-generator/generate.py` 即可同时替换四语言生成方法。
+SDK 唯一源码位于本公开仓库的 `sdk/`，版本与打包方式见 [SDK 下载](/plugins/downloads)，变更记录见 [SDK 更新日志](/changelog/sdk/)。
 
 ## Markdown 群消息
 
@@ -86,10 +85,11 @@ Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
 与目标客户端表现。
 :::
 
-可安装的完整 @ 复读示例位于 `samples/QQBotMarkdownRepeatPlugin`，命令为
-`复读 你好`。
+完整示例见 `samples/QQBotMarkdownRepeatPlugin`（命令为 `复读 你好`）。
 
 ## 指定目标平台与账号
+
+> 以下为 2.1.0-preview.2 开发中特性，正式发布前 API 与行为可能调整。
 
 `messages.send` 的主动发送目标支持可选 `platform` 参数，缺省为 `"qqbot"`。
 当 ISkyPro 已接入 OneBot 时，可显式把目标平台设为 `"onebot"`：
@@ -139,7 +139,7 @@ await message.ReplyAsync(
 Python、Node.js 和 Go 对应使用 `image(...)` 和 `Image(filePath)`。Main 会把图片上传到
 QQ 服务器（私聊 `v2/users/{openid}/files`、群聊 `v2/groups/{openid}/files`），再以富媒体
 `msg_type = 7` 发送。一条消息最多包含一个 `image` part，且不能与 Markdown 格式组合；
-发送多张图片请拆成多条消息。`image` part 不使用低层 `media.uploadC2CFile` 授权 stub。
+发送多张图片请拆成多条消息。`image` part 的文件上传由 Main 完成，插件不需要调用低层 `media.uploadC2CFile`。
 
 ## 发送远程图片
 
@@ -166,7 +166,7 @@ err := message.Reply(ctx, iskypro.ImageUrl("https://example.com/news_banner.png"
 ```
 
 文字子频道/频道私信的目标暂不支持远程 URL 图片，请改用本地文件路径。本地 base64
-`file_data` 上传路径作为兼容能力保留（官方文档未列出该字段，可能仍可用），未做迁移。
+`file_data` 上传路径作为兼容能力保留，未做迁移。
 
 ## 撤回消息
 
@@ -194,7 +194,7 @@ err := sdk.Messages.Group("group-openid").Recall(ctx, "platform-message-id")
 
 ## 打包 stdio 插件
 
-不要直接压缩源码目录。正式 ZIP 必须包含插件入口、运行依赖和根目录 `manifest.json`。仓库样例提供了可直接运行的打包入口：
+请勿直接压缩源码目录。正式 ZIP 必须包含插件入口、运行依赖和根目录 `manifest.json`。仓库样例提供了可直接运行的打包入口：
 
 ### C#
 
@@ -230,7 +230,7 @@ Set-Location samples\stdio-node-plugin
 npm run package:plugin
 ```
 
-也可以直接运行 `node package-plugin.mjs`。脚本只使用 Node.js 内置模块，并把 `@iskypro/plugin-sdk-v2` 放入包内 `node_modules`。目标机器仍需提供兼容的 `node` 命令。
+或直接运行 `node package-plugin.mjs`。脚本只使用 Node.js 内置模块，并把 `@iskypro/plugin-sdk-v2` 放入包内 `node_modules`。目标机器仍需提供兼容的 `node` 命令。
 
 ### Go
 

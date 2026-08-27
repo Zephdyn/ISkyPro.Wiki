@@ -6,7 +6,7 @@
 
 ## 应该选 WebSocket 还是 Webhook？
 
-本机运行、没有公网 HTTPS 回调地址时选 WebSocket。已经在 QQ 平台配置公网回调地址，或部署目标就是公网 HTTPS 回调时选 Webhook。
+本机运行、没有公网 HTTPS 回调地址时选 WebSocket。已经在 QQ 平台配置公网回调地址，或部署目标就是公网 HTTPS 回调时选 Webhook。详细配置与排障见 [QQBot 事件配置](/guide/qqbot-events) 和 [Webhook 与反向代理](/guide/webhook-and-proxy)。
 
 ## 为什么登录成功但收不到群消息？
 
@@ -14,7 +14,7 @@
 
 ## Bot ID / AppID 和 Secret 在哪里获取？
 
-在 QQ 开放平台机器人管理后台获取。不要从第三方插件、文档截图或别人发来的配置中复制 Secret。
+在 QQ 开放平台机器人管理后台获取。不要从第三方插件、文档截图或转发的配置中复制 Secret。
 
 ## Webhook 回调地址应该填什么？
 
@@ -34,7 +34,7 @@ ISky v1 插件依赖原 ISky 框架 DLL ABI 和 32 位运行环境。ISkyPro 用
 
 ## ISkyPro v2+ 插件 ZIP 上传后为什么没有启动？
 
-安装成功不一定自动启动。确认上传时勾选了“安装后立即启动”，或在插件列表页手动启动。运行中的插件更新前需要先停止。
+安装成功不一定自动启动。确认上传时勾选了“安装后立即启动”，或在插件列表页手动启动。更新运行中的插件时，框架会先停止旧版本并在替换完成后自动恢复运行，无需手动停止。
 
 ## 更新检测失败是否影响运行？
 
@@ -43,3 +43,16 @@ ISky v1 插件依赖原 ISky 框架 DLL ABI 和 32 位运行环境。ISkyPro 用
 ## 服务模式下为什么不会自动弹浏览器？
 
 Windows Service 或 Linux systemd 都在后台会话中运行，不能像桌面程序一样弹出浏览器。请手动打开 WebUI 地址并输入访问 token。
+
+## 如何从其他机器访问 WebUI？
+
+默认 WebUI 只监听本机回环地址。远程访问需要同时满足两个条件：
+
+1. 将 `ISkyPro:WebUI:Url` 改为可路由的监听地址，例如 `http://0.0.0.0:5432`。
+2. 开启远程访问：将 `ISkyPro:WebUI:AllowRemote` 设为 `true`，或在 WebUI 设置中开启远程访问。
+
+修改后重启 ISkyPro，通过 `http://<服务器地址>:5432` 访问并输入启动时输出的访问 token。远程访问务必放在 HTTPS 反向代理之后，不要把 WebUI 登录页直接暴露到公网。
+
+## 如何升级 ISkyPro？
+
+较低版本可通过 WebUI 关于页的更新入口检测并下载新版；也可以手动下载新版发布包，替换旧文件时保留 `config`、`data` 和插件目录。升级前查看 [更新日志](/changelog/) 中的兼容性说明。SDK 请按 `SDK-V2-<Language>-<version>.zip` 单独下载，SDK 压缩包不用于安装或更新主程序。

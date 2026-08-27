@@ -1,8 +1,8 @@
 # 快速开始
 
-ISkyPro 是面向 QQBot 和 ISky 插件生态的 .NET 10 重构版主框架。它包含主程序、Web 管理界面、QQBot 网关、ISky v1 插件兼容宿主、`message.dll` 兼容层和 ISkyPro v2+ Plugin SDK。
+ISkyPro 是基于 .NET 10 重写的 QQBot 主框架，面向 ISky 插件生态提供兼容与扩展。它由主程序、Web 管理界面、QQBot 网关、ISky v1 插件兼容宿主、`message.dll` 兼容层和 ISkyPro v2+ Plugin SDK 组成。
 
-当前稳定版本为 `2.0.0`。Plugin SDK v2 已提供 C#、Python、Node.js 和 Go 公共源码。
+最新稳定版本为 `2.0.0`，最新已发布预览版为 `2.1.0-preview.1`。Plugin SDK v2 已提供 C#、Python、Node.js 和 Go 公共源码。
 
 ## 准备
 
@@ -113,6 +113,8 @@ Bot ID / AppID 和 Secret 只来自你自己的 QQ 机器人后台。不要把 S
 
 ## 接入 OneBot 平台
 
+> 以下为 2.1.0 预览版特性，正式发布前行为可能调整。
+
 2.1.0 起，ISkyPro 支持 OneBot 平台网关，可与其他 OneBot 兼容客户端/协议端并行运行。
 OneBot 网关与 QQBot 网关相互独立：
 
@@ -122,7 +124,40 @@ OneBot 网关与 QQBot 网关相互独立：
 - 消息协议支持 OneBot v11 与 v12；发送层支持图片、@、回复、语音等 CQ 码富媒体，并带出站限速。
 
 在 WebUI 登录页选择“OneBot”平台，或直接编辑配置文件中的 `onebot` 节启用。多平台状态可在
-网关页查看。
+网关页查看。配置文件示例（`config/appsettings.json`）：
+
+```json
+{
+  "ISkyPro": {
+    "OneBot": {
+      "Enabled": true,
+      "ProtocolVersion": "V11",
+      "ConnectionMode": "ForwardWebSocket",
+      "WsUrl": "ws://127.0.0.1:8080",
+      "ApiBaseUrl": "http://127.0.0.1:3000",
+      "AccessToken": "",
+      "SelfUserId": 0,
+      "DisplayName": "OneBot",
+      "ReverseWebSocketPath": "/onebot/ws",
+      "MaxReconnectBackoffSeconds": 60
+    }
+  }
+}
+```
+
+`ProtocolVersion` 可填 `V11` / `V12`；`ConnectionMode` 可填 `ForwardWebSocket` / `ReverseWebSocket` / `Http`。
+反向 WebSocket 与 HTTP 模式时，`ApiBaseUrl` 与 `SelfUserId` 按协议端要求填写；`AccessToken` 与协议端配置保持一致。
+
+## 配置覆盖方式
+
+除 WebUI 与 `config/appsettings.json` 外，还支持环境变量和命令行参数覆盖，优先级高于配置文件：
+
+- 环境变量：`ISkyPro:WebUI:AllowRemote=true`。环境变量名不支持冒号的平台
+  （如 Windows）可用双下划线形式 `ISkyPro__WebUI__AllowRemote=true`。
+- 命令行：`ISkyPro.exe --ISkyPro:WebUI:AllowRemote=true`（或
+  `--ISkyPro__WebUI__AllowRemote=true`）。
+- 特殊参数：`--urls`（Kestrel 监听地址）、`--open-browser` / `--no-open-browser`
+  （是否自动打开浏览器）、`--service-name`（服务名，与安装脚本配合）。
 
 ## 长期运行入口
 

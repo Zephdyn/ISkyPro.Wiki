@@ -2,10 +2,16 @@
 
 Plugin SDK v2 事件同时提供规范字段和完整 `rawPayload`。规范字段用于常规开发，`rawPayload` 用于读取 QQ 平台新增或暂未建模的字段。
 
+## 事件类型
+
+各平台的消息类事件统一规范化为 `message.created`（QQBot 与 OneBot 均如此）。
+manifest 的 `eventSubscriptions` 订阅该事件类型即可收到全部消息事件；来源平台与目标
+类型通过事件字段区分。新增事件类型会在 SDK 更新日志中说明。
+
 常见字段：
 
 - `eventId`：框架侧事件 ID。
-- `eventType`：事件类型。
+- `eventType`：事件类型，目前为 `message.created`。
 - `bot`：机器人账号上下文。
 - `conversation`：会话类型和目标 ID。
 - `sender`：发送者 ID、成员 ID、展示名等。
@@ -24,24 +30,27 @@ Plugin SDK v2 事件同时提供规范字段和完整 `rawPayload`。规范字�
 
 QQ 媒体消息（图片/视频/语音/文件）的 `message.attachments` 数组已自动填充，每项包含
 `url`、`content_type`、`size` 等字段；频道消息中被 @ 的用户会填充到 `message.mentions`
-（`id`/`username`）。纯文本消息两者的数组为空；`rawPayload` 仍保留完整原始字段
-（如附件尺寸、文件名）。
+（`id`/`username`）。OneBot 的 voice/video/file 消息段同样映射。纯文本消息两者的数组
+为空；`rawPayload` 仍保留完整原始字段（如附件尺寸、文件名）。
 
-## C2C / 单聊消息
+## C2C 单聊消息
 
-单聊消息通常映射为 `conversation.type = "c2c"`。回复仍使用事件中的 `messageReference`，主动消息需要插件 manifest 声明发送权限，并受平台权限限制。
+单聊消息通常映射为 `conversation.type = "c2c"`。回复仍使用事件中的 `messageReference`，
+主动消息需要插件 manifest 声明 `messages.send` 权限，并受平台权限限制。
 
 ## 频道消息
 
-频道消息通常包含 guild 和 channel 上下文。插件需要按实际事件中的 `conversation.guildId`、`conversation.channelId` 和 `rawPayload` 判断来源。
+频道消息通常包含 guild 和 channel 上下文。插件需要按实际事件中的 `conversation.guildId`、
+`conversation.channelId` 和 `rawPayload` 判断来源。
 
-## 私信消息
+## 频道私信
 
-频道私信和 C2C 不是同一类目标。开发时不要只按文本内容判断目标，应该读取 `conversation.type` 和 `messageReference.targetType`。
+频道私信和 C2C 不是同一类目标。开发时不要只按文本内容判断目标，应该读取
+`conversation.type` 和 `messageReference.targetType`。
 
 ## 开发建议
 
 - 常规回复优先使用 `messageReference`。
 - 需要 QQ 平台新增字段时读取 `rawPayload`。
-- 插件收到事件后尽快 ACK，耗时业务放到插件内部异步处理。
-- command 插件用 manifest 中的命令和前缀路由，避免多个插件重复响应同一命令。
+- 收到事件后应先返回 ACK，耗时操作置于插件内部异步执行。
+- command 插件使用 manifest 中的命令和前缀路由，避免多个插件重复响应同一命令。

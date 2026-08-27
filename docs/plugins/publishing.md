@@ -39,9 +39,9 @@ plugins-v2/
 
 ## manifest 要点
 
-- `pluginId` 必须稳定，更新版本时不要随意更改。
+- `pluginId` 必须稳定，更新版本时不应更改。
 - `protocolVersion` 使用 `2`。
-- 本地包安装第一阶段只接受 `stdio-jsonrpc`。
+- 本地 ZIP 安装目前仅接受 `stdio-jsonrpc` transport；HTTP 插件不通过 ZIP 安装。
 - `transport.stdio.args` 建议包含 `--iskypro-stdio`。
 - `permissions` 只声明实际需要的权限。
 - 需要设置表单时，在 `settings.configSchema` 中声明字段。
@@ -85,7 +85,8 @@ dotnet publish .\MyPlugin.csproj -c Release
 - 拒绝路径穿越条目。
 - 只读取 manifest，不执行插件。
 - 校验 manifest。
-- 拒绝覆盖运行中的插件。
+- 重复安装同 ID 插件时返回冲突信息，由用户确认后才执行更新。
+- 更新运行中的插件时先停止旧版本，替换完成后自动恢复运行。
 - 更新时保留旧版本备份。
 
 默认不删除插件的 data/config。删除数据应由用户明确执行，不应作为普通更新的一部分。
@@ -111,11 +112,11 @@ HTTP 发布说明还应写清：
 
 ## 发布说明
 
-发布页或 README 中建议写清：
+发布页或 README 中建议明确以下内容：
 
 - 支持的 ISkyPro 版本。
 - 插件权限用途。
 - 需要的运行时，例如 Python、Node.js 或 Go。
 - 配置项说明。
-- 常见错误和日志位置。
+- 常见错误和日志位置（可参考 [故障排查](/plugins/troubleshooting)）。
 - transport 类型，以及用户应该上传 ZIP 还是注册 Base URL。
