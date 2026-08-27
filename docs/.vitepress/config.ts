@@ -80,8 +80,9 @@ function compareVersionsDesc(left: string, right: string): number {
   return b.prereleaseNumber - a.prereleaseNumber
 }
 
-function buildChangelogSidebarItems(localePrefix: '' | '/en'): SidebarItem[] {
-  const relativeDir = localePrefix === '/en' ? '../en/changelog' : '../changelog'
+function buildChangelogSidebarItems(localePrefix: '' | '/en', subdir = ''): SidebarItem[] {
+  const subPath = subdir ? `${subdir}/` : ''
+  const relativeDir = localePrefix === '/en' ? `../en/changelog/${subPath}` : `../changelog/${subPath}`
   const changelogDir = path.resolve(docsDir, relativeDir)
 
   if (!fs.existsSync(changelogDir)) {
@@ -96,7 +97,7 @@ function buildChangelogSidebarItems(localePrefix: '' | '/en'): SidebarItem[] {
       const version = slugToVersion(fileName)
       return {
         text: version,
-        link: `${localePrefix}/changelog/${slug}`,
+        link: `${localePrefix}/changelog/${subPath}${slug}`,
         version
       }
     })
@@ -122,7 +123,8 @@ const zhNav = [
       { text: '事件详解', link: '/plugins/events' },
       { text: '发布插件', link: '/plugins/publishing' },
       { text: '故障排查', link: '/plugins/troubleshooting' },
-      { text: 'SDK 下载', link: '/plugins/downloads' }
+      { text: 'SDK 下载', link: '/plugins/downloads' },
+      { text: 'SDK 更新日志', link: '/changelog/sdk/' }
     ]
   },
   { text: 'FAQ', link: '/faq' },
@@ -149,7 +151,8 @@ const zhSidebar = [
       { text: '事件详解', link: '/plugins/events' },
       { text: '发布插件', link: '/plugins/publishing' },
       { text: '故障排查', link: '/plugins/troubleshooting' },
-      { text: 'SDK 下载', link: '/plugins/downloads' }
+      { text: 'SDK 下载', link: '/plugins/downloads' },
+      { text: 'SDK 更新日志', link: '/changelog/sdk/' }
     ]
   },
   {
@@ -162,7 +165,9 @@ const zhSidebar = [
     text: '发布',
     items: [
       { text: '更新日志', link: '/changelog/' },
-      ...buildChangelogSidebarItems('')
+      ...buildChangelogSidebarItems(''),
+      { text: 'SDK 更新日志', link: '/changelog/sdk/' },
+      ...buildChangelogSidebarItems('', 'sdk')
     ]
   }
 ]
@@ -185,7 +190,8 @@ const enNav = [
       { text: 'Events', link: '/en/plugins/events' },
       { text: 'Publishing', link: '/en/plugins/publishing' },
       { text: 'Troubleshooting', link: '/en/plugins/troubleshooting' },
-      { text: 'SDK Downloads', link: '/en/plugins/downloads' }
+      { text: 'SDK Downloads', link: '/en/plugins/downloads' },
+      { text: 'SDK Changelog', link: '/en/changelog/sdk/' }
     ]
   },
   { text: 'FAQ', link: '/en/faq' },
@@ -212,7 +218,8 @@ const enSidebar = [
       { text: 'Events', link: '/en/plugins/events' },
       { text: 'Publishing', link: '/en/plugins/publishing' },
       { text: 'Troubleshooting', link: '/en/plugins/troubleshooting' },
-      { text: 'SDK Downloads', link: '/en/plugins/downloads' }
+      { text: 'SDK Downloads', link: '/en/plugins/downloads' },
+      { text: 'SDK Changelog', link: '/en/changelog/sdk/' }
     ]
   },
   {
@@ -225,7 +232,9 @@ const enSidebar = [
     text: 'Release',
     items: [
       { text: 'Changelog', link: '/en/changelog/' },
-      ...buildChangelogSidebarItems('/en')
+      ...buildChangelogSidebarItems('/en'),
+      { text: 'SDK Changelog', link: '/en/changelog/sdk/' },
+      ...buildChangelogSidebarItems('/en', 'sdk')
     ]
   }
 ]
