@@ -3,7 +3,7 @@ package iskypro
 
 import "context"
 
-const SDKVersion = "2.1.0-preview.1"
+const SDKVersion = "2.1.0-preview.2"
 
 var SDKMethods = map[string]SdkMethod{
 	"ChannelsCreateSubChannel":                  {Name: "channels.createSubChannel", Permission: "channels.manage", Stability: "stable", RequestModel: "CreateChannelRequest", ResponseModel: "Channel", DefaultEnabled: true},

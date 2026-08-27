@@ -1,6 +1,6 @@
 # 2.1.0-preview.2
 
-Status: in development, not yet released
+Release date: 2026-08-27
 
 This preview focuses on multi-platform experience and a forward-looking architecture: the dashboard shows whichever platform is signed in; the current version limits you to a single active platform (QQBot or OneBot), while the account model, log fields, and plugin protocol are already designed for multiple platforms and accounts; stdio-jsonrpc internals were optimized without touching plugins or users.
 

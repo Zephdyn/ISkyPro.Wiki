@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "iskypro-sdk-v2"
-version = "2.1.0-preview.1"
+version = "2.1.0-preview.2"
 description = "ISkyPro Plugin SDK v2 stdio-jsonrpc runtime"
 readme = "README.md"
 requires-python = ">=3.9"

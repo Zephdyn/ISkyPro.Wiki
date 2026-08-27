@@ -1,31 +1,31 @@
 # SDK 下载
 
 Plugin SDK v2 的唯一源码位于本公开仓库的 `sdk/`，可直接 clone 或按语言下载同版本
-Release 压缩包。最新稳定版为 `2.0.0`；`2.1.0-preview.1` 为最新预览版，其 API
+Release 压缩包。最新稳定版为 `2.0.0`；`2.1.0-preview.2` 为最新预览版，其 API
 尚不承诺稳定命名冻结。
 
 下载入口：
 
-- 最新预览版：[v2.1.0-preview.1 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.1.0-preview.1)
+- 最新预览版：[v2.1.0-preview.2 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.1.0-preview.2)
 - 最新稳定版：[v2.0.0 Release](https://github.com/Zephdyn/ISkyPro.Wiki/releases/tag/v2.0.0)
 
 主程序发布包命名：
 
 | 平台 | 文件名 |
 | --- | --- |
-| Windows x64 | `ISkyPro-2.1.0-preview.1-win-x64.zip` |
-| Windows ARM64 | `ISkyPro-2.1.0-preview.1-win-arm64.zip` |
-| Linux x64 | `ISkyPro-2.1.0-preview.1-linux-x64.tar.gz` |
+| Windows x64 | `ISkyPro-2.1.0-preview.2-win-x64.zip` |
+| Windows ARM64 | `ISkyPro-2.1.0-preview.2-win-arm64.zip` |
+| Linux x64 | `ISkyPro-2.1.0-preview.2-linux-x64.tar.gz` |
 
 SDK 压缩包文件名：
 
 | SDK | 文件名 |
 | --- | --- |
-| ISky v1 *EPL* SDK | `SDK-V1-EPL-2.1.0-preview.1.zip` |
-| C# Plugin SDK v2 | `SDK-V2-CSharp-2.1.0-preview.1.zip` |
-| Python Plugin SDK v2 | `SDK-V2-Python-2.1.0-preview.1.zip` |
-| Node.js Plugin SDK v2 | `SDK-V2-NodeJS-2.1.0-preview.1.zip` |
-| Go Plugin SDK v2 | `SDK-V2-Go-2.1.0-preview.1.zip` |
+| ISky v1 *EPL* SDK | `SDK-V1-EPL-2.1.0-preview.2.zip` |
+| C# Plugin SDK v2 | `SDK-V2-CSharp-2.1.0-preview.2.zip` |
+| Python Plugin SDK v2 | `SDK-V2-Python-2.1.0-preview.2.zip` |
+| Node.js Plugin SDK v2 | `SDK-V2-NodeJS-2.1.0-preview.2.zip` |
+| Go Plugin SDK v2 | `SDK-V2-Go-2.1.0-preview.2.zip` |
 
 SDK 压缩包用于插件开发，不用于安装或更新主程序。C# 包包含 NuGet 包、公共 Contracts、
 SDK 源码和可运行样例；其他语言包保留 `sdk/<language>` 与 `samples/<sample>` 的相对布局，
