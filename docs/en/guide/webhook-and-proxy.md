@@ -49,6 +49,28 @@ If the separate Webhook port is not enabled, the Webhook listens on the WebUI
 port (default `5432`); change the target address in the examples to
 `127.0.0.1:5432`. Confirm the actual listen address in the WebUI settings page.
 
+## IIS Reverse Proxy
+
+Windows Server + IIS requires the **URL Rewrite** and **Application Request Routing
+(ARR)** modules. Enable ARR proxying (IIS Manager > server > Application Request
+Routing Cache > Server Proxy Settings > check "Enable proxy"), then add this to the
+`web.config` of the public site:
+
+```xml
+<rewrite>
+    <rules>
+        <rule name="ISkyProWebhook" stopProcessing="true">
+            <match url="^qqbot/webhook" />
+            <action type="Rewrite" url="http://127.0.0.1:5433/qqbot/webhook" />
+        </rule>
+    </rules>
+</rewrite>
+```
+
+When the separate Webhook port is disabled, point the `Rewrite` target at the WebUI
+port (default `127.0.0.1:5432`). The proxy generator on the settings page copies the
+full snippet when IIS is selected.
+
 ## Configure ISkyPro
 
 In the WebUI settings page, confirm:

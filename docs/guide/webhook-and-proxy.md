@@ -48,6 +48,26 @@ bot.example.com {
 如果未启用独立 Webhook 端口，Webhook 监听在 WebUI 端口（默认 `5432`）上，
 把上面示例中的目标地址改为 `127.0.0.1:5432`。实际监听地址以 WebUI 设置页为准。
 
+## IIS 反向代理
+
+Windows Server + IIS 需要先安装 **URL Rewrite** 与 **Application Request Routing (ARR)**
+两个模块，并启用 ARR 代理（IIS 管理器 > 服务器 > Application Request Routing Cache >
+Server Proxy Settings > 勾选 Enable proxy）。然后在公网站点的 `web.config` 中加入：
+
+```xml
+<rewrite>
+    <rules>
+        <rule name="ISkyProWebhook" stopProcessing="true">
+            <match url="^qqbot/webhook" />
+            <action type="Rewrite" url="http://127.0.0.1:5433/qqbot/webhook" />
+        </rule>
+    </rules>
+</rewrite>
+```
+
+未启用独立 Webhook 端口时，把 `Rewrite` 目标改为 WebUI 端口（默认 `127.0.0.1:5432`）。
+设置页「反代生成器」选择 IIS 可直接复制完整片段。
+
 ## 在 ISkyPro 中配置
 
 在 WebUI 设置页确认：
