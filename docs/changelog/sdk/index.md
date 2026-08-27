@@ -6,6 +6,6 @@ SDK 版本号与主程序保持一致，按语言发布为 `SDK-V2-<Language>-<v
 
 ## 版本列表
 
-- [2.1.0-preview.2（开发中，暂未发布）](/changelog/sdk/v2-1-0-preview-2.md)
+- [2.1.0-preview.2](/changelog/sdk/v2-1-0-preview-2.md)
 - [2.1.0-preview.1](/changelog/sdk/v2-1-0-preview-1.md)
 - [2.0.0](/changelog/sdk/v2-0-0.md)

@@ -1,6 +1,6 @@
 # Plugin SDK v2 快速实现
 
-稳定 SDK `2.0.0` 正式支持 C#、Python、Node.js 和 Go，最新预览版为 `2.1.0-preview.1`。开始前先选择部署方式：
+稳定 SDK `2.0.0` 正式支持 C#、Python、Node.js 和 Go，最新预览版为 `2.1.0-preview.2`。开始前先选择部署方式：
 
 | 方式 | 适合场景 | 如何接入 ISkyPro |
 | --- | --- | --- |
@@ -89,7 +89,7 @@ Python、Node.js 和 Go 对应使用 `reply_markdown`、`replyMarkdown` 和
 
 ## 指定目标平台与账号
 
-> 以下为 2.1.0-preview.2 开发中特性，正式发布前 API 与行为可能调整。
+> 以下特性自 2.1.0-preview.2 起提供。
 
 `messages.send` 的主动发送目标支持可选 `platform` 参数，缺省为 `"qqbot"`。
 当 ISkyPro 已接入 OneBot 时，可显式把目标平台设为 `"onebot"`：

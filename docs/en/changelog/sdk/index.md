@@ -6,6 +6,6 @@ SDK versions match the main application version and are published per language a
 
 ## Versions
 
-- [2.1.0-preview.2 (in development, not yet released)](/en/changelog/sdk/v2-1-0-preview-2.md)
+- [2.1.0-preview.2](/en/changelog/sdk/v2-1-0-preview-2.md)
 - [2.1.0-preview.1](/en/changelog/sdk/v2-1-0-preview-1.md)
 - [2.0.0](/en/changelog/sdk/v2-0-0.md)

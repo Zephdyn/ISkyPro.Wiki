@@ -2,7 +2,7 @@
 
 ISkyPro is a .NET 10 rewrite of the QQBot main framework, built for compatibility with and extension of the ISky plugin ecosystem. It consists of the main process, Web management UI, QQBot gateway, isolated ISky v1 *EPL* / x86 plugin host, `message.dll` compatibility layer, and the ISkyPro v2+ Plugin SDK.
 
-The latest stable version is `2.0.0`, and the latest released preview is `2.1.0-preview.1`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
+The latest stable version is `2.0.0`, and the latest released preview is `2.1.0-preview.2`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
 
 ## Requirements
 

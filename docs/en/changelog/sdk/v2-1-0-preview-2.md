@@ -1,6 +1,6 @@
 # 2.1.0-preview.2 SDK
 
-Status: in development, not yet released
+Release date: 2026-08-27
 
 This version prepares for multiple platforms and accounts: message targets can name an explicit account, and adding a platform requires zero SDK or protocol changes.
 

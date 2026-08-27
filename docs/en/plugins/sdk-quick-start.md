@@ -1,6 +1,6 @@
 # Plugin SDK v2 Quick Start
 
-Stable SDK `2.0.0` officially supports C#, Python, Node.js, and Go; the latest preview is `2.1.0-preview.1`. Choose a deployment model first:
+Stable SDK `2.0.0` officially supports C#, Python, Node.js, and Go; the latest preview is `2.1.0-preview.2`. Choose a deployment model first:
 
 | Mode | Best for | ISkyPro integration |
 | --- | --- | --- |
@@ -96,8 +96,7 @@ The complete example is `samples/QQBotMarkdownRepeatPlugin` (command
 
 ## Target Platform and Account
 
-> The following describes 2.1.0-preview.2 in-development features; API and
-> behavior may change before the stable release.
+> The following features are available since 2.1.0-preview.2.
 
 The proactive `messages.send` target accepts an optional `platform` parameter
 that defaults to `"qqbot"`. When ISkyPro is connected to OneBot, set the target
