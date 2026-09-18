@@ -1,6 +1,6 @@
 # Plugin SDK v2 Quick Start
 
-Stable SDK `2.0.0` officially supports C#, Python, Node.js, and Go; the latest preview is `2.1.0-preview.2`. Choose a deployment model first:
+Stable SDK `2.0.0` officially supports C#, Python, Node.js, and Go; the latest preview is `2.1.0-preview.3`. Choose a deployment model first:
 
 | Mode | Best for | ISkyPro integration |
 | --- | --- | --- |

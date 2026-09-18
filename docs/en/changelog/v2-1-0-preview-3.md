@@ -42,8 +42,9 @@ settings page switch platforms and log out of the right one.
   default, so a typical setup only needs an address and the token.
 - Settings platform switching: when more than one platform is active at the same time, the settings
   page shows a platform switcher (with a single platform the panel title already says which one it
-  is, so the block is hidden). Select a platform to view its settings and log out of it, and the
-  OneBot panel shows online state, connection mode and message counters in a status card.
+  is, so the block is hidden). Select a platform to view its settings and log out of it.
+
+## 🎨 Experience
 
 - Login layout: the card now fills the viewport height and stays fixed while the form area scrolls
   internally, so switching between QQBot and OneBot keeps the card, the artwork and the bottom
@@ -54,6 +55,8 @@ settings page switch platforms and log out of the right one.
   control styles, the quick actions sit as buttons next to the "Connection" heading, and the test and
   detection results appear as a single status line with a state-coloured dot (dark theme colours
   fixed as well).
+- Settings status card: the OneBot panel shows online state, connection mode and message counters in
+  a card that matches the dashboard account card.
 
 ## ♻️ Compatibility
 
