@@ -120,7 +120,7 @@ OneBot 网关与 QQBot 网关相互独立：
 
 - 正向 WebSocket：由 ISkyPro 主动连接 OneBot 协议端地址。
 - 反向 WebSocket：OneBot 协议端连接 ISkyPro 的 `/onebot/ws` 接入点，可配置
-  `access_token` 校验。
+  `access_token` 校验；机器人自身 QQ 号可留空，协议端连上后会自动识别。修改接入路径需重启 ISkyPro 生效。
 - 消息协议支持 OneBot v11 与 v12；发送层支持图片、@、回复、语音等 CQ 码富媒体，并带出站限速。
 
 ### 以 NapCat 为例：四步接入

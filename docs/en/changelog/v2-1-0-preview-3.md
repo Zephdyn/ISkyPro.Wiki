@@ -1,6 +1,6 @@
 # 2.1.0-preview.3
 
-Release date: in development (not yet released)
+Release date: 2026-09-19
 
 This preview focuses on the OneBot onboarding experience: it fixes connections to sidecars that
 require an access token, adds one-click local detection and connection testing, and lets the
@@ -16,10 +16,14 @@ settings page switch platforms and log out of the right one.
   The reason is now actionable: authentication failed, endpoint not found (wrong port), connection
   refused, host not resolvable, timeout, and so on.
 - OneBot addresses: values such as `127.0.0.1:3001` without a `ws://` prefix, or with a trailing
-  slash, are normalized automatically. Invalid addresses produce a clear message and stop the
-  pointless reconnect loop.
+  slash, are normalized automatically. An invalid address for a given configuration is reported once
+  and retried with backoff instead of logging every few seconds.
 - OneBot sending: HTTP API calls now send the standard auth header, and OneBot v12 string ids
   (`"10001"`) are accepted.
+- OneBot reverse WebSocket: saving the reverse mode no longer leaves you stuck on the login page.
+  The sidecar dials in to ISkyPro, so the bot QQ account is optional - it is detected from the first
+  event and stored, after which the dashboard and logs use that account. The form shows the
+  paste-ready endpoint.
 - OneBot connection mode: the pure HTTP mode is no longer offered. It can only call APIs and never
   receives message events, which produced a confusing "enabled but no messages" state; saving it is
   now rejected with a hint to choose forward or reverse WebSocket.
@@ -36,10 +40,10 @@ settings page switch platforms and log out of the right one.
 - Quick setup: the "NapCat preset" fills in `ws://127.0.0.1:3001` and `http://127.0.0.1:3000`.
   Advanced options (reconnect delay, backoff cap, reverse path, outbound interval) are collapsed by
   default, so a typical setup only needs an address and the token.
-- Settings platform switching: the settings page now has a platform switcher showing the online
-  state of every enabled platform. Select a platform to view its settings and log out of that
-  platform (previously the first platform was always shown, which made OneBot impossible to log
-  out of when both were present).
+- Settings platform switching: when more than one platform is active at the same time, the settings
+  page shows a platform switcher (with a single platform the panel title already says which one it
+  is, so the block is hidden). Select a platform to view its settings and log out of it, and the
+  OneBot panel shows online state, connection mode and message counters in a status card.
 
 - Login layout: the card now fills the viewport height and stays fixed while the form area scrolls
   internally, so switching between QQBot and OneBot keeps the card, the artwork and the bottom

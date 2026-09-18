@@ -121,7 +121,9 @@ gateways are independent of each other:
 
 - Forward WebSocket: ISkyPro actively connects to the OneBot protocol endpoint.
 - Reverse WebSocket: the OneBot protocol endpoint connects to ISkyPro's
-  `/onebot/ws` endpoint, with optional `access_token` validation.
+  `/onebot/ws` endpoint, with optional `access_token` validation; the bot's own QQ
+  account may be left empty and is detected automatically once the sidecar
+  connects. Changing the path requires restarting ISkyPro.
 - Message protocols support OneBot v11 and v12; the send layer supports CQ-code
   rich media such as images, mentions, replies, and voice, with outbound throttling.
 
