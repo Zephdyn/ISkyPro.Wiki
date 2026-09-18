@@ -8,6 +8,17 @@
 
 本机运行、没有公网 HTTPS 回调地址时选 WebSocket。已经在 QQ 平台配置公网回调地址，或部署目标就是公网 HTTPS 回调时选 Webhook。详细配置与排障见 [QQBot 事件配置](/guide/qqbot-events) 和 [Webhook 与反向代理](/guide/webhook-and-proxy)。
 
+## OneBot 提示“Unable to connect to the remote server”怎么办？
+
+按顺序检查：
+
+1. **端口是否填反**：NapCat 默认 `3001` 是正向 WebSocket，`3000` 是 HTTP API。ISkyPro 的「WebSocket 地址」应填 `ws://127.0.0.1:3001`。
+2. **协议端是否开启了正向 WebSocket**：只在 NapCat 里开了 HTTP 服务时，WebSocket 连接会被拒绝。
+3. **Access Token 是否一致**：协议端设置了 token 就必须在 ISkyPro 填入完全相同的值，否则握手返回 401/403。
+4. **协议端是否在运行**：连接被拒绝（connection refused）通常表示端口没有服务监听。
+
+登录页或设置页的「测试连接」会给出具体原因，点「自动探测（本机）」可以自动扫描端口并填入推荐配置。详见 [快速开始](/guide/getting-started#接入-onebot-平台)。
+
 ## 为什么登录成功但收不到群消息？
 
 常见原因是群全量消息开关未开、Webhook 没勾选 `GROUP_MESSAGE_CREATE`、连接模式与 QQ 平台配置不一致，或插件没有处理该事件。
