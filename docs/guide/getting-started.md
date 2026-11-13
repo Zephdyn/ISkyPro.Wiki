@@ -2,12 +2,12 @@
 
 ISkyPro 是基于 .NET 10 重写的 QQBot 主框架，面向 ISky 插件生态提供兼容与扩展。它由主程序、Web 管理界面、QQBot 网关、ISky v1 插件兼容宿主、`message.dll` 兼容层和 ISkyPro v2+ Plugin SDK 组成。
 
-最新稳定版本为 `2.0.0`，最新已发布预览版为 `2.1.0-preview.2`。Plugin SDK v2 已提供 C#、Python、Node.js 和 Go 公共源码。
+最新稳定版本为 `2.1.0`。Plugin SDK v2 已提供 C#、Python、Node.js 和 Go 公共源码。
 
 ## 准备
 
 - Windows x64 / Windows ARM64，或 glibc Linux x64
-- ISkyPro 发布包，例如 `ISkyPro-2.0.0-win-x64.zip`、`ISkyPro-2.0.0-win-arm64.zip` 或 `ISkyPro-2.0.0-linux-x64.tar.gz`
+- ISkyPro 发布包，例如 `ISkyPro-2.1.0-win-x64.zip`、`ISkyPro-2.1.0-win-arm64.zip` 或 `ISkyPro-2.1.0-linux-x64.tar.gz`
 - 可访问 QQBot 平台的网络环境
 - QQ 开放平台机器人管理后台中的 Bot ID / AppID 和 Secret
 
@@ -71,7 +71,7 @@ Linux：
 
 ```bash
 sudo mkdir -p /opt/iskypro
-sudo tar -xzf ISkyPro-2.0.0-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
+sudo tar -xzf ISkyPro-2.1.0-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
 sudo chmod +x /opt/iskypro/ISkyPro
 ```
 
@@ -112,8 +112,6 @@ Bot ID / AppID 和 Secret 只来自你自己的 QQ 机器人后台。不要把 S
 - [Webhook 与反向代理](/guide/webhook-and-proxy)
 
 ## 接入 OneBot 平台
-
-> 以下为 2.1.0 预览版特性，正式发布前行为可能调整。
 
 2.1.0 起，ISkyPro 支持 OneBot 平台网关，可与其他 OneBot 兼容客户端/协议端并行运行。
 OneBot 网关与 QQBot 网关相互独立：

@@ -2,12 +2,12 @@
 
 ISkyPro is a .NET 10 rewrite of the QQBot main framework, built for compatibility with and extension of the ISky plugin ecosystem. It consists of the main process, Web management UI, QQBot gateway, isolated ISky v1 *EPL* / x86 plugin host, `message.dll` compatibility layer, and the ISkyPro v2+ Plugin SDK.
 
-The latest stable version is `2.0.0`, and the latest released preview is `2.1.0-preview.2`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
+The latest stable version is `2.1.0`. Plugin SDK v2 provides public sources for C#, Python, Node.js, and Go.
 
 ## Requirements
 
 - Windows x64 / Windows ARM64, or glibc Linux x64
-- An ISkyPro release package, such as `ISkyPro-2.0.0-win-x64.zip`, `ISkyPro-2.0.0-win-arm64.zip`, or `ISkyPro-2.0.0-linux-x64.tar.gz`
+- An ISkyPro release package, such as `ISkyPro-2.1.0-win-x64.zip`, `ISkyPro-2.1.0-win-arm64.zip`, or `ISkyPro-2.1.0-linux-x64.tar.gz`
 - Network access to the QQBot platform
 - Bot ID / AppID and Secret from your QQ Open Platform bot console
 
@@ -71,7 +71,7 @@ Linux:
 
 ```bash
 sudo mkdir -p /opt/iskypro
-sudo tar -xzf ISkyPro-2.0.0-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
+sudo tar -xzf ISkyPro-2.1.0-linux-x64.tar.gz -C /opt/iskypro --strip-components=1
 sudo chmod +x /opt/iskypro/ISkyPro
 ```
 
@@ -112,8 +112,6 @@ The quick start only requires login and mode selection. Group message permission
 - [Webhook and Reverse Proxy](/en/guide/webhook-and-proxy)
 
 ## Connecting the OneBot Platform
-
-> The following describes 2.1.0 preview behavior and may change before the stable release.
 
 Since 2.1.0, ISkyPro supports a OneBot platform gateway that can run alongside
 other OneBot-compatible clients/protocol implementations. The OneBot and QQBot

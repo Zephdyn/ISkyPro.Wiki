@@ -1,6 +1,6 @@
 # Plugin SDK v2 快速实现
 
-稳定 SDK `2.0.0` 正式支持 C#、Python、Node.js 和 Go，最新预览版为 `2.1.0-preview.2`。开始前先选择部署方式：
+稳定 SDK `2.1.0` 正式支持 C#、Python、Node.js 和 Go。开始前先选择部署方式：
 
 | 方式 | 适合场景 | 如何接入 ISkyPro |
 | --- | --- | --- |

@@ -8,6 +8,28 @@
 - `transport.type` 不是 `stdio-jsonrpc`。
 - 插件被复制到 ISky v1 插件使用的 `plugin/` 目录，而不是通过 v2 插件上传入口安装。
 
+## ISky v1 插件载入失败 / 一直停在“启动中”
+
+旧版本日志里可能出现：
+
+```text
+自动载入插件 cc.example.Plugin 失败：Plugin cc.example.Plugin is not initialized.
+```
+
+这条文案表示兼容宿主在载入时限内没有完成初始化，而不是插件不存在。2.1.0 起会直接给出阶段：
+
+```text
+插件载入超时：30000ms 内未完成初始化（未连接，未读取插件信息，未完成初始化）；宿主 PID 1234；宿主输出日志 data/logs/pluginhost/cc.example.Plugin-...log。已终止兼容运行器并按崩溃策略处理。
+```
+
+排查顺序：
+
+1. 看日志或插件卡片里的失败原因，它指明了已到达的阶段。
+2. 打开 `data/logs/pluginhost/` 下对应 `isky.exe` 的日志，看最后一条 `PluginHost status:` 行。
+3. 未连接：多半是杀软拦截 `isky.exe` 或命名管道、磁盘过慢；已连接但没有“信息已读取”：`ISkyS_Information` 卡住；已读取信息但没有“初始化完成”：插件初始化自身阻塞（联网授权、弹窗、读写大文件）。
+4. 确认是机器慢而不是插件坏时，可在 WebUI 设置页“运行时”把“载入超时 ms”调大（默认 30000），或设置 `Plugins:StartupTimeoutMilliseconds` 后重启。
+5. 超时后宿主会被终止并按崩溃策略延迟重启；连续失败会进入暂停或停用，需要人工处理。
+
 ## 启动失败
 
 - `transport.stdio.command` 不存在或不在 PATH。
