@@ -119,9 +119,45 @@ gateways are independent of each other:
 
 - Forward WebSocket: ISkyPro actively connects to the OneBot protocol endpoint.
 - Reverse WebSocket: the OneBot protocol endpoint connects to ISkyPro's
-  `/onebot/ws` endpoint, with optional `access_token` validation.
+  `/onebot/ws` endpoint, with optional `access_token` validation; the bot's own QQ
+  account may be left empty and is detected automatically once the sidecar
+  connects. Changing the path requires restarting ISkyPro.
 - Message protocols support OneBot v11 and v12; the send layer supports CQ-code
   rich media such as images, mentions, replies, and voice, with outbound throttling.
+
+### NapCat example: four steps
+
+1. **Start NapCat and sign in a QQ account.** Sign in with the account that should act as the bot in
+   the NapCat WebUI (default `http://127.0.0.1:6099`).
+2. **Enable the OneBot 11 services.** Under network configuration, add and enable two servers:
+   - **Forward WebSocket server**: default port `3001` (ISkyPro receives events through it).
+   - **HTTP server**: default port `3000` (ISkyPro calls the send APIs through it).
+   - If you set an **Access Token**, note it down - the same value is needed in the next step.
+3. **Select "OneBot" on the ISkyPro login page**, then:
+   - Press "NapCat preset" to fill in `ws://127.0.0.1:3001` and `http://127.0.0.1:3000`, or press
+     "Auto-detect (local)" and apply one of the detected candidates.
+   - If the sidecar has an Access Token, enter exactly the same value.
+   - Press "**Test connection**": the bot QQ (self_id) and nickname are filled in on success.
+4. **Save to enable.** ISkyPro connects immediately; online state and message counters are visible
+   on the dashboard and the Logs page.
+
+> Port mapping: in NapCat **3001 is WebSocket** and **3000 is the HTTP API**. Entering 3000 as the
+> "WebSocket URL" is the most common connection failure. ISkyPro completes `ws://` / `http://`
+> prefixes and removes trailing slashes on save, so `127.0.0.1:3001` also works.
+
+### Connection troubleshooting
+
+| Message / symptom | Cause | Fix |
+| --- | --- | --- |
+| Authentication failed (HTTP 401/403) | The sidecar requires an Access Token and the values differ (or none was entered) | Enter exactly the same token in ISkyPro |
+| Endpoint not found (HTTP 404/400) | The HTTP API port was entered as the WebSocket address | Use `ws://127.0.0.1:3001` for WebSocket and `http://127.0.0.1:3000` for the HTTP API |
+| Connection refused | Nothing is listening on that port | Make sure the sidecar is running and the matching WebSocket / HTTP service is enabled |
+| Connect or handshake timeout | Address unreachable, firewall or proxy blocking | Use `127.0.0.1` for a local sidecar; open the port for remote deployments |
+| Connected but no messages arrive | Only HTTP was enabled, not the forward WebSocket server | Enable the forward WebSocket server in the sidecar and save again |
+
+> "Test connection" performs a real handshake and calls `get_login_info` without writing
+> configuration. "Auto-detect (local)" only scans the common sidecar ports on 127.0.0.1 and never
+> touches other hosts.
 
 Select the "OneBot" platform on the WebUI login page, or enable the `onebot`
 section in the configuration file. Multi-platform state is visible on the gateway
@@ -134,7 +170,7 @@ page. Configuration example (`config/appsettings.json`):
       "Enabled": true,
       "ProtocolVersion": "V11",
       "ConnectionMode": "ForwardWebSocket",
-      "WsUrl": "ws://127.0.0.1:8080",
+      "WsUrl": "ws://127.0.0.1:3001",
       "ApiBaseUrl": "http://127.0.0.1:3000",
       "AccessToken": "",
       "SelfUserId": 0,
@@ -147,9 +183,12 @@ page. Configuration example (`config/appsettings.json`):
 ```
 
 `ProtocolVersion` accepts `V11` / `V12`; `ConnectionMode` accepts
-`ForwardWebSocket` / `ReverseWebSocket` / `Http`. For reverse WebSocket and HTTP
-modes, fill in `ApiBaseUrl` and `SelfUserId` as required by the protocol
-endpoint, and keep `AccessToken` consistent with that endpoint.
+`ForwardWebSocket` / `ReverseWebSocket`. Only these two modes can receive message
+events in this release; a pure HTTP mode can only call APIs, so it is not exposed
+(saving it is rejected with a hint to pick a WebSocket mode). `ApiBaseUrl` is used
+for sending messages and should be filled in for both modes; keep `AccessToken`
+consistent with the sidecar. `SelfUserId` may be left empty and filled in later by
+"Test connection" on the settings page.
 
 ## Configuration Overrides
 

@@ -118,8 +118,40 @@ OneBot 网关与 QQBot 网关相互独立：
 
 - 正向 WebSocket：由 ISkyPro 主动连接 OneBot 协议端地址。
 - 反向 WebSocket：OneBot 协议端连接 ISkyPro 的 `/onebot/ws` 接入点，可配置
-  `access_token` 校验。
+  `access_token` 校验；机器人自身 QQ 号可留空，协议端连上后会自动识别。修改接入路径需重启 ISkyPro 生效。
 - 消息协议支持 OneBot v11 与 v12；发送层支持图片、@、回复、语音等 CQ 码富媒体，并带出站限速。
+
+### 以 NapCat 为例：四步接入
+
+1. **启动 NapCat 并登录 QQ**。在 NapCat 的 WebUI（默认 `http://127.0.0.1:6099`）中登录需要作为
+   机器人的 QQ 号。
+2. **开启 OneBot 11 服务**。进入「网络配置」，添加并启用两个服务：
+   - **正向 WebSocket 服务器**：默认端口 `3001`（ISkyPro 用它收事件）。
+   - **HTTP 服务器**：默认端口 `3000`（ISkyPro 用它调用发送消息等 API）。
+   - 如果设置了 **Access Token**，请记下它，下一步要填完全相同的值。
+3. **在 ISkyPro 登录页选择「OneBot」**，然后：
+   - 点「NapCat 预设」一键填入 `ws://127.0.0.1:3001` 与 `http://127.0.0.1:3000`；
+     或点「自动探测（本机）」扫描本机端口后点候选右侧「应用」。
+   - 如协议端设置了 Access Token，填入相同值。
+   - 点「**测试连接**」：成功后会自动回填机器人 QQ（self_id）与昵称。
+4. **保存并启用**。保存后立即连接；可在仪表盘与日志页查看在线状态与收发消息。
+
+> 端口对应关系：NapCat 的 **3001 是 WebSocket**，**3000 是 HTTP API**。把 3000 填进
+> 「WebSocket 地址」是最常见的连接失败原因。ISkyPro 会在保存时自动补全 `ws://` / `http://`
+> 前缀并去除多余斜杠，填写 `127.0.0.1:3001` 也是可以的。
+
+### 连接失败排查
+
+| 提示 / 现象 | 原因 | 处理 |
+| --- | --- | --- |
+| 鉴权失败（HTTP 401/403） | 协议端开启了 Access Token，两边不一致或未填写 | 在 ISkyPro 填入与协议端完全相同的 token |
+| 端点不存在（HTTP 404/400） | 把 HTTP API 端口填进了 WebSocket 地址 | WebSocket 用 `ws://127.0.0.1:3001`，HTTP API 用 `http://127.0.0.1:3000` |
+| 连接被拒绝 | 端口没有服务监听 | 确认协议端已启动，且已开启对应的 WebSocket / HTTP 服务 |
+| 连接或握手超时 | 地址不可达、防火墙或代理拦截 | 本机协议端使用 `127.0.0.1`；跨机部署检查端口放通 |
+| 连上了但收不到消息 | 只开启了 HTTP，未开启正向 WebSocket | 在协议端启用正向 WebSocket 服务器后重新保存 |
+
+> 「测试连接」会真实握手并调用 `get_login_info`，不写入配置；「自动探测（本机）」只扫描
+> 127.0.0.1 上的常见协议端端口，不会扫描其他主机。
 
 在 WebUI 登录页选择“OneBot”平台，或直接编辑配置文件中的 `onebot` 节启用。多平台状态可在
 网关页查看。配置文件示例（`config/appsettings.json`）：
@@ -131,7 +163,7 @@ OneBot 网关与 QQBot 网关相互独立：
       "Enabled": true,
       "ProtocolVersion": "V11",
       "ConnectionMode": "ForwardWebSocket",
-      "WsUrl": "ws://127.0.0.1:8080",
+      "WsUrl": "ws://127.0.0.1:3001",
       "ApiBaseUrl": "http://127.0.0.1:3000",
       "AccessToken": "",
       "SelfUserId": 0,
@@ -143,8 +175,9 @@ OneBot 网关与 QQBot 网关相互独立：
 }
 ```
 
-`ProtocolVersion` 可填 `V11` / `V12`；`ConnectionMode` 可填 `ForwardWebSocket` / `ReverseWebSocket` / `Http`。
-反向 WebSocket 与 HTTP 模式时，`ApiBaseUrl` 与 `SelfUserId` 按协议端要求填写；`AccessToken` 与协议端配置保持一致。
+`ProtocolVersion` 可填 `V11` / `V12`；`ConnectionMode` 可填 `ForwardWebSocket` / `ReverseWebSocket`——当前版本只有这两种模式能接收消息事件，纯 HTTP 模式仅支持调用 API，因此未开放（保存时会被拒绝并提示改用 WebSocket）。
+`ApiBaseUrl` 用于发送消息，两种模式都建议填写；`AccessToken` 与协议端配置保持一致。
+`SelfUserId` 可留空，保存后用设置页的「测试连接」自动回填。
 
 ## 配置覆盖方式
 

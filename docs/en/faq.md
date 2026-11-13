@@ -8,6 +8,17 @@ When `ISkyPro.exe` or the Linux package's `ISkyPro` starts for the first time, t
 
 Use WebSocket for local use or when you do not have a public HTTPS callback address. Use Webhook when you have configured a public callback URL on the QQ platform or the deployment is intended to receive public HTTPS callbacks. See [QQBot Event Setup](/en/guide/qqbot-events) and [Webhook and Reverse Proxy](/en/guide/webhook-and-proxy) for detailed setup and troubleshooting.
 
+## What does "Unable to connect to the remote server" mean for OneBot?
+
+Check, in order:
+
+1. **Ports swapped**: in NapCat `3001` is the forward WebSocket and `3000` is the HTTP API. The ISkyPro "WebSocket URL" should be `ws://127.0.0.1:3001`.
+2. **Forward WebSocket not enabled**: if only the HTTP server is enabled in NapCat, the WebSocket connection is refused.
+3. **Access Token mismatch**: when the sidecar sets a token, the exact same value must be entered in ISkyPro, otherwise the handshake returns 401/403.
+4. **Sidecar not running**: "connection refused" usually means nothing is listening on that port.
+
+"Test connection" on the login or settings page reports the concrete reason, and "Auto-detect (local)" scans the ports and fills in a recommended configuration. See [Getting Started](/en/guide/getting-started#connecting-the-onebot-platform).
+
 ## Why did login succeed but group messages are missing?
 
 Common causes are a disabled group full-message switch, missing `GROUP_MESSAGE_CREATE` selection for Webhook, a mismatch between connection mode and QQ platform configuration, or a plugin that does not handle the event.
